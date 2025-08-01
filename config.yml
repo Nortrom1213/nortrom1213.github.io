@@ -1,5 +1,5 @@
-baseURL: "https://pascalmichaillat.org/hugo-website/" 
-title: Moritz-Maria von Igelfeld
+baseURL: "https://pascalmichaillat.org/hugo-website/"
+title: Kaijie Xu
 theme: PaperMod
 
 enableInlineShortcodes: true
@@ -12,25 +12,16 @@ taxonomies:
 
 menu:
     main:
-        - name: Books
-          url: books/
-          weight: 5 
-        - name: Papers
-          url: papers/
-          weight: 2
-        - name: Courses
-          url: courses/
-          weight: 3
-        - name: Data
-          url: data/
-          weight: 4 
-        - name: Blog
-          url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
-          weight: 6
+    - name: News
+      url: news/
+      weight: 1
+    - name: Publications
+      url: publications/
+      weight: 2
 
 params:
-    description: "This website hosts Moritz-Maria von Igelfeld's research papers, books, course materials, data, curriculum vitae, and contact information."
-    author: Moritz-Maria von Igelfeld
+    description: "Kaijie (Jay) Xu, PhD Student at McGill University — Publications & News"
+    author: Kaijie Xu
     # googleAnalyticsID: "G-XXXXX"
     DateFormat: "January 2006"
     defaultTheme: light
@@ -44,7 +35,7 @@ params:
     ShowBreadCrumbs: false
     ShowCodeCopyButtons: true
     ShowAllPagesInArchive: false
-    MainSections: ["books","courses","papers","data"]
+    MainSections: ["news","publications"]
     ShowToc: false
     disableScrollToTop: true
     TocOpen: true
@@ -54,50 +45,32 @@ params:
     math: true
     profileMode:
           enabled: true
-          title: Professor Dr von Igelfeld
-          subtitle: "I am a Professor in the Institute of Romance Philology at the University of Regensburg, Germany. My research focuses on Portuguese irregular verbs. I was a doctoral student of Professor Dr Dieter Vogelsang in Munich, and later a second assistant of Professor Walter Schoeffler-Henschell at the University of Wiesbaden."
-          imageUrl: "picture.jpeg"
+          title: Kaijie (Jay) Xu
+          subtitle: >
+            I’m a first-year PhD student in Computer Science at McGill University, supervised by <a href="https://www.sable.mcgill.ca/~clump/" style="color:#0066cc;">Dr Clark Verbrugge</a>; previously, I completed a B.A. in Computer Science & Applied Mathematics at UC Berkeley and an M.Sc. at Imperial College London under <a href="https://cq615.github.io/" style="color:#0066cc;">Dr Chen Qin</a> (primary) and <a href="https://cheng-01037.github.io/" style="color:#0066cc;">Dr Cheng Ouyang</a> (co-supervisor).<br>
+            I'm interested in procedural content generation, game AI, computer vision in games, large language models, and optimization & evolutionary computation.
+
+          imageUrl: "me.jpg"
           imageWidth: 160
           imageHeight: 160
           buttons:
-            - name: Papers
-              url: papers/
-            - name: Data
-              url: data/
-            - name: Books
-              url: books/
-            - name: Courses
-              url: courses/
-            - name: Tags
-              url: tags/
-            - name: Archive
-              url: archive/
-            - name: Blog
-              url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
+          - name: News
+            url: news/
+          - name: Publications
+            url: publications/
+
 
     socialIcons:
-        - name: CV
-          url: cv.pdf
+        #- name: CV
+        #  url: cv.pdf
         - name: Email
-          url: mailto:igelfeld@regensburg.edu
-        - name: Zoom
-          url: https://www.zoom.us/my/igelfeld
-        - name: Location
-          url: location/
-        - name: Office Hours
-          url: officehours/
+          url: mailto:kaijie.xu2@mail.mcgill.ca
         - name: Google Scholar
-          url: https://scholar.google.com/citations?user=cL23w-4AAAAJ
+          url: https://scholar.google.com/citations?hl=zh-CN&user=Ks6qgVQAAAAJ
+        - name: LinkedIn
+          url: https://www.linkedin.com/in/kaijie-xu-051705263/
         - name: GitHub
-          url: https://github.com/pmichaillat
-        - name: Substack
-          url: https://pmichaillat.substack.com
-        - name: YouTube
-          url: https://www.youtube.com/@pmichaillat
-        - name: Twitter
-          url: https://x.com/pmichaillat
-        - name: Bluesky
-          url: https://bsky.app/profile/pmichaillat.bsky.social
+          url: https://github.com/Nortrom1213
 
     assets:
         disableScrollBarStyle: true
@@ -105,7 +78,7 @@ params:
         hiddenInList: false
         hiddenInSingle: true
     label:
-      text: "Moritz-Maria von Igelfeld"
+      text: "Kaijie Xu"
       icon: favicon.ico
       iconHeight: 18
 
