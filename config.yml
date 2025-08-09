@@ -7,6 +7,8 @@ enableRobotsTXT: true
 pagination:
   pagerSize: 20
 
+buildfuture: true
+
 taxonomies:
     tag: tags
 
@@ -43,6 +45,7 @@ params:
     UseHugoToc: true
     comments: false
     math: true
+
     profileMode:
           enabled: true
           title: Kaijie (Jay) Xu
