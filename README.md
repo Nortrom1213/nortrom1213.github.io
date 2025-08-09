@@ -58,14 +58,3 @@ On each push, the [GitHub Actions workflow](https://github.com/pmichaillat/hugo-
 ## License
 
 This repository is licensed under the [MIT License](LICENSE.md).
-
-## Related resources
-
-+ [latex-cv](https://github.com/pmichaillat/latex-cv) - This LaTeX template produces a minimalist academic CV, which you can post on your website. The CV should be named `cv.pdf` and placed in the `static` folder. It will be accessible from the homepage via a social icon.
-
-+ [Pragathi Praveena's website](https://pragathipraveena.com)
-+ [Qiwei He's website](https://www.qiwei-he.com)
-+ [Pierre Bardier's website](https://pierrebard.github.io/pierre-bardier/)
-+ [Marek Wiewiórka's website](https://marekwiewiorka.org)
-+ [Eran Shmuëli's website](https://eranshmueli.com)
-+ [Bo Wang's website](https://bowang.finance)
