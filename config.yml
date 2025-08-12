@@ -20,6 +20,9 @@ menu:
     - name: Publications
       url: publications/
       weight: 2
+    - name: Notebook
+      url: notebook/
+      weight: 3
 
 params:
     description: "Kaijie (Jay) Xu, PhD Student at McGill University — Publications & News"
@@ -37,7 +40,7 @@ params:
     ShowBreadCrumbs: false
     ShowCodeCopyButtons: true
     ShowAllPagesInArchive: false
-    MainSections: ["news","publications"]
+    MainSections: ["news","publications","notebook"]
     ShowToc: false
     disableScrollToTop: true
     TocOpen: true
@@ -61,6 +64,8 @@ params:
             url: news/
           - name: Publications
             url: publications/
+          - name: Notebook
+            url: notebook/
 
 
     socialIcons:
