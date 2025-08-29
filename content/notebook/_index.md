@@ -28,6 +28,8 @@ Welcome to my research notebook! Here I document important resources, references
 - **[ACM CHI](https://chi2026.acm.org/)** - Human-Computer Interaction
 
 ### 🤖 AI & Multimedia Conferences
+- **[AAAI](https://aaai.org/conference/)** - Association for the Advancement of Artificial Intelligence
+- **[IJCAI](https://ijcai.org/)** - International Joint Conference on Artificial Intelligence
 - **[NeurIPS](https://neurips.cc/)** - Neural Information Processing Systems
 - **[ICML](https://icml.cc/)** - International Conference on Machine Learning
 - **[CVPR](https://cvpr.thecvf.com/)** - Computer Vision and Pattern Recognition
