@@ -5,7 +5,7 @@ description: "Research notes, resources, and references in game AI and computer 
 
 # Research Notebook
 
-Welcome to my research notebook! Here I document important resources, references, and notes related to my research in game AI, computer vision, and procedural content generation.
+Here I document important resources, references, and notes related to my research in game AI, computer vision, and procedural content generation.
 
 ## 📚 Conferences 
 
