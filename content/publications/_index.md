@@ -12,7 +12,7 @@ description: "Selected research publications and complete publication list"
 
 + **Generic Guard AI in Stealth Games with Composite Potential Fields** (2025)  
   Kaijie Xu, Clark Verbrugge  
-  *Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2025)*  
+  *Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2025)* — Best Student Paper Award  
   [Paper](https://ojs.aaai.org/index.php/AIIDE/article/view/36819) | [Details](2025-11-01-guard-ai/)
 
 ---
@@ -26,7 +26,7 @@ description: "Selected research publications and complete publication list"
 
 + **Generic Guard AI in Stealth Games with Composite Potential Fields** (2025)  
   Kaijie Xu, Clark Verbrugge  
-  *Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2025)*  
+  *Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2025)* — Best Student Paper Award  
   [Paper](https://ojs.aaai.org/index.php/AIIDE/article/view/36819) | [Details](2025-11-01-guard-ai/)
 
 + **A Database-Driven Framework for 3D Level Generation with LLMs** (2025)  

@@ -53,7 +53,7 @@ params:
           enabled: true
           title: Kaijie (Jay) Xu
           subtitle: >
-            I’m a first-year PhD student in Computer Science at McGill University, supervised by <a href="https://www.sable.mcgill.ca/~clump/" style="color:#0066cc;">Dr Clark Verbrugge</a>; previously, I completed a B.A. in Computer Science & Applied Mathematics at UC Berkeley and an M.Sc. at Imperial College London under <a href="https://cq615.github.io/" style="color:#0066cc;">Dr Chen Qin</a> (primary) and <a href="https://cheng-01037.github.io/" style="color:#0066cc;">Dr Cheng Ouyang</a> (co-supervisor).<br>
+            I’m a second-year PhD candidate in Computer Science at McGill University, supervised by <a href="https://www.sable.mcgill.ca/~clump/" style="color:#0066cc;">Dr Clark Verbrugge</a>; previously, I completed a B.A. in Computer Science & Applied Mathematics at UC Berkeley and an M.Sc. at Imperial College London under <a href="https://cq615.github.io/" style="color:#0066cc;">Dr Chen Qin</a> (primary) and <a href="https://cheng-01037.github.io/" style="color:#0066cc;">Dr Cheng Ouyang</a> (co-supervisor).<br>
             I'm interested in procedural content generation, game AI, computer vision in games, large language models, and optimization & evolutionary computation.
 
           imageUrl: "me.jpg"
