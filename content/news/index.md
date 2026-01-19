@@ -4,6 +4,7 @@ description: "Recent updates and upcoming presentations"
 ---
 
 ## 2025
+- One paper accepted at **[CHI 2026](https://chi2026.acm.org/)** - Barcelona, Spain, Apr 13-17, 2026; **one oral**.
 - One paper accepted at **[AAAI 2026](https://aaai.org/aaai-conference/aaai-26/)** main track —  Singapore, Jan 20-27, 2026; **one oral**.
 - Three papers accepted at **[AIIDE 2025](https://sites.google.com/ualberta.ca/aiide2025/home)** — Edmonton, Canada, Nov 10–14, 2025; **one oral, two posters**.
 - Three papers accepted at **[CoG 2025](https://cog2025.inesc-id.pt/)**  — Lisbon, Portugal, Aug 26–29, 2025; **two oral presentations**.

@@ -5,6 +5,10 @@ description: "Selected research publications and complete publication list"
 
 ## Selected Publications
 
++ **Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework** (2026)  
+  Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge  
+  *Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026)* (in press)  
+
 + **CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference** (2026)  
   Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas  
   *Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2026)* (in press)  
@@ -18,6 +22,10 @@ description: "Selected research publications and complete publication list"
 ---
 
 ## All Publications
+
++ **Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework** (2026)  
+  Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge  
+  *Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026)* (in press)  
 
 + **CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference** (2026)  
   Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas  
