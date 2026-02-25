@@ -3,6 +3,9 @@ title: "News"
 description: "Recent updates and upcoming presentations"
 ---
 
+## 2026
+- Three papers accepted at **[FDG 2026](https://fdg2026.org/)** — Copenhagen, Denmark, Aug 10–13, 2026; **three oral presentations**.
+
 ## 2025
 - One paper accepted at **[CHI 2026](https://chi2026.acm.org/)** - Barcelona, Spain, Apr 13-17, 2026; **one oral**.
 - One paper accepted at **[AAAI 2026](https://aaai.org/aaai-conference/aaai-26/)** main track —  Singapore, Jan 20-27, 2026; **one oral**.

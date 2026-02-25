@@ -32,6 +32,21 @@ description: "Selected research publications and complete publication list"
   *Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2026)* (in press)  
   [Paper](https://arxiv.org/abs/2511.06175) | [Details](2026-aaai-csp4sdg/)
 
++ **High Dimensional Procedural Content Generation** (2026)  
+  Kaijie Xu, Clark Verbrugge  
+  *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press)  
+  [Paper](https://arxiv.org/abs/2602.18943) | [Details](2026-fdg-hdpcg/)
+
++ **(Perlin) Noise as AI coordinator** (2026)  
+  Kaijie Xu, Clark Verbrugge  
+  *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press)  
+  [Paper](https://arxiv.org/abs/2602.18947) | [Details](2026-fdg-perlin-noise-ai-coordinator/)
+
++ **How Far Can We Go with Pixels Alone? A Pilot Study on Screen-Only Navigation in Commercial 3D ARPGs** (2026)  
+  Kaijie Xu, Mustafa Bugti, Clark Verbrugge  
+  *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press)  
+  [Paper](https://arxiv.org/abs/2602.18981) | [Details](2026-fdg-pixels-alone-navigation/)
+
 + **Generic Guard AI in Stealth Games with Composite Potential Fields** (2025)  
   Kaijie Xu, Clark Verbrugge  
   *Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2025)* — Best Student Paper Award  
