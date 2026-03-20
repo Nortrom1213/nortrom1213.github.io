@@ -8,11 +8,12 @@ description: "Selected research publications and complete publication list"
 + **Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework** (2026)  
   Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge  
   *Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026)* (in press)  
+  [Paper](https://arxiv.org/abs/2603.18398) | [Details](2026-chi-mission-design/)
 
 + **CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference** (2026)  
   Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas  
   *Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2026)* (in press)  
-  [Paper](https://arxiv.org/abs/2511.06175) | [Details](2026-aaai-csp4sdg/)
+  [Paper](https://ojs.aaai.org/index.php/AAAI/article/view/38453) | [Details](2026-aaai-csp4sdg/)
 
 + **Generic Guard AI in Stealth Games with Composite Potential Fields** (2025)  
   Kaijie Xu, Clark Verbrugge  
@@ -26,11 +27,12 @@ description: "Selected research publications and complete publication list"
 + **Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework** (2026)  
   Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge  
   *Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026)* (in press)  
+  [Paper](https://arxiv.org/abs/2603.18398) | [Details](2026-chi-mission-design/)
 
 + **CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference** (2026)  
   Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas  
   *Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2026)* (in press)  
-  [Paper](https://arxiv.org/abs/2511.06175) | [Details](2026-aaai-csp4sdg/)
+  [Paper](https://ojs.aaai.org/index.php/AAAI/article/view/38453) | [Details](2026-aaai-csp4sdg/)
 
 + **High Dimensional Procedural Content Generation** (2026)  
   Kaijie Xu, Clark Verbrugge  

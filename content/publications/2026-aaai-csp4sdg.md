@@ -18,7 +18,7 @@ In Social Deduction Games (SDGs) such as Avalon, Mafia, and Werewolf, players co
 
 ##### Links
 
-+ [Link](https://arxiv.org/abs/2511.06175)
++ [Link](https://ojs.aaai.org/index.php/AAAI/article/view/38453)
 
 ---
 
