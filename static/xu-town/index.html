@@ -1,0 +1,2714 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+<title>Xu Town · Kaijie Xu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#1a1c3a;font-family:'VT323',monospace;color:#fbf3dc;image-rendering:pixelated;user-select:none;touch-action:none;}
+*{box-sizing:border-box;}
+@keyframes shimmer{from{box-shadow:0 0 6px 1px rgba(255,220,90,0.7),0 0 3px 1px rgba(255,220,90,0.9);}to{box-shadow:0 0 18px 4px rgba(255,220,90,1),0 0 8px 2px rgba(255,220,90,1);}}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.dialog-cursor{animation:blink .8s steps(2) infinite;color:#9a4a2b;}@keyframes blink{50%{opacity:0;}}
+button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
+::-webkit-scrollbar{width:12px;height:12px;}::-webkit-scrollbar-track{background:#e8d9b3;}::-webkit-scrollbar-thumb{background:#2b2118;border:2px solid #e8d9b3;}
+</style></head><body>
+<div id="root"></div>
+
+<!-- Mode chooser modal: shown on entry so the user can pick game vs classic. -->
+<div id="xu-mode-chooser" role="dialog" aria-modal="true" aria-label="Choose site mode" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:rgba(10,12,30,0.78);font-family:'VT323',monospace;pointer-events:auto;">
+  <div style="background:#fbf3dc;color:#2b2118;border:4px solid #2b2118;padding:26px 34px;max-width:460px;width:88%;box-shadow:0 0 0 4px #7d3a2c, 8px 8px 0 rgba(0,0,0,0.45);text-align:center;image-rendering:pixelated;">
+    <div style="font-size:34px;line-height:1;margin-bottom:8px;color:#7d3a2c;letter-spacing:2px;">&#10022; Xu Town &#10022;</div>
+    <div style="font-size:22px;margin-bottom:6px;">Welcome, traveler.</div>
+    <div style="font-size:18px;margin-bottom:20px;color:#5a4a38;line-height:1.35;">
+      Explore Kaijie (Jay) Xu's site as a pixel town,<br>or head to the classic academic page.
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button id="xu-mode-game" type="button"
+        style="cursor:pointer;font-family:'VT323',monospace;font-size:22px;padding:8px 20px;background:#7d3a2c;color:#fbf3dc;border:3px solid #2b2118;box-shadow:3px 3px 0 #2b2118;">&#9656; Enter the Town</button>
+      <button id="xu-mode-classic" type="button"
+        style="cursor:pointer;font-family:'VT323',monospace;font-size:22px;padding:8px 20px;background:#fbf3dc;color:#2b2118;border:3px solid #2b2118;box-shadow:3px 3px 0 #2b2118;">&#9671; Classic Site</button>
+    </div>
+    <div style="font-size:15px;margin-top:14px;color:#8a7e64;">You can switch modes anytime from the top-right.</div>
+  </div>
+</div>
+
+<!-- Floating switch to classic site (visible once the game is active). -->
+<a id="xu-classic-link" href="/classic/" title="Switch to classic academic site"
+   style="position:fixed;top:10px;left:10px;z-index:500;font-family:'VT323',monospace;font-size:16px;background:rgba(43,33,24,0.82);color:#fbf3dc;border:2px solid #fbf3dc;padding:4px 10px;text-decoration:none;display:none;">&#9671; Classic Site</a>
+
+<script>
+(function () {
+  var chooser = document.getElementById('xu-mode-chooser');
+  var classicLink = document.getElementById('xu-classic-link');
+  var btnGame = document.getElementById('xu-mode-game');
+  var btnClassic = document.getElementById('xu-mode-classic');
+  function show() {
+    chooser.style.display = 'flex';
+    classicLink.style.display = 'none';
+  }
+  function hide() {
+    chooser.style.display = 'none';
+    classicLink.style.display = 'inline-block';
+  }
+  function toClassic() { window.location.href = '/classic/'; }
+  show();
+  btnGame.addEventListener('click', function () {
+    hide();
+    window.dispatchEvent(new Event('xuTownEnter'));
+  });
+  btnClassic.addEventListener('click', toClassic);
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && chooser.style.display !== 'none') {
+      e.stopPropagation();
+      hide();
+    }
+  }, true);
+})();
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script>// All site data extracted from nortrom1213.github.io content/
+
+window.SITE_DATA = {
+  about: {
+    name: "Kaijie (Jay) Xu",
+    title: "PhD Candidate · McGill University",
+    blurb: "Second-year PhD candidate in Computer Science at McGill, supervised by Dr. Clark Verbrugge. Previously B.A. in CS & Applied Math at UC Berkeley, M.Sc. at Imperial College London under Dr. Chen Qin and Dr. Cheng Ouyang.",
+    interests: "Procedural Content Generation · Game AI · Computer Vision in Games · LLMs · Optimization & Evolutionary Computation",
+  },
+
+  publications: [
+    { id: "chi26", year: 2026, featured: true,
+      title: "Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework",
+      authors: "Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge",
+      venue: "CHI 2026", venueFull: "ACM CHI Conference on Human Factors in Computing Systems",
+      status: "in press",
+      link: "https://arxiv.org/abs/2603.18398" },
+    { id: "aaai26", year: 2026, featured: true,
+      title: "CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference",
+      authors: "Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas",
+      venue: "AAAI 2026", venueFull: "AAAI Conference on Artificial Intelligence",
+      status: "in press",
+      link: "https://ojs.aaai.org/index.php/AAAI/article/view/38453" },
+    { id: "fdg26-hd", year: 2026,
+      title: "High Dimensional Procedural Content Generation",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "FDG 2026", venueFull: "Foundations of Digital Games",
+      status: "in press",
+      link: "https://arxiv.org/abs/2602.18943" },
+    { id: "fdg26-noise", year: 2026,
+      title: "(Perlin) Noise as AI Coordinator",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "FDG 2026", venueFull: "Foundations of Digital Games",
+      status: "in press",
+      link: "https://arxiv.org/abs/2602.18947" },
+    { id: "fdg26-pix", year: 2026,
+      title: "How Far Can We Go with Pixels Alone? A Pilot Study on Screen-Only Navigation in Commercial 3D ARPGs",
+      authors: "Kaijie Xu, Mustafa Bugti, Clark Verbrugge",
+      venue: "FDG 2026", venueFull: "Foundations of Digital Games",
+      status: "in press",
+      link: "https://arxiv.org/abs/2602.18981" },
+    { id: "aiide25-guard", year: 2025, featured: true, award: "Best Student Paper",
+      title: "Generic Guard AI in Stealth Games with Composite Potential Fields",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "AIIDE 2025", venueFull: "AAAI Conference on AI and Interactive Digital Entertainment",
+      link: "https://ojs.aaai.org/index.php/AIIDE/article/view/36819" },
+    { id: "aiide25-db", year: 2025,
+      title: "A Database-Driven Framework for 3D Level Generation with LLMs",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "AIIDE 2025", venueFull: "AAAI Conference on AI and Interactive Digital Entertainment",
+      link: "https://ojs.aaai.org/index.php/AIIDE/article/view/36840" },
+    { id: "aiide25-nav", year: 2025,
+      title: "Adaptive Visual Navigation Assistant in 3D RPGs",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "AIIDE 2025", venueFull: "AAAI Conference on AI and Interactive Digital Entertainment",
+      link: "https://ojs.aaai.org/index.php/AIIDE/article/view/36839" },
+    { id: "cog25-action", year: 2025,
+      title: "Action Window Planning for Stealth Missions",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "CoG 2025", venueFull: "IEEE Conference on Games",
+      link: "https://ieeexplore.ieee.org/abstract/document/11114360" },
+    { id: "cog25-vis", year: 2025,
+      title: "Quantitative Analysis of Visual Guidance in Level Transitions Using Multimodal Visual Metrics",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "CoG 2025", venueFull: "IEEE Conference on Games",
+      link: "https://ieeexplore.ieee.org/abstract/document/11114135" },
+    { id: "cog25-csp", year: 2025,
+      title: "Constraint Propagation for Reasoning in Single-player Deduction Games",
+      authors: "Fandi Meng, Kaijie Xu, Simon Lucas",
+      venue: "CoG 2025", venueFull: "IEEE Conference on Games",
+      link: "https://ieeexplore.ieee.org/abstract/document/11114136" },
+    { id: "fdg25", year: 2025,
+      title: "Constraint Is All You Need: Optimization-Based 3D Level Generation with LLMs",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "FDG 2025", venueFull: "Foundations of Digital Games",
+      link: "https://dl.acm.org/doi/full/10.1145/3723498.3723840" },
+    { id: "midl24", year: 2024,
+      title: "FedFDD: Federated Learning with Frequency Domain Decomposition for Low-Dose CT Denoising",
+      authors: "Xuhang Chen, Zeju Li, Zikun Xu, Kaijie Xu, Cheng Ouyang, Chen Qin",
+      venue: "MIDL 2024", venueFull: "Medical Imaging with Deep Learning",
+      link: "https://proceedings.mlr.press/v250/chen24a.html" },
+  ],
+
+  news: [
+    { year: 2026, date: "2026", text: "Three papers accepted at FDG 2026 — Copenhagen, Denmark · Aug 10–13. Three oral presentations.", link: "https://fdg2026.org/" },
+    { year: 2025, date: "2025", text: "One paper accepted at CHI 2026 — Barcelona, Spain · Apr 13–17. One oral.", link: "https://chi2026.acm.org/" },
+    { year: 2025, date: "2025", text: "One paper accepted at AAAI 2026 main track — Singapore · Jan 20–27. One oral.", link: "https://aaai.org/aaai-conference/aaai-26/" },
+    { year: 2025, date: "2025", text: "Three papers accepted at AIIDE 2025 — Edmonton, Canada · Nov 10–14. One oral, two posters.", link: "https://sites.google.com/ualberta.ca/aiide2025/home" },
+    { year: 2025, date: "2025", text: "Three papers accepted at CoG 2025 — Lisbon, Portugal · Aug 26–29. Two oral presentations.", link: "https://cog2025.inesc-id.pt/" },
+    { year: 2025, date: "2025", text: "One paper accepted at FDG 2025 — Apr 15–18. Presented at the PCG Workshop 2025 in Graz & Vienna, Austria.", link: "https://fdg2025.org/" },
+  ],
+
+  notebook: {
+    confs_gaming: [
+      { name: "IEEE CoG", desc: "IEEE Conference on Games", url: "https://ieee-cog.org/" },
+      { name: "AIIDE", desc: "AI & Interactive Digital Entertainment", url: "https://sites.google.com/ualberta.ca/aiide2025/home" },
+      { name: "FDG", desc: "Foundations of Digital Games", url: "https://fdg2025.org/" },
+      { name: "ACM CHI PLAY", desc: "Player Experience & HCI in Games", url: "https://chiplay.acm.org/" },
+      { name: "DiGRA", desc: "Digital Games Research Association", url: "https://digra.org/" },
+    ],
+    workshops: [
+      { name: "PCG Workshop", desc: "Procedural Content Generation (FDG)", url: "https://www.pcgworkshop.com/" },
+      { name: "EXAG", desc: "Experimental AI in Games (AIIDE)", url: "https://www.exag.org/" },
+    ],
+    confs_graphics: [
+      { name: "SIGGRAPH", desc: "Computer Graphics & Interactive Tech", url: "https://s2025.siggraph.org/" },
+      { name: "I3D", desc: "Interactive 3D Graphics and Games", url: "https://i3dsymposium.org/" },
+      { name: "MIG", desc: "Motion, Interaction and Games", url: "https://mig.siggraph.org/" },
+      { name: "IEEE VR", desc: "Virtual Reality Conference", url: "https://ieeevr.org/" },
+      { name: "ACM CHI", desc: "Human-Computer Interaction", url: "https://chi2026.acm.org/" },
+    ],
+    confs_ai: [
+      { name: "AAAI", desc: "Advancement of Artificial Intelligence", url: "https://aaai.org/conference/" },
+      { name: "IJCAI", desc: "International Joint Conf. on AI", url: "https://ijcai.org/" },
+      { name: "NeurIPS", desc: "Neural Information Processing Systems", url: "https://neurips.cc/" },
+      { name: "ICML", desc: "International Conf. on Machine Learning", url: "https://icml.cc/" },
+      { name: "CVPR", desc: "Computer Vision and Pattern Recognition", url: "https://cvpr.thecvf.com/" },
+      { name: "AAMAS", desc: "Autonomous Agents & Multi-Agent Systems", url: "https://aamas2025.org/" },
+      { name: "ACM Multimedia", desc: "Multimedia Research", url: "https://acmmm2025.org/" },
+    ],
+    journals_gaming: [
+      { name: "IEEE ToG", desc: "IEEE Transactions on Games", url: "https://transactions.games/" },
+      { name: "ACM Games", desc: "Games: Research and Practice", url: "https://dl.acm.org/journal/games" },
+      { name: "Entertainment Computing", desc: "Elsevier", url: "https://journals.elsevier.com/entertainment-computing" },
+      { name: "Game Studies", desc: "Intl. J. of computer game research", url: "https://gamestudies.org" },
+      { name: "Simulation & Gaming", desc: "SAGE Journal", url: "https://journals.sagepub.com/home/sag" },
+    ],
+    journals_graphics: [
+      { name: "ACM TOG", desc: "Transactions on Graphics", url: "https://dl.acm.org/journal/tog" },
+      { name: "CGF", desc: "Computer Graphics Forum (Wiley)", url: "https://onlinelibrary.wiley.com/journal/14678659" },
+      { name: "Virtual Reality", desc: "Springer journal for VR/AR", url: "https://springer.com/journal/10055" },
+      { name: "Presence", desc: "MIT Press, VR/AR presence", url: "https://direct.mit.edu/pvar" },
+      { name: "ACM TOCHI", desc: "Transactions on HCI", url: "https://dl.acm.org/journal/tochi" },
+      { name: "IJHCS", desc: "Intl. J. of HCI Studies", url: "https://journals.elsevier.com/international-journal-of-human-computer-studies" },
+    ],
+    journals_ai: [
+      { name: "IEEE TAI", desc: "Transactions on AI", url: "https://cis.ieee.org/publications/ieee-transactions-on-artificial-intelligence" },
+      { name: "Artificial Intelligence", desc: "Elsevier journal", url: "https://journals.elsevier.com/artificial-intelligence" },
+      { name: "IEEE TNNLS", desc: "Neural Networks & Learning Systems", url: "https://ieee-cis.org/publications/tnnls" },
+      { name: "Neural Computing", desc: "Springer", url: "https://springer.com/journal/521" },
+      { name: "ACM TOMM", desc: "Multimedia Computing", url: "https://dl.acm.org/journal/tomm" },
+    ],
+  },
+
+  links: [
+    { id: "github", label: "GitHub", url: "https://github.com/Nortrom1213", color: "#2c2c34" },
+    { id: "scholar", label: "Google Scholar", url: "https://scholar.google.com/citations?hl=zh-CN&user=Ks6qgVQAAAAJ", color: "#4285f4" },
+    { id: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/in/kaijie-xu-051705263/", color: "#0a66c2" },
+    { id: "email", label: "Email", url: "mailto:kaijie.xu2@mail.mcgill.ca", color: "#b85a3a" },
+    { id: "site", label: "Hugo Site", url: "https://nortrom1213.github.io/", color: "#3b8d56" },
+  ],
+
+  npcs: [
+    { name: "Verbrugge\u00b7Wizard", role: "Advisor", x: 34, y: 36, hair: "#b0a090", shirt: "#5a3a6a",
+      lines: [
+        "Ah \u2014 another procedural dungeon, you say? Show me the constraints first.",
+        "Stealth has math. Potential fields don't lie.",
+        "Mission, level, narrative \u2014 three layers, one design formula.",
+      ] },
+    { name: "Town Chronicler", role: "Town Historian", x: 62, y: 32, hair: "#5a4a38", shirt: "#5a6a8a",
+      lines: [
+        "I keep the town's chronicle \u2014 every paper, every festival, every stray cat.",
+        "Xu Town has five festival seasons. The ICML Rush is next.",
+        "Mind if I add your journey to the ledger?",
+      ] },
+    { name: "Cat 'Perlin'", role: "Town Cat", x: 49, y: 50, hair: "#e8a04a", shirt: "#e8a04a",
+      lines: ["mrrow.", "(Perlin noise intensifies)", "purr~ (a wild gradient appears)"] },
+    { name: "Bard of CHI", role: "Reviewer #2", x: 60, y: 63, hair: "#6a3a20", shirt: "#3b6a8e",
+      lines: [
+        "Have you considered a thematic analysis?",
+        "Reject? No, no \u2014 major revision. With love.",
+      ] },
+    { name: "Innkeeper Berkeley", role: "Old Friend", x: 38, y: 63, hair: "#3a2a18", shirt: "#6a4a3a",
+      lines: [
+        "Math 110 still haunts me. Did you finish the linear algebra dungeon?",
+        "Free coffee for PhDs. We know.",
+      ] },
+  ],
+};
+</script><script>// Top-down pixel-town engine (Stardew-style). No images, all procedural.
+(function () {
+  const TILE = 40;                // screen px per tile
+  const VIEW_SCALE = 1.5;          // uniform zoom so characters/buildings/text read bigger
+  let fontScale = 1;               // multiplied into every ctx.font size so text stays readable at high DPR
+  const WORLD_W = 96, WORLD_H = 96; // visible world extent
+  const PLAY_MIN_X = 14, PLAY_MAX_X = 82;
+  const PLAY_MIN_Y = 14, PLAY_MAX_Y = 82;
+
+  const T = {
+    GRASS:0, GRASS_FLOWER:1, GRASS_TUFT:2, GRASS_DARK:3,
+    PATH:10, PLAZA:11, PLAZA_ALT:12, SAND:13,
+    WATER:20, WATER_DEEP:21,
+  };
+
+  // --- World generation ---------------------------------------------------
+  function makeWorld() {
+    const m = [];
+    for (let y = 0; y < WORLD_H; y++) {
+      const row = [];
+      for (let x = 0; x < WORLD_W; x++) {
+        const n = Math.sin(x*1.17)*Math.cos(y*0.91) + Math.sin((x+y)*0.53);
+        const n2 = Math.sin(x*0.31+y*0.27)*Math.cos(x*0.19);
+        let t = T.GRASS;
+        if (n > 1.25) t = T.GRASS_FLOWER;
+        else if (n2 > 0.85) t = T.GRASS_TUFT;
+        else if (n < -1.15) t = T.GRASS_DARK;
+        row.push(t);
+      }
+      m.push(row);
+    }
+    // Plaza 8x8 center
+    const cx = 48, cy = 48;
+    for (let y = cy-4; y <= cy+3; y++)
+      for (let x = cx-4; x <= cx+3; x++)
+        m[y][x] = ((x+y)&1) ? T.PLAZA : T.PLAZA_ALT;
+    // Cross paths
+    for (let y = PLAY_MIN_Y; y <= PLAY_MAX_Y; y++) {
+      m[y][cx] = T.PATH; m[y][cx-1] = T.PATH;
+    }
+    for (let x = PLAY_MIN_X; x <= PLAY_MAX_X; x++) {
+      m[cy][x] = T.PATH; m[cy-1][x] = T.PATH;
+    }
+    // Re-paint plaza over overlap
+    for (let y = cy-4; y <= cy+3; y++)
+      for (let x = cx-4; x <= cx+3; x++)
+        m[y][x] = ((x+y)&1) ? T.PLAZA : T.PLAZA_ALT;
+    // Pond (southwest)
+    for (let y = 64; y <= 72; y++) for (let x = 22; x <= 32; x++) {
+      const dx = x-27, dy = (y-68)*1.2;
+      const d = Math.hypot(dx, dy);
+      if (d < 3.2) m[y][x] = T.WATER_DEEP;
+      else if (d < 4.2) m[y][x] = T.WATER;
+      else if (d < 4.9) m[y][x] = T.SAND;
+    }
+    return m;
+  }
+
+  // Buildings (footprint + south-facing door)
+  function makeBuildings() {
+    return [
+      { id:"library",     kind:"library",   tx:30, ty:28, w:7, h:6, label:"Library",       door:{x:33, y:34} },
+      { id:"noticeboard", kind:"notice",    tx:55, ty:28, w:5, h:2, label:"News Board",    door:{x:57, y:30}, sign:"\u25C6 NEWS \u25C6" },
+      { id:"about",       kind:"notice",    tx:50, ty:54, w:4, h:2, label:"About Board",   door:{x:51, y:56}, sign:"\u25C6 ABOUT \u25C6" },
+      { id:"cafe",        kind:"cafe",      tx:33, ty:56, w:6, h:5, label:"Caf\u00e9",     door:{x:36, y:61} },
+      { id:"artifact",    kind:"studio",    tx:56, ty:56, w:6, h:5, label:"Artifact",      door:{x:58, y:61} },
+      { id:"portal",      kind:"portal",    tx:60, ty:44, w:4, h:4, label:"Portal",        door:{x:61, y:48} },
+    ];
+  }
+
+  function makeNPCs(list) {
+    return (list||[]).map(n => ({
+      ...n, x: n.x, y: n.y, homeX: n.x, homeY: n.y,
+      targetX: n.x, targetY: n.y,
+      dir: "down", frame: 0,
+      state: "idle", // idle | moving
+      stateTimer: 1000 + Math.random()*3000,
+    }));
+  }
+
+  // Obstacles: trees, bushes, rocks, flowers
+  function makeObstacles() {
+    const obs = [];
+    // Dense tree belt beyond playable zone
+    for (let y = 0; y < WORLD_H; y++) {
+      for (let x = 0; x < WORLD_W; x++) {
+        const out = x < PLAY_MIN_X || x > PLAY_MAX_X || y < PLAY_MIN_Y || y > PLAY_MAX_Y;
+        if (!out) continue;
+        const dB = Math.min(
+          Math.abs(x-PLAY_MIN_X), Math.abs(x-PLAY_MAX_X),
+          Math.abs(y-PLAY_MIN_Y), Math.abs(y-PLAY_MAX_Y)
+        );
+        const h = Math.abs(Math.sin(x*12.9898+y*78.233)*43758.5453);
+        const frac = h - Math.floor(h);
+        const density = dB < 2 ? 0.7 : dB < 5 ? 0.4 : 0.18;
+        if (frac < density) {
+          const k = frac < density*0.15 ? "rock" : frac < density*0.32 ? "bush" : "tree";
+          obs.push({ x:x+0.5, y:y+0.5, kind:k, size: 0.85 + ((frac*9)%0.35) });
+        }
+      }
+    }
+    // Decorative flower patches inside playable zone
+    for (let i = 0; i < 36; i++) {
+      const x = PLAY_MIN_X + 2 + Math.floor(Math.random()*(PLAY_MAX_X-PLAY_MIN_X-4));
+      const y = PLAY_MIN_Y + 2 + Math.floor(Math.random()*(PLAY_MAX_Y-PLAY_MIN_Y-4));
+      obs.push({ x:x+0.5, y:y+0.5, kind:"flower",
+        color:["#e85a5a","#e8a74a","#e8e04a","#d84ad8","#4aa8e8","#ffffff"][i%6],
+        size:0.6, passable:true });
+    }
+    return obs;
+  }
+
+  // --- Tile rendering -----------------------------------------------------
+  function drawTile(ctx, t, px, py, time) {
+    if (t === T.GRASS || t === T.GRASS_FLOWER || t === T.GRASS_TUFT || t === T.GRASS_DARK) {
+      ctx.fillStyle = t === T.GRASS_DARK ? "#4e7a36" : "#6aa04a";
+      ctx.fillRect(px, py, TILE, TILE);
+      // blades
+      ctx.fillStyle = "#5a8838";
+      const h1 = Math.abs(Math.sin(px*1.3+py*0.7)*1000)%1;
+      ctx.fillRect(px + ((h1*TILE)|0), py + ((h1*TILE*0.7+5)|0)%TILE, 2, 3);
+      ctx.fillRect(px + ((h1*31+7)|0)%TILE, py + ((h1*19+13)|0)%TILE, 2, 2);
+      ctx.fillStyle = "#7cb258";
+      ctx.fillRect(px+6, py+10, 2, 2);
+      ctx.fillRect(px+26, py+30, 2, 2);
+      if (t === T.GRASS_FLOWER) {
+        ctx.fillStyle = "#f0d24a"; ctx.fillRect(px+12, py+18, 3, 3);
+        ctx.fillStyle = "#fff6b3"; ctx.fillRect(px+13, py+19, 1, 1);
+        ctx.fillStyle = "#e56aa8"; ctx.fillRect(px+28, py+26, 3, 3);
+        ctx.fillStyle = "#ffd4eb"; ctx.fillRect(px+29, py+27, 1, 1);
+      } else if (t === T.GRASS_TUFT) {
+        ctx.fillStyle = "#3e6830";
+        ctx.fillRect(px+10, py+12, 2, 5);
+        ctx.fillRect(px+30, py+20, 2, 6);
+        ctx.fillRect(px+18, py+28, 2, 5);
+      }
+    } else if (t === T.PATH) {
+      ctx.fillStyle = "#b89666"; ctx.fillRect(px, py, TILE, TILE);
+      ctx.fillStyle = "#a07e4f";
+      for (let i = 0; i < 5; i++) {
+        const r = Math.abs(Math.sin((px+i*13)*0.9+py*0.41));
+        ctx.fillRect(px + ((i*9)%TILE), py + ((r*TILE)|0), 3, 2);
+      }
+      ctx.fillStyle = "#c8a978";
+      ctx.fillRect(px+10, py+20, 2, 2);
+    } else if (t === T.PLAZA || t === T.PLAZA_ALT) {
+      ctx.fillStyle = t === T.PLAZA ? "#b6a98c" : "#a29578";
+      ctx.fillRect(px, py, TILE, TILE);
+      ctx.fillStyle = "#7f745c";
+      ctx.fillRect(px+TILE-1, py, 1, TILE);
+      ctx.fillRect(px, py+TILE-1, TILE, 1);
+      ctx.fillStyle = "#cdc09a";
+      ctx.fillRect(px, py, TILE, 1); ctx.fillRect(px, py, 1, TILE);
+      ctx.fillStyle = "#8f856a";
+      ctx.fillRect(px+10, py+10, 4, 4); ctx.fillRect(px+26, py+24, 4, 4);
+    } else if (t === T.WATER || t === T.WATER_DEEP) {
+      const deep = t === T.WATER_DEEP;
+      ctx.fillStyle = deep ? "#27578a" : "#3a7aad";
+      ctx.fillRect(px, py, TILE, TILE);
+      const off = (time*0.03+px*0.02+py*0.02);
+      ctx.fillStyle = deep ? "#4a8ab8" : "#6cb0d8";
+      ctx.fillRect(px + ((off|0)%TILE), py+10, 8, 2);
+      ctx.fillRect(px + ((off+20|0)%TILE), py+26, 6, 2);
+      ctx.fillStyle = deep ? "#7fb3d4" : "#a8d6ea";
+      ctx.fillRect(px + ((off+10|0)%TILE), py+18, 3, 1);
+    } else if (t === T.SAND) {
+      ctx.fillStyle = "#e5d4a1"; ctx.fillRect(px, py, TILE, TILE);
+      ctx.fillStyle = "#caa77a";
+      ctx.fillRect(px+10, py+12, 2, 2); ctx.fillRect(px+26, py+24, 2, 2);
+    }
+  }
+
+  // --- Sprite drawing -----------------------------------------------------
+  function drawTree(ctx, sx, sy, s, time) {
+    ctx.fillStyle = "rgba(0,0,0,0.3)";
+    ctx.beginPath(); ctx.ellipse(sx, sy+6, 16*s, 5*s, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#4a2e18";
+    ctx.fillRect(sx-4, sy-14, 8, 20);
+    ctx.fillStyle = "#3a2212"; ctx.fillRect(sx-4, sy-14, 3, 20);
+    const sway = Math.sin(time*0.0008 + sx*0.03)*1;
+    ctx.fillStyle = "#2f5a2b";
+    ctx.beginPath(); ctx.arc(sx+sway, sy-28*s, 18*s, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#3f7a38";
+    ctx.beginPath();
+    ctx.arc(sx-6+sway, sy-32*s, 10*s, 0, Math.PI*2);
+    ctx.arc(sx+8+sway, sy-26*s, 9*s, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = "#58a04a";
+    ctx.beginPath();
+    ctx.arc(sx-7+sway, sy-38*s, 4*s, 0, Math.PI*2);
+    ctx.arc(sx+9+sway, sy-32*s, 3*s, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = "rgba(0,0,0,0.22)";
+    ctx.beginPath(); ctx.arc(sx+9+sway, sy-24*s, 7*s, 0, Math.PI*2); ctx.fill();
+  }
+
+  function drawBush(ctx, sx, sy, s) {
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    ctx.beginPath(); ctx.ellipse(sx, sy+3, 12*s, 4*s, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#3a6a2e";
+    ctx.beginPath();
+    ctx.arc(sx, sy-3, 9*s, 0, Math.PI*2);
+    ctx.arc(sx-6, sy-1, 6*s, 0, Math.PI*2);
+    ctx.arc(sx+6, sy-1, 6*s, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = "#4f8a40";
+    ctx.beginPath();
+    ctx.arc(sx-3, sy-6, 5*s, 0, Math.PI*2);
+    ctx.arc(sx+4, sy-5, 4*s, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = "#b82a2a";
+    ctx.fillRect(sx-2, sy-3, 2, 2); ctx.fillRect(sx+3, sy-1, 2, 2);
+  }
+
+  function drawRock(ctx, sx, sy, s) {
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    ctx.beginPath(); ctx.ellipse(sx, sy+3, 10*s, 3*s, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#7a7a7a";
+    ctx.beginPath();
+    ctx.moveTo(sx-9*s, sy+2); ctx.lineTo(sx-5*s, sy-7*s);
+    ctx.lineTo(sx+3*s, sy-9*s); ctx.lineTo(sx+9*s, sy-2*s);
+    ctx.lineTo(sx+7*s, sy+3); ctx.lineTo(sx-7*s, sy+3);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#9a9a9a";
+    ctx.beginPath();
+    ctx.moveTo(sx-5*s, sy-4); ctx.lineTo(sx-1*s, sy-8*s);
+    ctx.lineTo(sx+3*s, sy-7*s); ctx.lineTo(sx+3*s, sy-2);
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#5a5a5a"; ctx.fillRect(sx+1*s, sy-1, 3*s, 2);
+  }
+
+  function drawFlower(ctx, sx, sy, c) {
+    ctx.fillStyle = "#3d6a2a"; ctx.fillRect(sx-1, sy-2, 2, 4);
+    ctx.fillStyle = c;
+    ctx.fillRect(sx-3, sy-6, 6, 3);
+    ctx.fillRect(sx-2, sy-8, 4, 2);
+    ctx.fillStyle = "#fff7cc"; ctx.fillRect(sx-1, sy-6, 2, 1);
+  }
+
+  // Warm cobble step in front of a door.
+  function drawDoorStep(ctx, cx, y, w) {
+    ctx.fillStyle = "rgba(0,0,0,0.38)";
+    ctx.fillRect(cx-w/2-1, y+5, w+2, 3);
+    ctx.fillStyle = "#b89666";
+    ctx.fillRect(cx-w/2, y, w, 7);
+    ctx.fillStyle = "#cdb07a";
+    ctx.fillRect(cx-w/2, y, w, 1);
+    ctx.fillStyle = "#8a6e4a";
+    ctx.fillRect(cx-w/2, y+6, w, 1);
+    ctx.fillStyle = "#9a7e5a";
+    for (let i = -w/2+6; i < w/2-2; i += 8) {
+      ctx.fillRect(cx+i, y+1, 1, 5);
+    }
+  }
+
+  // Auto-sized building nameplate: plate width hugs the rendered text.
+  function drawBuildingSign(ctx, cx, topY, text, textColor, bgColor, sizePx) {
+    const size = (sizePx || 10) * fontScale;
+    ctx.font = `bold ${size}px monospace`;
+    const textW = ctx.measureText(text).width;
+    const padX = Math.max(10, 6 * fontScale);
+    const w = Math.max(40, textW + padX * 2);
+    const h = Math.max(10, size + 4);
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(cx - w/2, topY, w, h);
+    ctx.fillStyle = "rgba(0,0,0,0.22)";
+    ctx.fillRect(cx - w/2, topY + h - 1, w, 1);
+    ctx.fillStyle = textColor;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(text, cx, topY + h/2);
+    ctx.textBaseline = "alphabetic";
+  }
+
+  // Flickering pixel lantern hung beside doors.
+  function drawLantern(ctx, x, y, time) {
+    const flicker = 0.82 + Math.sin(time * 0.003 + x * 0.13) * 0.18;
+    ctx.fillStyle = `rgba(255, 205, 100, ${0.18 * flicker})`;
+    ctx.beginPath(); ctx.arc(x, y-3, 16, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = `rgba(255, 230, 160, ${0.30 * flicker})`;
+    ctx.beginPath(); ctx.arc(x, y-3, 9, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#2a1a10"; ctx.fillRect(x-1, y, 2, 10);
+    ctx.fillStyle = "#3a2a18"; ctx.fillRect(x-4, y-7, 8, 2);
+    ctx.fillStyle = "#3a2a18"; ctx.fillRect(x-5, y-5, 10, 1);
+    ctx.fillStyle = `rgba(255, 215, 120, ${flicker})`;
+    ctx.fillRect(x-3, y-4, 6, 4);
+    ctx.fillStyle = `rgba(255, 245, 200, ${flicker})`;
+    ctx.fillRect(x-1, y-3, 2, 2);
+    ctx.fillStyle = "#2a1a10"; ctx.fillRect(x-5, y, 10, 1);
+  }
+
+  // --- Building drawings ---
+  function drawLibrary(ctx, px, py, w, h) {
+    const pw = w*TILE, ph = h*TILE;
+    ctx.fillStyle = "rgba(0,0,0,0.25)"; ctx.fillRect(px+6, py+ph-2, pw, 8);
+    ctx.fillStyle = "#a45a3a"; ctx.fillRect(px, py+24, pw, ph-24);
+    ctx.fillStyle = "#8a4628";
+    for (let y = py+24; y < py+ph; y += 8) {
+      const off = ((y/8)|0)%2 ? 12 : 0;
+      for (let x = px+off; x < px+pw; x += 22) ctx.fillRect(x, y, 10, 3);
+    }
+    ctx.fillStyle = "#5a3a24";
+    ctx.beginPath();
+    ctx.moveTo(px-4, py+28); ctx.lineTo(px+pw/2, py-6);
+    ctx.lineTo(px+pw+4, py+28); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#7a5032";
+    for (let i = 0; i < 5; i++) ctx.fillRect(px+10+i*18, py+22-i*2, 14, 3);
+    // windows
+    ctx.fillStyle = "#f8e9b0";
+    ctx.fillRect(px+12, py+36, 18, 22);
+    ctx.fillRect(px+pw-30, py+36, 18, 22);
+    ctx.strokeStyle = "#4a2a18"; ctx.lineWidth = 2;
+    ctx.strokeRect(px+12, py+36, 18, 22);
+    ctx.strokeRect(px+pw-30, py+36, 18, 22);
+    ctx.beginPath();
+    ctx.moveTo(px+21, py+36); ctx.lineTo(px+21, py+58);
+    ctx.moveTo(px+12, py+47); ctx.lineTo(px+30, py+47);
+    ctx.moveTo(px+pw-21, py+36); ctx.lineTo(px+pw-21, py+58);
+    ctx.moveTo(px+pw-30, py+47); ctx.lineTo(px+pw-12, py+47);
+    ctx.stroke();
+    // door
+    const dx = px+pw/2-14, dy = py+ph-36;
+    ctx.fillStyle = "#5a3a20"; ctx.fillRect(dx, dy, 28, 36);
+    ctx.fillStyle = "#3a2210"; ctx.fillRect(dx, dy, 28, 3); ctx.fillRect(dx+13, dy, 2, 36);
+    ctx.fillStyle = "#d4a73b"; ctx.fillRect(dx+22, dy+18, 3, 3);
+    // sign
+    drawBuildingSign(ctx, px+pw/2, py+24, "LIBRARY", "#4a2a18", "#e5c47a", 10);
+  }
+
+  function drawNotice(ctx, px, py, w, h, sign) {
+    const pw = w*TILE, ph = h*TILE;
+    ctx.fillStyle = "rgba(0,0,0,0.25)"; ctx.fillRect(px+4, py+ph-2, pw, 6);
+    ctx.fillStyle = "#5a3a20";
+    ctx.fillRect(px+6, py+ph-34, 6, 34);
+    ctx.fillRect(px+pw-12, py+ph-34, 6, 34);
+    ctx.fillStyle = "#8a5a35"; ctx.fillRect(px+2, py+6, pw-4, ph-36);
+    ctx.fillStyle = "#6a4226";
+    ctx.fillRect(px+2, py+6, pw-4, 3); ctx.fillRect(px+2, py+ph-36, pw-4, 3);
+    const papers = [
+      {x:8,y:14,w:22,h:26,c:"#f4e9c2"},
+      {x:36,y:18,w:22,h:24,c:"#e8d4a8"},
+      {x:66,y:14,w:22,h:26,c:"#f4e9c2"},
+      {x:96,y:18,w:22,h:24,c:"#e8d4a8"},
+      {x:126,y:16,w:22,h:24,c:"#f4e9c2"},
+    ];
+    for (const p of papers) {
+      if (p.x+p.w > pw-6) continue;
+      ctx.fillStyle = p.c; ctx.fillRect(px+p.x, py+p.y, p.w, p.h);
+      ctx.fillStyle = "rgba(0,0,0,0.15)"; ctx.fillRect(px+p.x+p.w-2, py+p.y, 2, p.h);
+      ctx.fillStyle = "#c44"; ctx.fillRect(px+p.x+p.w/2-1, py+p.y+1, 2, 2);
+      ctx.fillStyle = "#7a6e52";
+      for (let i = 0; i < 3; i++) ctx.fillRect(px+p.x+3, py+p.y+6+i*5, p.w-6, 1);
+    }
+    ctx.fillStyle = "#f4e9c2"; ctx.font = `bold ${10*fontScale}px monospace`; ctx.textAlign = "center";
+    ctx.fillText(sign || "\u25C6 NEWS \u25C6", px+pw/2, py+ph-40);
+  }
+
+  function drawCafe(ctx, px, py, w, h, time) {
+    const pw = w*TILE, ph = h*TILE;
+    ctx.fillStyle = "rgba(0,0,0,0.25)"; ctx.fillRect(px+6, py+ph-2, pw, 8);
+    ctx.fillStyle = "#e6cc9a"; ctx.fillRect(px, py+26, pw, ph-26);
+    ctx.fillStyle = "#7a4f2a";
+    ctx.fillRect(px, py+26, 6, ph-26);
+    ctx.fillRect(px+pw-6, py+26, 6, ph-26);
+    ctx.fillRect(px, py+ph-8, pw, 6);
+    ctx.fillRect(px, py+26, pw, 4);
+    ctx.strokeStyle = "#7a4f2a"; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(px+10, py+42); ctx.lineTo(px+pw-10, py+ph-22);
+    ctx.moveTo(px+pw-10, py+42); ctx.lineTo(px+10, py+ph-22);
+    ctx.stroke();
+    // roof
+    ctx.fillStyle = "#a03828";
+    ctx.beginPath();
+    ctx.moveTo(px-6, py+30); ctx.lineTo(px+pw/2, py+6);
+    ctx.lineTo(px+pw+6, py+30); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#7a2616";
+    for (let i = 0; i < 5; i++) ctx.fillRect(px+8+i*20, py+24-i*2, 16, 3);
+    // chimney
+    ctx.fillStyle = "#8a4a2a"; ctx.fillRect(px+pw-30, py+8, 10, 14);
+    const tp = (time*0.003)%1;
+    ctx.fillStyle = `rgba(240,240,240,${0.6-tp*0.6})`;
+    ctx.beginPath(); ctx.arc(px+pw-25, py-tp*12, 4+tp*4, 0, Math.PI*2); ctx.fill();
+    // window
+    ctx.fillStyle = "#cfe6f5"; ctx.fillRect(px+16, py+42, 26, 20);
+    ctx.strokeStyle = "#5a3a20"; ctx.lineWidth = 2; ctx.strokeRect(px+16, py+42, 26, 20);
+    // door
+    const dx = px+pw/2-12, dy = py+ph-32;
+    ctx.fillStyle = "#5a3a20"; ctx.fillRect(dx, dy, 24, 32);
+    ctx.fillStyle = "#d4a73b"; ctx.fillRect(dx+18, dy+16, 3, 3);
+    // sign
+    drawBuildingSign(ctx, px+pw/2, py+30, "CAFÉ", "#7a2616", "#f4e9c2", 9);
+  }
+
+  function drawStudio(ctx, px, py, w, h, time) {
+    const pw = w*TILE, ph = h*TILE;
+    ctx.fillStyle = "rgba(0,0,0,0.25)"; ctx.fillRect(px+6, py+ph-2, pw, 8);
+    ctx.fillStyle = "#8a9ab0"; ctx.fillRect(px, py+26, pw, ph-26);
+    ctx.fillStyle = "#6a7c92";
+    for (let y = py+26; y < py+ph; y += 10) {
+      const off = ((y/10)|0)%2 ? 10 : 0;
+      for (let x = px+off; x < px+pw; x += 20) ctx.fillRect(x, y, 2, 10);
+      ctx.fillRect(px, y, pw, 2);
+    }
+    ctx.fillStyle = "#354a6a";
+    ctx.beginPath();
+    ctx.moveTo(px-4, py+30); ctx.lineTo(px+pw/2, py+4);
+    ctx.lineTo(px+pw+4, py+30); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = "#5a7aa0";
+    for (let i = 0; i < 5; i++) ctx.fillRect(px+8+i*18, py+24-i*2, 14, 3);
+    // skylight
+    ctx.fillStyle = "rgba(240,230,140,0.6)";
+    ctx.beginPath();
+    ctx.moveTo(px+pw/2-10, py+16); ctx.lineTo(px+pw/2, py+8);
+    ctx.lineTo(px+pw/2+10, py+16); ctx.closePath(); ctx.fill();
+    // lab window with glow
+    ctx.fillStyle = "#cfe6f5"; ctx.fillRect(px+12, py+40, pw-24, 22);
+    ctx.strokeStyle = "#3a2a18"; ctx.lineWidth = 2;
+    ctx.strokeRect(px+12, py+40, pw-24, 22);
+    for (let i = 1; i < 4; i++) {
+      ctx.beginPath();
+      ctx.moveTo(px+12+i*(pw-24)/4, py+40);
+      ctx.lineTo(px+12+i*(pw-24)/4, py+62);
+      ctx.stroke();
+    }
+    const glow = 0.3 + Math.sin(time*0.002)*0.12;
+    ctx.fillStyle = `rgba(255,230,120,${glow})`;
+    ctx.fillRect(px+14, py+42, pw-28, 18);
+    // door
+    const dx = px+pw/2-12, dy = py+ph-32;
+    ctx.fillStyle = "#3a2a18"; ctx.fillRect(dx, dy, 24, 32);
+    ctx.fillStyle = "#aac4e0"; ctx.fillRect(dx+3, dy+4, 18, 10);
+    ctx.fillStyle = "#d4a73b"; ctx.fillRect(dx+18, dy+18, 3, 3);
+    // sign
+    drawBuildingSign(ctx, px+pw/2, py+30, "ARTIFACT", "#2a3a5a", "#f4e9c2", 9);
+  }
+
+  function drawPortal(ctx, px, py, w, h, time) {
+    const pw = w*TILE, ph = h*TILE;
+    ctx.fillStyle = "rgba(0,0,0,0.3)"; ctx.fillRect(px+4, py+ph-2, pw, 6);
+    ctx.fillStyle = "#5a4a6a"; ctx.fillRect(px, py+ph-20, pw, 20);
+    ctx.fillStyle = "#3a2a4a";
+    for (let x = px; x < px+pw; x += 12) ctx.fillRect(x, py+ph-20, 2, 20);
+    ctx.fillStyle = "#6a5a7a";
+    ctx.fillRect(px+6, py+20, 14, ph-40);
+    ctx.fillRect(px+pw-20, py+20, 14, ph-40);
+    ctx.beginPath();
+    ctx.moveTo(px+6, py+24);
+    ctx.quadraticCurveTo(px+pw/2, py+2, px+pw-6, py+24);
+    ctx.lineTo(px+pw-6, py+40);
+    ctx.quadraticCurveTo(px+pw/2, py+18, px+6, py+40);
+    ctx.closePath(); ctx.fill();
+    const ix = px+pw/2, iy = py+ph/2+2, ir = Math.min(pw,ph)/2 - 14;
+    ctx.fillStyle = "#1a0d2a";
+    ctx.beginPath(); ctx.arc(ix, iy, ir, 0, Math.PI*2); ctx.fill();
+    for (let i = 0; i < 4; i++) {
+      const a = time*0.001 + i*Math.PI/2;
+      const g = ctx.createRadialGradient(ix, iy, 2, ix, iy, ir);
+      g.addColorStop(0, "rgba(200,160,255,0.9)");
+      g.addColorStop(1, "rgba(80,40,120,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.moveTo(ix, iy);
+      ctx.arc(ix, iy, ir, a, a+0.8); ctx.closePath(); ctx.fill();
+    }
+    for (let i = 0; i < 6; i++) {
+      const a = time*0.002 + i*1.04;
+      const r = ir*(0.3 + ((i*0.19)%0.6));
+      ctx.fillStyle = "rgba(240,220,255,0.9)";
+      ctx.fillRect(ix+Math.cos(a)*r-1, iy+Math.sin(a)*r-1, 2, 2);
+    }
+  }
+
+  function drawSignboard(ctx, px, py) {
+    ctx.fillStyle = "rgba(0,0,0,0.3)"; ctx.fillRect(px+4, py+TILE-2, TILE-8, 4);
+    ctx.fillStyle = "#5a3a20";
+    ctx.fillRect(px+8, py+16, 4, TILE-16);
+    ctx.fillRect(px+TILE-12, py+16, 4, TILE-16);
+    ctx.fillStyle = "#8a5a35"; ctx.fillRect(px+2, py+4, TILE-4, 22);
+    ctx.fillStyle = "#6a4226";
+    ctx.fillRect(px+2, py+4, TILE-4, 3); ctx.fillRect(px+2, py+23, TILE-4, 3);
+    ctx.fillStyle = "#f4e9c2"; ctx.font = `bold ${10*fontScale}px monospace`; ctx.textAlign = "center";
+    ctx.fillText("ABOUT", px+TILE/2, py+18);
+    ctx.fillStyle = "#d4a73b"; ctx.fillRect(px+TILE/2-2, py+22, 4, 4);
+  }
+
+  // Character — top-down
+  function drawCharacter(ctx, sx, sy, frame, dir, hairColor, shirtColor, glasses) {
+    ctx.fillStyle = "rgba(0,0,0,0.35)";
+    ctx.beginPath(); ctx.ellipse(sx, sy+14, 10, 3, 0, 0, Math.PI*2); ctx.fill();
+    const bob = Math.floor(frame/10)%2 === 0 ? 0 : -1;
+    sy += bob;
+    ctx.fillStyle = shirtColor || "#4a6aa0";
+    ctx.fillRect(sx-6, sy-2, 12, 10);
+    ctx.fillStyle = "rgba(0,0,0,0.18)"; ctx.fillRect(sx-6, sy-2, 12, 2);
+    const armSwing = Math.sin(frame*0.3)*2;
+    ctx.fillStyle = shirtColor || "#4a6aa0";
+    ctx.fillRect(sx-8, sy-1+armSwing*0.3, 3, 7);
+    ctx.fillRect(sx+5, sy-1-armSwing*0.3, 3, 7);
+    ctx.fillStyle = "#f0c49a";
+    ctx.fillRect(sx-8, sy+5+armSwing*0.3, 3, 2);
+    ctx.fillRect(sx+5, sy+5-armSwing*0.3, 3, 2);
+    ctx.fillStyle = "#3a3a5a";
+    ctx.fillRect(sx-5, sy+8, 10, 5);
+    const legSwing = Math.sin(frame*0.4)*1.5;
+    ctx.fillRect(sx-4, sy+8+legSwing, 3, 5);
+    ctx.fillRect(sx+1, sy+8-legSwing, 3, 5);
+    ctx.fillStyle = "#2a1a10";
+    ctx.fillRect(sx-4, sy+12+legSwing, 3, 2);
+    ctx.fillRect(sx+1, sy+12-legSwing, 3, 2);
+    // head
+    ctx.fillStyle = "#f0c49a";
+    ctx.fillRect(sx-5, sy-10, 10, 8);
+    ctx.fillStyle = "rgba(0,0,0,0.12)"; ctx.fillRect(sx-5, sy-4, 10, 2);
+    // hair
+    ctx.fillStyle = hairColor || "#3a2a18";
+    if (dir === "up") {
+      ctx.fillRect(sx-5, sy-11, 10, 6);
+      ctx.fillRect(sx-6, sy-9, 12, 3);
+    } else {
+      ctx.fillRect(sx-5, sy-11, 10, 4);
+      ctx.fillRect(sx-6, sy-9, 2, 3);
+      ctx.fillRect(sx+4, sy-9, 2, 3);
+      ctx.fillRect(sx-5, sy-8, 10, 1);
+    }
+    if (dir !== "up") {
+      ctx.fillStyle = "#2a1a10";
+      if (dir === "left") ctx.fillRect(sx-3, sy-5, 2, 2);
+      else if (dir === "right") ctx.fillRect(sx+1, sy-5, 2, 2);
+      else { ctx.fillRect(sx-3, sy-5, 2, 2); ctx.fillRect(sx+1, sy-5, 2, 2); }
+    }
+    if (glasses && dir !== "up") {
+      ctx.strokeStyle = "#2a1a10"; ctx.lineWidth = 1;
+      ctx.strokeRect(sx-4, sy-6, 3, 3);
+      ctx.strokeRect(sx+1, sy-6, 3, 3);
+      ctx.beginPath(); ctx.moveTo(sx-1, sy-5); ctx.lineTo(sx+1, sy-5); ctx.stroke();
+    }
+  }
+
+  // Intro text on the ground (world-coord-anchored)
+  function drawGroundIntro(ctx, ox, oy, intro) {
+    const cx = (intro.x ?? 48) * TILE + ox;
+    const cy = (intro.y ?? 52) * TILE + oy;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const lines = intro.lines;
+    // Usable width/height in the post-VIEW_SCALE "user space"; leave margins.
+    const availW = ctx.canvas.width / VIEW_SCALE - 40;
+    // Available space ABOVE the intro center to the top edge of the visible region.
+    // Visible y range in user space: canvas.height * (0.5 ± 0.5/VIEW_SCALE).
+    const viewTopY = ctx.canvas.height * (0.5 - 0.5 / VIEW_SCALE);
+    const upperAvail = Math.max(40, cy - viewTopY - 12);
+    // First pass: find widest line and total natural height.
+    let maxW = 0;
+    let naturalH = 0;
+    for (const L of lines) {
+      const s = (L.size || 14) * fontScale;
+      ctx.font = `${L.bold ? "bold " : ""}${s}px 'VT323', monospace`;
+      const w = ctx.measureText(L.text).width;
+      if (w > maxW) maxW = w;
+      naturalH += s + 6 * fontScale;
+    }
+    const widthFit = maxW > availW ? availW / maxW : 1;
+    // Upper half of block must fit in upperAvail to avoid clipping at top.
+    const heightFit = (naturalH / 2) > upperAvail ? (upperAvail * 2 / naturalH) : 1;
+    const fit = Math.min(widthFit, heightFit);
+    const sizes = lines.map(L => (L.size || 14) * fontScale * fit);
+    const gap = 6 * fontScale * fit;
+    let total = -gap;
+    for (const s of sizes) total += s + gap;
+    let y = cy - total / 2;
+    for (let i = 0; i < lines.length; i++) {
+      const L = lines[i];
+      const size = sizes[i];
+      const color = L.color || "#fff5d8";
+      ctx.font = `${L.bold ? "bold " : ""}${size}px 'VT323', monospace`;
+      const lineY = y + size / 2;
+      ctx.fillStyle = "#1a1207";
+      const o = Math.max(1, Math.round(2 * fontScale * fit));
+      for (let dx = -o; dx <= o; dx++)
+        for (let dy = -o; dy <= o; dy++)
+          if (dx || dy) ctx.fillText(L.text, cx + dx, lineY + dy);
+      ctx.fillStyle = color;
+      ctx.fillText(L.text, cx, lineY);
+      y += size + gap;
+    }
+    ctx.textBaseline = "alphabetic";
+  }
+
+  // --- Main --------------------------------------------------------------
+  function start(canvas, opts) {
+    opts = opts || {};
+    const ctx = canvas.getContext("2d");
+    ctx.imageSmoothingEnabled = false;
+
+    const map = makeWorld();
+    const buildings = makeBuildings();
+    const npcs = makeNPCs(opts.npcs || []);
+    const obstacles = makeObstacles();
+    const buildingColliders = buildings.filter(b => b.kind !== "signboard").map(b => ({
+      minX: b.tx, maxX: b.tx + b.w, minY: b.ty, maxY: b.ty + b.h,
+    }));
+
+    const state = {
+      px: opts.spawn?.x ?? 48.5, py: opts.spawn?.y ?? 56.5,
+      dir: "down", frame: 0, target: null,
+      lastNearKey: "",
+      timeOfDay: opts.timeOfDay || "day", weather: opts.weather || "clear",
+      muted: opts.muted ?? false, paused: false,
+    };
+
+    const keys = {};
+    window.addEventListener("keydown", (e) => {
+      const k = e.key.toLowerCase();
+      if (["w","a","s","d","arrowup","arrowdown","arrowleft","arrowright"," ","e","enter"].includes(k)) e.preventDefault();
+      keys[k] = true;
+      if (k === " " || k === "e" || k === "enter") {
+        const b = nearestInteractive();
+        if (b.kind === "building" && opts.onEnter) opts.onEnter(b.obj);
+        else if (b.kind === "npc" && opts.onNpc) opts.onNpc(b.obj);
+      }
+    });
+    window.addEventListener("keyup", (e) => { keys[e.key.toLowerCase()] = false; });
+
+    function cameraOX() { return canvas.width/2 - state.px*TILE; }
+    function cameraOY() { return canvas.height/2 - state.py*TILE; }
+
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      // rect is in CSS px; the canvas internally is canvas.width px, so scale to internal coords.
+      const rx = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const ry = (e.clientY - rect.top) * (canvas.height / rect.height);
+      // Invert the world zoom (applied around canvas center) before mapping to tiles.
+      const mx = (rx - canvas.width/2)/VIEW_SCALE + canvas.width/2;
+      const my = (ry - canvas.height/2)/VIEW_SCALE + canvas.height/2;
+      const wx = (mx - cameraOX())/TILE, wy = (my - cameraOY())/TILE;
+      for (const b of buildings) {
+        if (wx >= b.tx && wx < b.tx+b.w && wy >= b.ty && wy < b.ty+b.h) {
+          const d = Math.hypot(state.px - (b.door.x+0.5), state.py - (b.door.y+0.5));
+          if (d < 2.5) { if (opts.onEnter) opts.onEnter(b); return; }
+          state.target = { x: b.door.x+0.5, y: b.door.y+0.5 };
+          return;
+        }
+      }
+      for (const n of npcs) {
+        if (Math.hypot(wx-n.x, wy-n.y) < 0.9) {
+          const d = Math.hypot(state.px-n.x, state.py-n.y);
+          if (d < 2.0) { if (opts.onNpc) opts.onNpc(n); return; }
+          state.target = { x: n.x, y: n.y };
+          return;
+        }
+      }
+      state.target = { x: wx, y: wy };
+    });
+
+    function tileBlocked(wx, wy) {
+      if (wx < PLAY_MIN_X || wy < PLAY_MIN_Y || wx >= PLAY_MAX_X+1 || wy >= PLAY_MAX_Y+1) return true;
+      const tx = Math.floor(wx), ty = Math.floor(wy);
+      if (tx >= 0 && ty >= 0 && tx < WORLD_W && ty < WORLD_H) {
+        const t = map[ty][tx];
+        if (t === T.WATER || t === T.WATER_DEEP) return true;
+      }
+      for (const b of buildingColliders)
+        if (wx >= b.minX && wx < b.maxX && wy >= b.minY && wy < b.maxY) return true;
+      for (const o of obstacles) {
+        if (o.passable) continue;
+        if (Math.hypot(wx-o.x, wy-o.y) < 0.45) return true;
+      }
+      return false;
+    }
+
+    function nearestInteractive() {
+      let best = { kind:null, d:999, obj:null };
+      for (const b of buildings) {
+        const dDoor = Math.hypot(state.px-(b.door.x+0.5), state.py-(b.door.y+0.5));
+        const cx = b.tx+b.w/2, cy = b.ty+b.h/2;
+        const hW = b.w/2+0.4, hH = b.h/2+0.4;
+        const dx = Math.max(0, Math.abs(state.px-cx)-hW);
+        const dy = Math.max(0, Math.abs(state.py-cy)-hH);
+        const dEdge = Math.hypot(dx, dy);
+        const d = Math.min(dDoor, dEdge+0.1);
+        if (d < 2.4 && d < best.d) best = { kind:"building", d, obj:b };
+      }
+      for (const n of npcs) {
+        const d = Math.hypot(state.px-n.x, state.py-n.y);
+        if (d < 2.0 && d < best.d) best = { kind:"npc", d, obj:n };
+      }
+      return best;
+    }
+
+    // Audio stubs (safe no-ops)
+    let audioCtx = null;
+    let masterGain = null;
+    let musicBus = null;
+    let delayBus = null;
+    let bgmInterval = null;
+    let bgmStarted = false;
+    let nextStepTime = 0;
+    let stepIndex = 0;
+    let noiseBuffer = null;
+    const BGM_STEP = 60 / 92 / 4;
+    const BGM_LOOKAHEAD = 0.22;
+    const BGM_INTERVAL_MS = 80;
+    const BGM_MASTER_GAIN = 0.2;
+    const CHORD_PROGRESSION = [
+      [50, 57, 62, 66],
+      [45, 52, 57, 61],
+      [47, 54, 59, 62],
+      [43, 50, 55, 59],
+    ];
+    const BASS_EVENTS = [
+      [0, 38, 8], [8, 45, 8],
+      [16, 33, 8], [24, 40, 8],
+      [32, 35, 8], [40, 42, 8],
+      [48, 31, 8], [56, 38, 8],
+    ];
+    const LEAD_EVENTS = [
+      [0, 74, 2], [3, 76, 1], [4, 78, 4], [10, 76, 2], [12, 74, 4],
+      [16, 76, 2], [19, 78, 1], [20, 81, 4], [26, 78, 2], [28, 76, 4],
+      [32, 74, 2], [35, 76, 1], [36, 78, 4], [42, 76, 2], [44, 74, 4],
+      [48, 71, 2], [51, 74, 1], [52, 76, 4], [58, 74, 2], [60, 69, 4],
+    ];
+    function initAudio() {
+      if (audioCtx) return;
+      try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e) {}
+    }
+    function midiToFreq(midi) {
+      return 440 * Math.pow(2, (midi - 69) / 12);
+    }
+    function ensureNoiseBuffer() {
+      if (!audioCtx || noiseBuffer) return;
+      noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate, audioCtx.sampleRate);
+      const data = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    }
+    function ensureAudioGraph() {
+      if (!audioCtx || masterGain) return;
+      masterGain = audioCtx.createGain();
+      musicBus = audioCtx.createGain();
+      delayBus = audioCtx.createGain();
+      const toneFilter = audioCtx.createBiquadFilter();
+      toneFilter.type = "lowpass";
+      toneFilter.frequency.value = 3600;
+      toneFilter.Q.value = 0.4;
+      const compressor = audioCtx.createDynamicsCompressor();
+      compressor.threshold.value = -18;
+      compressor.knee.value = 14;
+      compressor.ratio.value = 3;
+      compressor.attack.value = 0.01;
+      compressor.release.value = 0.18;
+      const delay = audioCtx.createDelay(0.5);
+      delay.delayTime.value = 0.22;
+      const delayFilter = audioCtx.createBiquadFilter();
+      delayFilter.type = "lowpass";
+      delayFilter.frequency.value = 2100;
+      const feedback = audioCtx.createGain();
+      feedback.gain.value = 0.22;
+
+      musicBus.gain.value = 0.95;
+      delayBus.gain.value = 1;
+      masterGain.gain.value = 0;
+
+      musicBus.connect(toneFilter);
+      toneFilter.connect(compressor);
+      compressor.connect(masterGain);
+      masterGain.connect(audioCtx.destination);
+
+      delayBus.connect(delay);
+      delay.connect(delayFilter);
+      delayFilter.connect(feedback);
+      feedback.connect(delay);
+      delayFilter.connect(compressor);
+
+      ensureNoiseBuffer();
+    }
+    function applyMasterGain() {
+      if (!masterGain || !audioCtx) return;
+      const now = audioCtx.currentTime;
+      masterGain.gain.cancelScheduledValues(now);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+      masterGain.gain.linearRampToValueAtTime(state.muted ? 0 : BGM_MASTER_GAIN, now + 0.08);
+    }
+    function envelope(gainNode, time, attack, peak, decayTarget, endTime) {
+      gainNode.gain.setValueAtTime(0.0001, time);
+      gainNode.gain.linearRampToValueAtTime(peak, time + attack);
+      gainNode.gain.linearRampToValueAtTime(decayTarget, endTime);
+      gainNode.gain.linearRampToValueAtTime(0.0001, endTime + 0.02);
+    }
+    function connectVoice(voiceGain, send) {
+      voiceGain.connect(musicBus);
+      if (send > 0) {
+        const sendGain = audioCtx.createGain();
+        sendGain.gain.value = send;
+        voiceGain.connect(sendGain);
+        sendGain.connect(delayBus);
+      }
+    }
+    function playTone(freq, time, duration, opts) {
+      if (!audioCtx || !musicBus) return;
+      const o = opts || {};
+      const osc = audioCtx.createOscillator();
+      const filter = audioCtx.createBiquadFilter();
+      const gain = audioCtx.createGain();
+      osc.type = o.type || "triangle";
+      osc.frequency.setValueAtTime(freq, time);
+      if (o.detune) osc.detune.setValueAtTime(o.detune, time);
+      filter.type = o.filterType || "lowpass";
+      filter.frequency.setValueAtTime(o.filterFreq || 1800, time);
+      filter.Q.value = o.filterQ || 0.4;
+      connectVoice(gain, o.delaySend || 0);
+      osc.connect(filter);
+      filter.connect(gain);
+      envelope(gain, time, o.attack || 0.01, o.peak || 0.15, o.sustain || 0.05, time + duration);
+      osc.start(time);
+      osc.stop(time + duration + 0.05);
+    }
+    function playKick(time, accent) {
+      if (!audioCtx || !musicBus) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(128, time);
+      osc.frequency.exponentialRampToValueAtTime(46, time + 0.18);
+      connectVoice(gain, 0);
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.linearRampToValueAtTime(0.22 * accent, time + 0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.22);
+      osc.connect(gain);
+      osc.start(time);
+      osc.stop(time + 0.24);
+    }
+    function playSnare(time) {
+      if (!audioCtx || !musicBus || !noiseBuffer) return;
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = noiseBuffer;
+      const noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = "highpass";
+      noiseFilter.frequency.value = 1800;
+      const noiseGain = audioCtx.createGain();
+      connectVoice(noiseGain, 0.08);
+      noiseGain.gain.setValueAtTime(0.0001, time);
+      noiseGain.gain.linearRampToValueAtTime(0.11, time + 0.005);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, time + 0.16);
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noise.start(time);
+      noise.stop(time + 0.18);
+
+      const body = audioCtx.createOscillator();
+      const bodyGain = audioCtx.createGain();
+      body.type = "triangle";
+      body.frequency.setValueAtTime(210, time);
+      body.frequency.exponentialRampToValueAtTime(120, time + 0.08);
+      connectVoice(bodyGain, 0);
+      bodyGain.gain.setValueAtTime(0.0001, time);
+      bodyGain.gain.linearRampToValueAtTime(0.05, time + 0.004);
+      bodyGain.gain.exponentialRampToValueAtTime(0.0001, time + 0.12);
+      body.connect(bodyGain);
+      body.start(time);
+      body.stop(time + 0.14);
+    }
+    function playHat(time, accent, open) {
+      if (!audioCtx || !musicBus || !noiseBuffer) return;
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = noiseBuffer;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "highpass";
+      filter.frequency.value = 5000;
+      const gain = audioCtx.createGain();
+      connectVoice(gain, 0.03);
+      const peak = 0.022 + (accent * 0.012);
+      const decay = open ? 0.14 : 0.05;
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.linearRampToValueAtTime(peak, time + 0.002);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + decay);
+      noise.connect(filter);
+      filter.connect(gain);
+      noise.start(time);
+      noise.stop(time + decay + 0.02);
+    }
+    function playBass(midi, time, durationSteps) {
+      const duration = durationSteps * BGM_STEP;
+      playTone(midiToFreq(midi), time, duration * 0.88, {
+        type: "triangle",
+        attack: 0.01,
+        peak: 0.11,
+        sustain: 0.035,
+        filterFreq: 280,
+        delaySend: 0.02,
+      });
+    }
+    function playChord(notes, time, durationSteps) {
+      const duration = durationSteps * BGM_STEP;
+      notes.forEach((midi, idx) => {
+        playTone(midiToFreq(midi), time + idx * 0.01, duration, {
+          type: idx % 2 === 0 ? "triangle" : "sine",
+          attack: 0.03,
+          peak: 0.045,
+          sustain: 0.022,
+          filterFreq: 1400 + idx * 220,
+          delaySend: 0.14,
+          detune: idx === 1 ? -4 : idx === 2 ? 5 : 0,
+        });
+      });
+    }
+    function playLead(midi, time, durationSteps) {
+      const duration = durationSteps * BGM_STEP;
+      playTone(midiToFreq(midi), time, duration * 0.9, {
+        type: "sawtooth",
+        attack: 0.012,
+        peak: 0.055,
+        sustain: 0.016,
+        filterFreq: 1900,
+        filterQ: 1.6,
+        delaySend: 0.18,
+      });
+      playTone(midiToFreq(midi + 12), time + 0.005, duration * 0.55, {
+        type: "triangle",
+        attack: 0.01,
+        peak: 0.02,
+        sustain: 0.008,
+        filterFreq: 2400,
+        delaySend: 0.12,
+      });
+    }
+    function scheduleBgmStep(step, time) {
+      const localStep = step % 16;
+      if (step % 16 === 0) playChord(CHORD_PROGRESSION[Math.floor(step / 16)], time, 15.5);
+      const bassEvent = BASS_EVENTS.find(ev => ev[0] === step);
+      if (bassEvent) playBass(bassEvent[1], time, bassEvent[2]);
+      const leadEvent = LEAD_EVENTS.find(ev => ev[0] === step);
+      if (leadEvent) playLead(leadEvent[1], time, leadEvent[2]);
+
+      if ([0, 6, 8, 14].includes(localStep)) playKick(time, (localStep === 0 || localStep === 8) ? 1 : 0.72);
+      if (localStep === 4 || localStep === 12) playSnare(time);
+      if (step % 2 === 0) playHat(time, step % 4 === 2 ? 1 : 0.45, localStep === 14);
+    }
+    function runBgmScheduler() {
+      if (!audioCtx || !bgmStarted) return;
+      while (nextStepTime < audioCtx.currentTime + BGM_LOOKAHEAD) {
+        scheduleBgmStep(stepIndex, nextStepTime);
+        nextStepTime += BGM_STEP;
+        stepIndex = (stepIndex + 1) % 64;
+      }
+    }
+    async function startBgm() {
+      initAudio();
+      if (!audioCtx) return;
+      ensureAudioGraph();
+      try {
+        if (audioCtx.state === "suspended") await audioCtx.resume();
+      } catch (e) {}
+      if (!bgmStarted) {
+        bgmStarted = true;
+        stepIndex = 0;
+        nextStepTime = audioCtx.currentTime + 0.08;
+        runBgmScheduler();
+        bgmInterval = window.setInterval(runBgmScheduler, BGM_INTERVAL_MS);
+      }
+      applyMasterGain();
+    }
+    function setMuted(m) {
+      state.muted = m;
+      applyMasterGain();
+    }
+
+    // Touch joystick via window API
+    window.__townInput = window.__townInput || { jx:0, jy:0 };
+
+    let last = performance.now(), time = 0;
+    function frame(now) {
+      const dt = Math.min(50, now - last); last = now; time += dt;
+      // Keep text sized in physical pixels: on a DPR-2 phone a 10px font would otherwise render at 5 CSS px.
+      fontScale = Math.max(1, canvas.width / Math.max(1, (canvas.clientWidth || window.innerWidth)));
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.fillStyle = "#2a3a18";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Zoom world rendering uniformly around canvas center.
+      ctx.save();
+      ctx.translate(canvas.width/2, canvas.height/2);
+      ctx.scale(VIEW_SCALE, VIEW_SCALE);
+      ctx.translate(-canvas.width/2, -canvas.height/2);
+
+      if (!state.paused) {
+        let kx = 0, ky = 0;
+        if (keys["w"] || keys["arrowup"]) ky -= 1;
+        if (keys["s"] || keys["arrowdown"]) ky += 1;
+        if (keys["a"] || keys["arrowleft"]) kx -= 1;
+        if (keys["d"] || keys["arrowright"]) kx += 1;
+        const jx = window.__townInput.jx || 0, jy = window.__townInput.jy || 0;
+        if (Math.abs(jx) > 0.1 || Math.abs(jy) > 0.1) { kx = jx; ky = jy; }
+        if (kx !== 0 || ky !== 0) state.target = null;
+        if (state.target) {
+          const dx = state.target.x - state.px, dy = state.target.y - state.py;
+          const d = Math.hypot(dx, dy);
+          if (d < 0.15) state.target = null;
+          else { kx = dx/d; ky = dy/d; }
+        }
+        const mag = Math.hypot(kx, ky);
+        if (mag > 1) { kx /= mag; ky /= mag; }
+        const speed = 0.0068 * dt;
+        const nx = state.px + kx*speed, ny = state.py + ky*speed;
+        if (!tileBlocked(nx, state.py)) state.px = nx;
+        if (!tileBlocked(state.px, ny)) state.py = ny;
+        if (Math.abs(kx) > Math.abs(ky)) state.dir = kx > 0 ? "right" : "left";
+        else if (ky !== 0) state.dir = ky > 0 ? "down" : "up";
+        if (kx !== 0 || ky !== 0) state.frame++;
+
+        // NPC wander: idle -> occasional short move
+        for (const n of npcs) {
+          n.stateTimer -= dt;
+          if (n.state === "idle") {
+            if (n.stateTimer <= 0) {
+              // pick a small target near home
+              const a = Math.random()*Math.PI*2;
+              const r = 0.6 + Math.random()*1.2;
+              n.targetX = n.homeX + Math.cos(a)*r;
+              n.targetY = n.homeY + Math.sin(a)*r;
+              n.state = "moving";
+              n.stateTimer = 600 + Math.random()*800;
+            }
+          } else {
+            const dx = n.targetX - n.x, dy = n.targetY - n.y;
+            const d = Math.hypot(dx, dy);
+            if (d < 0.08 || n.stateTimer <= 0) {
+              n.state = "idle";
+              n.stateTimer = 2500 + Math.random()*4000;
+            } else {
+              const sp = 0.0012 * dt;
+              n.x += (dx/d) * sp;
+              n.y += (dy/d) * sp;
+              n.frame++;
+              if (Math.abs(dx) > Math.abs(dy)) n.dir = dx > 0 ? "right" : "left";
+              else n.dir = dy > 0 ? "down" : "up";
+            }
+          }
+        }
+      }
+
+      // Camera
+      const ox = cameraOX(), oy = cameraOY();
+
+      // Tiles
+      const tileMinX = Math.max(0, Math.floor(-ox/TILE) - 1);
+      const tileMaxX = Math.min(WORLD_W, Math.ceil((canvas.width-ox)/TILE) + 1);
+      const tileMinY = Math.max(0, Math.floor(-oy/TILE) - 1);
+      const tileMaxY = Math.min(WORLD_H, Math.ceil((canvas.height-oy)/TILE) + 1);
+      for (let y = tileMinY; y < tileMaxY; y++) {
+        for (let x = tileMinX; x < tileMaxX; x++) {
+          drawTile(ctx, map[y][x], ox + x*TILE, oy + y*TILE, time);
+        }
+      }
+      // Outside-world extension: paint dark forest floor beyond
+      ctx.fillStyle = "#3a5a34";
+      if (ox > 0) ctx.fillRect(0, 0, ox, canvas.height);
+      if (ox + WORLD_W*TILE < canvas.width) ctx.fillRect(ox+WORLD_W*TILE, 0, canvas.width-(ox+WORLD_W*TILE), canvas.height);
+      if (oy > 0) ctx.fillRect(0, 0, canvas.width, oy);
+      if (oy + WORLD_H*TILE < canvas.height) ctx.fillRect(0, oy+WORLD_H*TILE, canvas.width, canvas.height-(oy+WORLD_H*TILE));
+
+      // z-sort sprites by bottom y
+      const items = [];
+      for (const o of obstacles) {
+        const sx = ox + o.x*TILE, sy = oy + o.y*TILE;
+        items.push({ z: o.y, draw: () => {
+          if (o.kind === "tree") drawTree(ctx, sx, sy, o.size || 1, time);
+          else if (o.kind === "bush") drawBush(ctx, sx, sy, o.size || 1);
+          else if (o.kind === "rock") drawRock(ctx, sx, sy, o.size || 1);
+          else if (o.kind === "flower") drawFlower(ctx, sx, sy, o.color || "#e8e04a");
+        }});
+      }
+      for (const b of buildings) {
+        const sx = ox + b.tx*TILE, sy = oy + b.ty*TILE;
+        const zz = b.ty + b.h - 0.1;
+        items.push({ z: zz, draw: () => {
+          if (b.kind === "library") drawLibrary(ctx, sx, sy, b.w, b.h);
+          else if (b.kind === "notice") drawNotice(ctx, sx, sy, b.w, b.h, b.sign);
+          else if (b.kind === "cafe") drawCafe(ctx, sx, sy, b.w, b.h, time);
+          else if (b.kind === "studio") drawStudio(ctx, sx, sy, b.w, b.h, time);
+          else if (b.kind === "portal") drawPortal(ctx, sx, sy, b.w, b.h, time);
+          else if (b.kind === "signboard") drawSignboard(ctx, sx, sy);
+          if (b.door && (b.kind === "library" || b.kind === "cafe" || b.kind === "studio")) {
+            // Use the building's horizontal center — that's where drawLibrary/drawCafe/drawStudio
+            // actually render the door, regardless of the door tile index (door.x+0.5 drifts by half
+            // a tile when the building has an even width).
+            const dcx = ox + (b.tx + b.w/2) * TILE;
+            const dgy = oy + (b.ty + b.h) * TILE;
+            drawDoorStep(ctx, dcx, dgy - 2, 44);
+            drawLantern(ctx, dcx - 34, dgy - 30, time);
+            drawLantern(ctx, dcx + 34, dgy - 30, time);
+          }
+        }});
+      }
+      for (const n of npcs) {
+        const sx = ox + n.x*TILE, sy = oy + n.y*TILE;
+        items.push({ z: n.y, draw: () => {
+          drawCharacter(ctx, sx, sy, n.state === "moving" ? n.frame : 0, n.dir || "down",
+            n.hair || "#3a2a18",
+            n.shirt || (n.name && n.name.includes("Verbrugge") ? "#6a4a3a" :
+                       n.name && n.name.includes("Berkeley") ? "#3b6a8e" : "#4f6e3b"),
+            n.name && (n.name.includes("Verbrugge") || n.name.includes("Berkeley")));
+          ctx.fillStyle = "rgba(0,0,0,0.55)";
+          const label = n.name || "";
+          const lf = 11 * fontScale;
+          ctx.font = `bold ${lf}px 'VT323', monospace`;
+          const tw = ctx.measureText(label).width;
+          const pad = 5 * fontScale;
+          const boxH = lf + 4 * fontScale;
+          ctx.fillRect(sx - tw/2 - pad, sy - 30 - boxH/2, tw + pad*2, boxH);
+          ctx.fillStyle = "#fff5d8"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+          ctx.fillText(label, sx, sy - 30);
+          ctx.textBaseline = "alphabetic";
+        }});
+      }
+      // player
+      {
+        const sx = ox + state.px*TILE, sy = oy + state.py*TILE;
+        items.push({ z: state.py + 0.01, draw: () => {
+          drawCharacter(ctx, sx, sy, state.frame, state.dir,
+            opts.player?.hair || "#3a2a18",
+            opts.player?.shirt || "#c25a3a", true);
+        }});
+      }
+      items.sort((a, b) => a.z - b.z);
+      for (const it of items) it.draw();
+
+      // Near-interactable highlight: pulse a thick yellow outline on whatever
+      // object the player can currently press [E] on.
+      const nearNow = nearestInteractive();
+      if (nearNow.kind) {
+        const pulse = 0.55 + 0.45 * Math.sin(time * 0.006);
+        const glow = `rgba(255, 220, 80, ${0.55 + 0.35 * pulse})`;
+        const outline = `rgba(255, 240, 140, ${0.95})`;
+        ctx.save();
+        if (nearNow.kind === "building") {
+          const b = nearNow.obj;
+          const bx = ox + b.tx * TILE;
+          const by = oy + b.ty * TILE;
+          const bw = b.w * TILE;
+          const bh = b.h * TILE;
+          ctx.lineWidth = 5 + pulse * 2;
+          ctx.strokeStyle = glow;
+          ctx.strokeRect(bx - 3, by - 3, bw + 6, bh + 6);
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = outline;
+          ctx.strokeRect(bx - 1, by - 1, bw + 2, bh + 2);
+        } else if (nearNow.kind === "npc") {
+          const n = nearNow.obj;
+          const sx = ox + n.x * TILE;
+          const sy = oy + n.y * TILE;
+          ctx.lineWidth = 4 + pulse * 2;
+          ctx.strokeStyle = glow;
+          ctx.beginPath(); ctx.ellipse(sx, sy - 2, 14, 18, 0, 0, Math.PI*2); ctx.stroke();
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = outline;
+          ctx.beginPath(); ctx.ellipse(sx, sy - 2, 14, 18, 0, 0, Math.PI*2); ctx.stroke();
+        }
+        ctx.restore();
+      }
+      // Notify App so the NearPrompt can render.
+      const nearKey = nearNow.kind ? `${nearNow.kind}:${(nearNow.obj && (nearNow.obj.id || nearNow.obj.name)) || ""}` : "";
+      if (nearKey !== state.lastNearKey) {
+        state.lastNearKey = nearKey;
+        if (opts.onNear) opts.onNear(nearNow);
+      }
+
+      // Target marker
+      if (state.target) {
+        const sx = ox + state.target.x*TILE, sy = oy + state.target.y*TILE;
+        ctx.strokeStyle = "rgba(255,255,255,0.8)"; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(sx, sy, 6+Math.sin(time*0.01)*2, 0, Math.PI*2); ctx.stroke();
+      }
+
+      // Intro text drawn on the ground just north of spawn
+      if (opts.intro && opts.intro.lines) {
+        drawGroundIntro(ctx, ox, oy, opts.intro);
+      }
+
+      ctx.restore();
+
+      // Day/night overlay
+      if (state.timeOfDay === "dusk") {
+        ctx.fillStyle = "rgba(240, 140, 80, 0.18)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (state.timeOfDay === "night") {
+        ctx.fillStyle = "rgba(10, 20, 60, 0.48)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      // Weather
+      if (state.weather === "rain") {
+        ctx.strokeStyle = "rgba(180,210,240,0.5)"; ctx.lineWidth = 1;
+        for (let i = 0; i < 80; i++) {
+          const rx = (i*97+time*0.5)%canvas.width;
+          const ry = (i*53+time*0.8)%canvas.height;
+          ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx-3, ry+8); ctx.stroke();
+        }
+      } else if (state.weather === "snow") {
+        ctx.fillStyle = "rgba(255,255,255,0.85)";
+        for (let i = 0; i < 60; i++) {
+          const rx = (i*71+time*0.1)%canvas.width;
+          const ry = (i*91+time*0.25)%canvas.height;
+          ctx.fillRect(rx, ry, 2, 2);
+        }
+      } else if (state.weather === "leaves") {
+        for (let i = 0; i < 28; i++) {
+          const rx = (i * 71 + time * (0.028 + (i % 5) * 0.003)) % canvas.width;
+          const ry = (i * 41 + time * (0.045 + (i % 4) * 0.004)) % canvas.height;
+          const sway = Math.sin(time * 0.003 + i) * 6;
+          ctx.save();
+          ctx.translate(rx + sway, ry);
+          ctx.rotate(Math.sin(time * 0.004 + i * 3) * 0.5);
+          ctx.fillStyle = ["rgba(255,196,120,0.72)","rgba(255,165,116,0.68)","rgba(255,216,144,0.66)"][i % 3];
+          ctx.fillRect(-2, -1, 5, 3);
+          ctx.restore();
+        }
+      } else if (state.weather === "fireflies") {
+        for (let i = 0; i < 24; i++) {
+          const rx = (i * 83 + time * 0.012) % canvas.width;
+          const ry = (i * 53 + time * (0.006 + (i % 4) * 0.001)) % canvas.height;
+          const pulse = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(time * 0.006 + i * 1.7));
+          ctx.fillStyle = `rgba(255, 238, 150, ${0.14 * pulse})`;
+          ctx.beginPath(); ctx.arc(rx, ry, 6 * pulse, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = `rgba(255, 244, 176, ${0.7 * pulse})`;
+          ctx.beginPath(); ctx.arc(rx, ry, 1.5 + pulse, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+
+      // Expose for HUD (in CSS pixel coords)
+      const rect = canvas.getBoundingClientRect();
+      const scale = rect.width / canvas.width || 1;
+      window.__townState = {
+        px: state.px, py: state.py,
+        ox: ox * scale, oy: oy * scale, TILE: TILE * scale, topDown: true,
+      };
+      window.__townMeta = buildings.map(b => ({
+        id: b.id, label: b.label,
+        x: (ox + (b.tx + b.w/2) * TILE) * scale,
+        y: (oy + b.ty * TILE - 10) * scale,
+      }));
+
+      requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+
+    return {
+      setMuted,
+      initAudio: () => { initAudio(); startBgm(); },
+      setTimeOfDay: (t) => { state.timeOfDay = t; },
+      setWeather: (w) => { state.weather = w; },
+      getAudioState: () => ({
+        started: bgmStarted,
+        muted: state.muted,
+        contextState: audioCtx ? audioCtx.state : "uninitialized",
+      }),
+      setPlayerColors: (hair, shirt) => { opts.player = opts.player || {}; opts.player.hair = hair; opts.player.shirt = shirt; },
+      setPaused: (p) => { state.paused = p; },
+      buildings, npcs,
+      teleport: (id) => {
+        const b = buildings.find(x => x.id === id);
+        if (b) { state.px = b.door.x + 0.5; state.py = b.door.y + 0.5; }
+      },
+      getMap: () => ({
+        map, MAP_W: WORLD_W, MAP_H: WORLD_H, buildings, npcs,
+        playerPos: () => [state.px, state.py],
+      }),
+    };
+  }
+
+  window.TownEngine = { start };
+})();
+</script>
+<script type="text/babel" data-presets="react">// React UI panels (dialog, info HUD, building modals, minimap, tweaks)
+// Loaded as text/babel. Depends on window.SITE_DATA and window.__townEngine.
+
+function useViewport() {
+  const [v, setV] = React.useState(() => ({
+    w: window.innerWidth, h: window.innerHeight,
+    isMobile: window.innerWidth < 820 || window.matchMedia("(max-width: 900px) and (orientation: portrait)").matches,
+    isPortrait: window.innerHeight > window.innerWidth,
+  }));
+  React.useEffect(() => {
+    function onR() {
+      setV({
+        w: window.innerWidth, h: window.innerHeight,
+        isMobile: window.innerWidth < 820 || window.matchMedia("(max-width: 900px) and (orientation: portrait)").matches,
+        isPortrait: window.innerHeight > window.innerWidth,
+      });
+    }
+    window.addEventListener("resize", onR);
+    window.addEventListener("orientationchange", onR);
+    return () => { window.removeEventListener("resize", onR); window.removeEventListener("orientationchange", onR); };
+  }, []);
+  return v;
+}
+
+const { useState, useEffect, useRef, useMemo } = React;
+
+const COLORS = {
+  paper: "#fbf3dc",
+  paperDark: "#e8d9b3",
+  ink: "#2b2118",
+  inkSoft: "#5a4a38",
+  accent: "#9a4a2b",
+  gold: "#d4a73b",
+  green: "#3d6a3a",
+};
+
+const fontHeader = "'VT323', monospace";
+const fontBody = "'VT323', monospace";
+
+// ---------------------------------------------------------------------------
+// Pixel-styled window/dialog frame
+function PixelPanel({ title, onClose, children, wide, accent = COLORS.accent }) {
+  return (
+    <div style={{
+      position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      zIndex: 100, padding: 20,
+      animation: "fadeIn .15s ease-out",
+    }} onClick={onClose}>
+      <div onClick={e => e.stopPropagation()} style={{
+        background: COLORS.paper,
+        color: COLORS.ink,
+        border: `4px solid ${COLORS.ink}`,
+        boxShadow: `8px 8px 0 ${COLORS.ink}, inset 0 0 0 2px ${COLORS.paperDark}`,
+        maxWidth: wide ? 920 : 640,
+        width: "100%",
+        maxHeight: "85vh",
+        display: "flex", flexDirection: "column",
+        fontFamily: fontBody,
+        imageRendering: "pixelated",
+      }}>
+        <div style={{
+          background: accent, color: COLORS.paper,
+          padding: "10px 16px", display: "flex", justifyContent: "space-between",
+          alignItems: "center", borderBottom: `4px solid ${COLORS.ink}`,
+          fontFamily: fontHeader, fontSize: 26, letterSpacing: 1,
+        }}>
+          <span>▸ {title}</span>
+          <button onClick={onClose} style={{
+            background: COLORS.paper, color: COLORS.ink, border: `2px solid ${COLORS.ink}`,
+            cursor: "pointer", fontFamily: fontHeader, fontSize: 22,
+            width: 32, height: 32, lineHeight: 1, padding: 0,
+          }}>✕</button>
+        </div>
+        <div style={{ overflow: "auto", padding: 24, fontSize: 20, lineHeight: 1.35 }}>
+          {children}
+        </div>
+        <div style={{
+          background: COLORS.paperDark, padding: "6px 16px",
+          borderTop: `2px solid ${COLORS.ink}`,
+          fontFamily: fontHeader, fontSize: 16, color: COLORS.inkSoft,
+          textAlign: "right",
+        }}>press ESC or click outside to close</div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Dialog (NPC) — typewriter
+function NpcDialog({ npc, onClose }) {
+  const [lineIdx, setLineIdx] = useState(0);
+  const [shown, setShown] = useState("");
+  const fullText = npc.lines[lineIdx];
+  useEffect(() => {
+    setShown("");
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setShown(fullText.slice(0, i));
+      if (i >= fullText.length) clearInterval(id);
+    }, 22);
+    return () => clearInterval(id);
+  }, [lineIdx, fullText]);
+  function next() {
+    if (shown.length < fullText.length) { setShown(fullText); return; }
+    if (lineIdx < npc.lines.length - 1) setLineIdx(lineIdx + 1);
+    else onClose();
+  }
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === " " || e.key === "Enter" || e.key === "e") { e.preventDefault(); next(); }
+      if (e.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 820);
+  useEffect(() => {
+    const r = () => setIsMobile(window.innerWidth < 820);
+    window.addEventListener('resize', r); return () => window.removeEventListener('resize', r);
+  }, []);
+  return (
+    <div style={{
+      position: "fixed", left: isMobile?8:24, right: isMobile?8:24,
+      bottom: isMobile ? 140 : 24,
+      background: COLORS.paper, color: COLORS.ink,
+      border: `4px solid ${COLORS.ink}`,
+      boxShadow: `6px 6px 0 ${COLORS.ink}`,
+      padding: isMobile?12:18, fontFamily: fontBody,
+      fontSize: isMobile?18:22, lineHeight: 1.3,
+      zIndex: 90, cursor: "pointer",
+    }} onClick={next}>
+      <div style={{
+        fontFamily: fontHeader, fontSize: 20, color: COLORS.accent,
+        marginBottom: 6, letterSpacing: 1,
+      }}>● {npc.name} <span style={{color: COLORS.inkSoft}}>· {npc.role}</span></div>
+      <div style={{ minHeight: 50 }}>{shown}<span className="dialog-cursor">▌</span></div>
+      <div style={{
+        marginTop: 8, textAlign: "right", color: COLORS.inkSoft,
+        fontFamily: fontHeader, fontSize: 16,
+      }}>
+        {shown.length < fullText.length ? "(click / SPACE to skip)"
+          : (lineIdx < npc.lines.length - 1 ? "▼ next" : "▼ end")}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// About signboard
+function AboutPanel({ onClose }) {
+  const a = SITE_DATA.about;
+  return (
+    <PixelPanel title="Town Signboard · About" onClose={onClose} accent={COLORS.green}>
+      <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: 24 }}>
+        <div style={{
+          width: 120, height: 120, background: COLORS.paperDark,
+          border: `3px solid ${COLORS.ink}`, position: "relative",
+          imageRendering: "pixelated", overflow: "hidden",
+        }}>
+          {/* pixel portrait */}
+          <PixelPortrait />
+        </div>
+        <div>
+          <div style={{ fontFamily: fontHeader, fontSize: 36, lineHeight: 1, marginBottom: 4 }}>
+            {a.name}
+          </div>
+          <div style={{ color: COLORS.accent, fontSize: 22, marginBottom: 16 }}>
+            {a.title}
+          </div>
+          <div style={{ marginBottom: 14 }}>{a.blurb}</div>
+          <div style={{
+            background: COLORS.paperDark, border: `2px dashed ${COLORS.inkSoft}`,
+            padding: "8px 12px",
+          }}>
+            <div style={{ fontFamily: fontHeader, fontSize: 18, color: COLORS.accent }}>★ INTERESTS</div>
+            {a.interests}
+          </div>
+        </div>
+      </div>
+      <div style={{
+        marginTop: 24, padding: 12, background: COLORS.paperDark,
+        border: `2px solid ${COLORS.ink}`,
+        fontFamily: fontHeader, fontSize: 18,
+      }}>
+        ⌂ TOWN GUIDE ⌂<br/>
+        ▸ NW · the LIBRARY holds my publications. Glowing tomes are my featured work.<br/>
+        ▸ NE · the NOTICE BOARD shows recent news and announcements.<br/>
+        ▸ SW · the NOTEBOOK CAFÉ — research notes, conferences, journals on every wall.<br/>
+        ▸ SE · the RESEARCH STUDIO — sticky notes pinned to every surface.<br/>
+        ▸ Center · the PORTAL — fast travel to GitHub, Email, Scholar.
+      </div>
+    </PixelPanel>
+  );
+}
+
+function PixelPortrait() {
+  // Tiny CSS-grid pixel portrait of a scholar with glasses
+  const px = ".";
+  const map = [
+    "............",
+    "....KKKK....",
+    "...KHHHHK...",
+    "..KHHHHHHK..",
+    "..HSSSSSSH..",
+    "..SS-SS-SS..",
+    "..SBBSBBSS..",
+    "...SSSSSS...",
+    "..GGGGGGGG..",
+    "..GGGGGGGG..",
+    ".G.GGGGGG.G.",
+    ".G..GGGG..G.",
+  ];
+  const colors = {
+    K: "#1a1410", H: "#3a2818", S: "#e8c69a",
+    B: "#1a1410", G: "#4f6e3b", "-": "#fbf3dc",
+  };
+  const cell = 9;
+  return (
+    <svg width="120" height="120" viewBox={`0 0 ${cell*12} ${cell*12}`} style={{ display: "block" }}>
+      <rect width={cell*12} height={cell*12} fill="#9bd0ff"/>
+      {map.flatMap((row, r) => row.split("").map((c, x) => (
+        c === "." ? null :
+        <rect key={`${r}-${x}`} x={x*cell} y={r*cell} width={cell} height={cell} fill={colors[c] || "#fbf3dc"} />
+      )))}
+      {/* glasses overlay */}
+      <rect x={cell*3} y={cell*5} width={cell*2} height={cell} fill="none" stroke="#1a1410" strokeWidth="1"/>
+      <rect x={cell*7} y={cell*5} width={cell*2} height={cell} fill="none" stroke="#1a1410" strokeWidth="1"/>
+      <line x1={cell*5} y1={cell*5+cell/2} x2={cell*7} y2={cell*5+cell/2} stroke="#1a1410" strokeWidth="1"/>
+    </svg>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Library
+function LibraryPanel({ onClose }) {
+  const [selected, setSelected] = useState(null);
+  const [filter, setFilter] = useState("all");
+  const pubs = SITE_DATA.publications;
+  const years = ["all", ...Array.from(new Set(pubs.map(p => p.year))).sort((a,b)=>b-a)];
+  const list = filter === "all" ? pubs : pubs.filter(p => p.year === Number(filter));
+  // organize into shelves of 5
+  const shelves = [];
+  for (let i = 0; i < list.length; i += 5) shelves.push(list.slice(i, i+5));
+  return (
+    <PixelPanel title="Library of Publications" onClose={onClose} wide accent="#7d3a2c">
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18, minHeight: 400 }}>
+        <div>
+          <div style={{ marginBottom: 14, display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: fontHeader, fontSize: 18, color: COLORS.inkSoft, alignSelf: "center" }}>FILTER:</span>
+            {years.map(y => (
+              <button key={y} onClick={() => setFilter(y)} style={{
+                background: filter === y ? COLORS.ink : COLORS.paperDark,
+                color: filter === y ? COLORS.paper : COLORS.ink,
+                border: `2px solid ${COLORS.ink}`, padding: "2px 10px",
+                fontFamily: fontHeader, fontSize: 18, cursor: "pointer",
+              }}>{y}</button>
+            ))}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {shelves.map((shelf, si) => (
+              <div key={si}>
+                <div style={{
+                  display: "flex", alignItems: "flex-end", gap: 4,
+                  height: 110, padding: "0 10px",
+                }}>
+                  {shelf.map(p => <Book key={p.id} p={p}
+                    selected={selected?.id === p.id}
+                    onClick={() => setSelected(p)} />)}
+                </div>
+                <div style={{
+                  height: 14, background: "linear-gradient(180deg, #6e4524, #4a2d18)",
+                  border: `2px solid ${COLORS.ink}`, borderTop: 0,
+                }}/>
+              </div>
+            ))}
+          </div>
+          <div style={{ fontFamily: fontHeader, fontSize: 16, color: COLORS.inkSoft, marginTop: 10 }}>
+            ✦ glowing book = featured work · 🏆 = award
+          </div>
+        </div>
+        <div style={{
+          background: COLORS.paperDark, border: `3px solid ${COLORS.ink}`,
+          padding: 14, fontSize: 18, lineHeight: 1.3,
+        }}>
+          {selected ? (
+            <>
+              <div style={{
+                fontFamily: fontHeader, fontSize: 18, color: COLORS.accent, marginBottom: 6,
+              }}>
+                {selected.featured && "✦ "}{selected.year} · {selected.venue}
+                {selected.award && <div style={{color: COLORS.gold, marginTop: 2}}>🏆 {selected.award}</div>}
+              </div>
+              <div style={{ fontWeight: "bold", marginBottom: 8 }}>{selected.title}</div>
+              <div style={{ color: COLORS.inkSoft, marginBottom: 10 }}>{selected.authors}</div>
+              <div style={{ marginBottom: 12 }}>
+                <em>{selected.venueFull}</em>
+                {selected.status && <span style={{color: COLORS.accent}}> · {selected.status}</span>}
+              </div>
+              <a href={selected.link} target="_blank" rel="noopener" style={{
+                display: "inline-block", background: COLORS.ink, color: COLORS.paper,
+                padding: "4px 12px", fontFamily: fontHeader, fontSize: 18,
+                textDecoration: "none", border: `2px solid ${COLORS.ink}`,
+              }}>▸ READ PAPER</a>
+            </>
+          ) : (
+            <div style={{ color: COLORS.inkSoft, textAlign: "center", paddingTop: 80 }}>
+              ◇<br/>Click a book on the shelf<br/>to read its details.
+            </div>
+          )}
+        </div>
+      </div>
+    </PixelPanel>
+  );
+}
+
+function Book({ p, selected, onClick }) {
+  const colorByVenue = {
+    "CHI 2026": "#7d3a8a", "AAAI 2026": "#3a4d8a", "FDG 2026": "#7a3a4d",
+    "AIIDE 2025": "#8a5a2a", "CoG 2025": "#3a6a5a", "FDG 2025": "#5a3a8a",
+    "MIDL 2024": "#3a8a6a",
+  };
+  const c = colorByVenue[p.venue] || "#5a4a38";
+  const h = 60 + (p.title.length % 24);
+  const w = 14 + (p.title.length % 8);
+  return (
+    <div onClick={onClick} title={p.title} style={{
+      width: w, height: h, background: c,
+      border: `2px solid ${COLORS.ink}`,
+      borderBottom: `3px solid ${COLORS.ink}`,
+      borderTop: `4px solid ${c}`,
+      display: "flex", alignItems: "flex-end", justifyContent: "center",
+      cursor: "pointer", position: "relative",
+      transform: selected ? "translateY(-6px)" : "none",
+      transition: "transform .15s",
+      boxShadow: p.featured
+        ? `0 0 12px 2px rgba(255, 220, 90, 0.95), 0 0 4px 1px rgba(255,220,90,1)`
+        : `inset -3px 0 0 rgba(0,0,0,0.25)`,
+      animation: p.featured ? "shimmer 1.4s ease-in-out infinite alternate" : "none",
+    }}>
+      {p.award && <div style={{
+        position: "absolute", top: -6, left: "50%", transform: "translateX(-50%)",
+        fontSize: 14,
+      }}>🏆</div>}
+      <div style={{
+        color: "#fff", fontSize: 9, fontFamily: fontHeader,
+        writingMode: "vertical-rl", transform: "rotate(180deg)",
+        padding: "4px 0", textAlign: "center",
+        textShadow: "1px 1px 0 rgba(0,0,0,0.5)",
+        lineHeight: 1, height: h - 18, overflow: "hidden",
+      }}>{p.venue}</div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Notice board
+function NewsPanel({ onClose }) {
+  return (
+    <PixelPanel title="Town Notice Board · News" onClose={onClose} wide accent="#7d4f24">
+      <div style={{
+        background: "#c79d68",
+        border: `4px solid #5e3b1f`,
+        padding: 18,
+        display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14,
+      }}>
+        {SITE_DATA.news.map((n, i) => (
+          <div key={i} style={{
+            background: i % 3 === 0 ? "#fffdf2" : i % 3 === 1 ? "#fff5d8" : "#fffae0",
+            padding: "14px 14px 16px",
+            transform: `rotate(${(i % 2 === 0 ? -1 : 1) * (0.3 + (i%3)*0.3)}deg)`,
+            boxShadow: "3px 3px 0 rgba(0,0,0,0.25)",
+            position: "relative", border: "1px solid #d8c79e",
+          }}>
+            <div style={{
+              position: "absolute", top: 4, left: "50%", transform: "translateX(-50%)",
+              width: 10, height: 10, background: "#c63333", borderRadius: "50%",
+              border: "1px solid #6a1a1a",
+            }}/>
+            <div style={{
+              fontFamily: fontHeader, fontSize: 18, color: COLORS.accent, marginBottom: 6,
+            }}>📌 {n.date}</div>
+            <div style={{ fontSize: 18, lineHeight: 1.3 }}>{n.text}</div>
+            {n.link && <a href={n.link} target="_blank" rel="noopener" style={{
+              display: "inline-block", marginTop: 8,
+              fontFamily: fontHeader, fontSize: 16, color: COLORS.ink,
+              borderBottom: `2px solid ${COLORS.ink}`, textDecoration: "none",
+            }}>▸ visit conference</a>}
+          </div>
+        ))}
+      </div>
+    </PixelPanel>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Notebook (Café walls)
+function NotebookPanel({ onClose }) {
+  const sections = [
+    { title: "🎮 Core Gaming Conferences", items: SITE_DATA.notebook.confs_gaming, color: "#f3c450" },
+    { title: "🎯 Workshops", items: SITE_DATA.notebook.workshops, color: "#7faedb" },
+    { title: "🖥️ Graphics & Interaction Conferences", items: SITE_DATA.notebook.confs_graphics, color: "#7fbf7e" },
+    { title: "🤖 AI & Multimedia Conferences", items: SITE_DATA.notebook.confs_ai, color: "#e88f8f" },
+    { title: "📖 Gaming Journals", items: SITE_DATA.notebook.journals_gaming, color: "#f3a85b" },
+    { title: "📖 Graphics Journals", items: SITE_DATA.notebook.journals_graphics, color: "#a496e0" },
+    { title: "📖 AI Journals", items: SITE_DATA.notebook.journals_ai, color: "#62c2b3" },
+  ];
+  return (
+    <PixelPanel title="Research Studio · Notebook Wall" onClose={onClose} wide accent="#5d6f7a">
+      <div style={{
+        background: "linear-gradient(180deg, #cfc6a8 0%, #b8af90 100%)",
+        border: `4px solid ${COLORS.ink}`,
+        padding: 16,
+      }}>
+        {sections.map((s, si) => (
+          <div key={si} style={{ marginBottom: 18 }}>
+            <div style={{
+              fontFamily: fontHeader, fontSize: 22, color: COLORS.ink, marginBottom: 8,
+              borderBottom: `2px dashed ${COLORS.inkSoft}`, paddingBottom: 4,
+            }}>{s.title}</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {s.items.map((it, ii) => {
+                const tilt = ((si*3 + ii) % 5 - 2) * 1.2;
+                return (
+                  <a key={ii} href={it.url} target="_blank" rel="noopener" style={{
+                    background: s.color,
+                    width: 150, padding: "8px 10px",
+                    fontSize: 16, lineHeight: 1.2, color: COLORS.ink,
+                    textDecoration: "none",
+                    transform: `rotate(${tilt}deg)`,
+                    boxShadow: "2px 3px 0 rgba(0,0,0,0.2)",
+                    border: "1px solid rgba(0,0,0,0.15)",
+                    fontFamily: fontBody,
+                  }}>
+                    <div style={{ fontFamily: fontHeader, fontSize: 18 }}>{it.name}</div>
+                    <div style={{ fontSize: 14, color: "rgba(0,0,0,0.65)" }}>{it.desc}</div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </PixelPanel>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Artifact Gallery — placeholder for future project/demo artifacts.
+function StudioPanel({ onClose }) {
+  return (
+    <PixelPanel title="Artifact Gallery" onClose={onClose} accent="#5a3a8a" wide>
+      <div style={{
+        minHeight: 320,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        background: COLORS.paperDark, border: `3px dashed ${COLORS.inkSoft}`,
+        padding: 30,
+      }}>
+        <div style={{ textAlign: "center", color: COLORS.inkSoft, maxWidth: 420 }}>
+          <div style={{ fontFamily: fontHeader, fontSize: 40, color: COLORS.ink, marginBottom: 10, letterSpacing: 2 }}>
+            {"\u25C7"} Empty Plinth {"\u25C7"}
+          </div>
+          <div style={{ fontSize: 20, lineHeight: 1.35, marginBottom: 8 }}>
+            The gallery hasn't been curated yet.
+          </div>
+          <div style={{ fontSize: 18, lineHeight: 1.35 }}>
+            Artifacts, project demos, and interactive pieces will be exhibited here soon.
+          </div>
+        </div>
+      </div>
+    </PixelPanel>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Portal (Links)
+function PortalPanel({ onClose }) {
+  return (
+    <PixelPanel title="Travel Portal · Links" onClose={onClose} accent="#5a3a8a">
+      <div style={{ textAlign: "center", marginBottom: 16, fontSize: 20 }}>
+        ◈ Choose your destination ◈
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+        {SITE_DATA.links.map(l => (
+          <a key={l.id} href={l.url} target="_blank" rel="noopener" style={{
+            display: "block", padding: "16px 18px",
+            background: l.color, color: "#fff",
+            border: `4px solid ${COLORS.ink}`,
+            boxShadow: `4px 4px 0 ${COLORS.ink}`,
+            textDecoration: "none",
+            fontFamily: fontHeader, fontSize: 26, letterSpacing: 1,
+            textAlign: "center",
+          }}>▸ {l.label}</a>
+        ))}
+      </div>
+    </PixelPanel>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// HUD: building labels floating over the map
+function BuildingLabels() {
+  const [meta, setMeta] = useState([]);
+  useEffect(() => {
+    let raf;
+    function loop() {
+      setMeta(window.__townMeta || []);
+      raf = requestAnimationFrame(loop);
+    }
+    loop();
+    return () => cancelAnimationFrame(raf);
+  }, []);
+  return (
+    <>
+      {meta.map(m => (
+        <div key={m.id} style={{
+          position: "fixed", left: m.x, top: m.y,
+          transform: "translate(-50%, -100%)",
+          fontFamily: fontHeader, fontSize: 14,
+          background: "rgba(20,15,10,0.78)", color: COLORS.paper,
+          padding: "2px 8px", border: `1px solid ${COLORS.paper}`,
+          pointerEvents: "none", whiteSpace: "nowrap",
+          letterSpacing: 1,
+        }}>{m.label}</div>
+      ))}
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Proximity prompt
+function NearPrompt({ near }) {
+  if (!near || !near.kind) return null;
+  const label = near.kind === "building" ? `Enter ${near.obj.label}` : `Talk to ${near.obj.name}`;
+  return (
+    <div style={{
+      position: "fixed", left: "50%", bottom: 110,
+      transform: "translateX(-50%)",
+      background: "rgba(20,15,10,0.86)", color: COLORS.paper,
+      border: `2px solid ${COLORS.paper}`,
+      padding: "6px 14px", fontFamily: fontHeader, fontSize: 22,
+      letterSpacing: 1, pointerEvents: "none",
+      animation: "bounce 1s ease-in-out infinite",
+    }}>
+      [E / SPACE] {label}
+    </div>
+  );
+}
+
+// Touch joystick + interact button (mobile)
+function TouchControls({ engine }) {
+  const [stick, setStick] = React.useState({ active: false, dx: 0, dy: 0, cx: 0, cy: 0 });
+  const held = React.useRef({ w:false, a:false, s:false, d:false });
+  function setKeys(next) {
+    for (const k of ["w","a","s","d"]) {
+      if (!!next[k] !== !!held.current[k]) {
+        const type = next[k] ? "keydown" : "keyup";
+        window.dispatchEvent(new KeyboardEvent(type, { key: k }));
+        held.current[k] = !!next[k];
+      }
+    }
+  }
+  function onStart(e) {
+    const t = e.touches[0] || e;
+    setStick({ active: true, dx: 0, dy: 0, cx: t.clientX, cy: t.clientY });
+  }
+  function onMove(e) {
+    const t = e.touches ? e.touches[0] : e;
+    if (!t) return;
+    const dx = t.clientX - stick.cx, dy = t.clientY - stick.cy;
+    const m = Math.hypot(dx, dy), max = 45;
+    const nx = m > max ? dx/m*max : dx;
+    const ny = m > max ? dy/m*max : dy;
+    setStick(s => ({ ...s, dx: nx, dy: ny }));
+    const th = 12;
+    setKeys({
+      w: ny < -th, s: ny > th,
+      a: nx < -th, d: nx > th,
+    });
+  }
+  function onEnd() {
+    setKeys({ w:false, a:false, s:false, d:false });
+    setStick({ active: false, dx: 0, dy: 0, cx: 0, cy: 0 });
+  }
+  function interact() {
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "e" }));
+    window.dispatchEvent(new KeyboardEvent("keyup", { key: "e" }));
+  }
+  const size = 130;
+  return (<>
+    <div onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}
+      onMouseDown={onStart} onMouseMove={stick.active ? onMove : undefined}
+      onMouseUp={onEnd} onMouseLeave={onEnd}
+      style={{
+        position:"fixed", left: 18, bottom: 22, width: size, height: size,
+        borderRadius: "50%", background: "rgba(20,15,10,0.45)",
+        border: `3px solid ${COLORS.paper}`, zIndex: 95, touchAction: "none",
+      }}>
+      <div style={{
+        position:"absolute", left: size/2 - 28 + stick.dx, top: size/2 - 28 + stick.dy,
+        width: 56, height: 56, borderRadius: "50%",
+        background: COLORS.paper, border: `3px solid ${COLORS.ink}`,
+        pointerEvents:"none",
+      }}/>
+    </div>
+    <button onTouchStart={(e)=>{e.preventDefault();interact();}}
+      onClick={(e)=>{e.preventDefault();interact();}}
+      style={{
+        position:"fixed", right: 18, bottom: 22, width: 96, height: 96,
+        borderRadius: "50%", background: COLORS.accent, color: COLORS.paper,
+        border: `4px solid ${COLORS.ink}`, boxShadow: `3px 3px 0 ${COLORS.ink}`,
+        fontFamily: fontHeader, zIndex: 95, cursor:"pointer",
+        touchAction:"none",
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        gap: 0, lineHeight: 1,
+      }}>
+      <span style={{ fontSize: 32, lineHeight: 1 }}>E</span>
+      <span style={{ fontSize: 13, letterSpacing: 1, marginTop: 2, opacity: 0.95 }}>Interact</span>
+    </button>
+  </>);
+}
+
+// ---------------------------------------------------------------------------
+// Minimap
+function Minimap({ engine, mobile }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!engine) return;
+    const ctx = ref.current.getContext("2d");
+    const data = engine.getMap();
+    const W = data.MAP_W, H = data.MAP_H;
+    const canvasSize = 128;
+    const scale = canvasSize / W;
+    function draw() {
+      ctx.fillStyle = "#1a2a14";
+      ctx.fillRect(0, 0, canvasSize, canvasSize);
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const t = data.map[y][x];
+          let c = "#6aa04a";
+          if (t === 1) c = "#7cb258";
+          else if (t === 2) c = "#5a8838";
+          else if (t === 3) c = "#4e7a36";
+          else if (t === 10) c = "#b89666";
+          else if (t === 11 || t === 12) c = "#b6a98c";
+          else if (t === 13) c = "#e5d4a1";
+          else if (t === 20) c = "#3a7aad";
+          else if (t === 21) c = "#27578a";
+          ctx.fillStyle = c;
+          ctx.fillRect(x*scale, y*scale, Math.ceil(scale), Math.ceil(scale));
+        }
+      }
+      for (const b of data.buildings) {
+        ctx.fillStyle = "#3a2418";
+        ctx.fillRect(b.tx*scale, b.ty*scale, b.w*scale, b.h*scale);
+        ctx.fillStyle = "#d4a73b";
+        ctx.fillRect(b.door.x*scale, b.door.y*scale, Math.max(2,scale), Math.max(2,scale));
+      }
+      const [px, py] = data.playerPos();
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(Math.floor(px*scale)-1, Math.floor(py*scale)-1, 4, 4);
+      ctx.fillStyle = "#c63333";
+      ctx.fillRect(Math.floor(px*scale), Math.floor(py*scale), 2, 2);
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }, [engine]);
+  return (
+    <div style={{
+      position: "fixed", top: mobile ? 6 : 16, right: mobile ? 6 : 16,
+      background: "rgba(20,15,10,0.88)", padding: mobile ? 3 : 6,
+      border: `${mobile?2:3}px solid ${COLORS.paper}`,
+      boxShadow: `3px 3px 0 rgba(0,0,0,0.6)`, zIndex: 80,
+    }}>
+      <div style={{
+        fontFamily: fontHeader, fontSize: mobile?11:14, color: COLORS.paper,
+        textAlign: "center", letterSpacing: 1,
+      }}>◇ MAP ◇</div>
+      <canvas ref={ref} width={128} height={128} style={{
+        display: "block", imageRendering: "pixelated",
+        width: mobile ? 72 : 128, height: mobile ? 72 : 128,
+      }}/>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Bottom-left controls bar
+function EnvironmentChip({ environment, mobile }) {
+  return (
+    <div title={`Visit preset: ${environment.label}`} style={{
+      display: "inline-flex", alignItems: "center", gap: 6,
+      background: mobile ? "rgba(251,243,220,0.9)" : COLORS.paperDark,
+      color: COLORS.ink,
+      border: `2px solid ${COLORS.ink}`,
+      padding: mobile ? "4px 8px" : "5px 10px",
+      fontFamily: fontHeader,
+      fontSize: mobile ? 14 : 18,
+      letterSpacing: 1,
+      boxShadow: mobile ? "none" : `2px 2px 0 ${COLORS.ink}`,
+      whiteSpace: "nowrap",
+    }}>
+      <span>{environment.icon}</span>
+      <span>{mobile ? environment.shortLabel : environment.label}</span>
+    </div>
+  );
+}
+
+function VisitControlsBar({ engine, muted, setMuted, environment, onAbout, onTeleport, mobile }) {
+  if (mobile) {
+    return (
+      <div style={{
+        position:"fixed", top: 6, left: 140, right: 90,
+        display:"flex", gap: 5, overflowX: "auto", padding: 4,
+        background: "rgba(20,15,10,0.6)", border: `2px solid ${COLORS.paper}`,
+        fontFamily: fontHeader, zIndex: 60,
+      }}>
+        <CtrlBtn onClick={onAbout}>★</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("library")}>📚</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("cafe")}>☕</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("artifact")}>🏺</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>◈</CtrlBtn>
+        <CtrlBtn onClick={() => {
+          engine.initAudio();
+          const next = !muted;
+          setMuted(next);
+          engine.setMuted(next);
+        }}>{muted ? "🔊" : "🔇"}</CtrlBtn>
+        <EnvironmentChip environment={environment} mobile />
+      </div>
+    );
+  }
+  return (
+    <div style={{
+      position: "fixed", bottom: 16, left: 16,
+      display: "flex", flexDirection: "column", gap: 10,
+      pointerEvents: "auto",
+    }}>
+      <div style={{
+        background: "rgba(20,15,10,0.86)", color: COLORS.paper,
+        border: `3px solid ${COLORS.paper}`, padding: "8px 12px",
+        fontFamily: fontHeader, fontSize: 16, letterSpacing: 1,
+      }}>
+        ⌨ WASD / ← → ↑ ↓ to move · 🖱 click to walk · [E/SPACE] interact
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", maxWidth: 620 }}>
+        <CtrlBtn onClick={onAbout}>★ About</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("library")}>📚 Library</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰 News</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("cafe")}>☕ Café</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("artifact")}>🏺 Artifact</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>◈ Portal</CtrlBtn>
+        <CtrlBtn onClick={() => {
+          engine.initAudio();
+          const next = !muted;
+          setMuted(next);
+          engine.setMuted(next);
+        }}>
+          {muted ? "🔊 Unmute" : "🔇 Mute"}
+        </CtrlBtn>
+        <EnvironmentChip environment={environment} />
+      </div>
+    </div>
+  );
+}
+
+function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout, onTeleport, mobile }) {
+  if (mobile) {
+    // Compact top strip: scrollable teleport icons + sound/day
+    return (
+      <div style={{
+        position:"fixed", top: 6, left: 140, right: 90,
+        display:"flex", gap: 5, overflowX: "auto", padding: 4,
+        background: "rgba(20,15,10,0.6)", border: `2px solid ${COLORS.paper}`,
+        fontFamily: fontHeader, zIndex: 60,
+      }}>
+        <CtrlBtn onClick={onAbout}>★</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("library")}>📚</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("cafe")}>☕</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("artifact")}>🏺</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>◈</CtrlBtn>
+        <CtrlBtn onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>{muted?"🔇":"🔊"}</CtrlBtn>
+        <CtrlBtn onClick={() => {
+          const next = timeOfDay === "day" ? "dusk" : timeOfDay === "dusk" ? "night" : "day";
+          setTimeOfDay(next); engine.setTimeOfDay(next);
+          engine.setWeather(next === "night" ? "fireflies" : "leaves");
+        }}>{timeOfDay==="day"?"☀":timeOfDay==="dusk"?"🌅":"🌙"}</CtrlBtn>
+      </div>
+    );
+  }
+  return (
+    <div style={{
+      position: "fixed", bottom: 16, left: 16,
+      display: "flex", flexDirection: "column", gap: 10,
+      pointerEvents: "auto",
+    }}>
+      <div style={{
+        background: "rgba(20,15,10,0.86)", color: COLORS.paper,
+        border: `3px solid ${COLORS.paper}`, padding: "8px 12px",
+        fontFamily: fontHeader, fontSize: 16, letterSpacing: 1,
+      }}>
+        ⌨ WASD / ← → ↑ ↓ to move · 🖱 click to walk · [E/SPACE] interact
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", maxWidth: 520 }}>
+        <CtrlBtn onClick={onAbout}>★ About</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("library")}>📚 Library</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰 News</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("cafe")}>☕ Café</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("artifact")}>🏺 Artifact</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>◈ Portal</CtrlBtn>
+        <CtrlBtn onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>
+          {muted ? "🔇 BGM Off" : "🔊 BGM On"}
+        </CtrlBtn>
+        <CtrlBtn onClick={() => {
+          const next = timeOfDay === "day" ? "dusk" : timeOfDay === "dusk" ? "night" : "day";
+          setTimeOfDay(next); engine.setTimeOfDay(next);
+          engine.setWeather(next === "night" ? "fireflies" : "leaves");
+        }}>
+          {timeOfDay === "day" ? "☀ Day" : timeOfDay === "dusk" ? "🌅 Dusk" : "🌙 Night"}
+        </CtrlBtn>
+      </div>
+    </div>
+  );
+}
+function CtrlBtn({ children, onClick }) {
+  return <button onClick={onClick} style={{
+    background: COLORS.paper, color: COLORS.ink,
+    border: `2px solid ${COLORS.ink}`,
+    padding: "5px 10px", fontFamily: fontHeader, fontSize: 18,
+    cursor: "pointer", letterSpacing: 1,
+    boxShadow: `2px 2px 0 ${COLORS.ink}`,
+  }}>{children}</button>;
+}
+
+// ---------------------------------------------------------------------------
+// Tweaks panel
+function AvatarTweaksPanel({ tweaks, setTweaks, engine, onClose }) {
+  function set(k, v) {
+    const next = { ...tweaks, [k]: v };
+    setTweaks(next);
+    if (k === "hair" || k === "shirt") engine.setPlayerColors(next.hair, next.shirt);
+    window.parent.postMessage({type: '__edit_mode_set_keys', edits: { [k]: v }}, '*');
+  }
+  return (
+    <div style={{
+      position: "fixed", right: 16, bottom: 160,
+      width: 280, background: COLORS.paper, color: COLORS.ink,
+      border: `4px solid ${COLORS.ink}`,
+      boxShadow: `5px 5px 0 ${COLORS.ink}`,
+      fontFamily: fontBody, fontSize: 18, zIndex: 110,
+    }}>
+      <div style={{
+        background: COLORS.accent, color: COLORS.paper,
+        padding: "6px 10px", display: "flex", justifyContent: "space-between",
+        fontFamily: fontHeader, fontSize: 20,
+      }}>
+        <span>Tweaks</span>
+        <button onClick={onClose} style={{
+          background: COLORS.paper, color: COLORS.ink, border: 0,
+          fontFamily: fontHeader, fontSize: 16, cursor: "pointer",
+          padding: "0 6px",
+        }}>✕</button>
+      </div>
+      <div style={{ padding: 12, display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{
+          background: COLORS.paperDark,
+          border: `2px dashed ${COLORS.inkSoft}`,
+          padding: "8px 10px",
+          color: COLORS.inkSoft,
+          lineHeight: 1.3,
+        }}>
+          Environment is randomized once per visit and no longer user-editable.
+        </div>
+        <Row label="Hair">
+          {[["#2a2018","black"],["#5b3a1f","brown"],["#a14d70","pink"],["#3a4d8a","blue"]].map(([c]) => (
+            <Swatch key={c} color={c} on={tweaks.hair === c} onClick={() => set("hair", c)}/>
+          ))}
+        </Row>
+        <Row label="Shirt">
+          {[["#3b6a8e","blue"],["#7d3a2c","red"],["#3d6a3a","green"],["#5a3a8a","purple"],["#d4a73b","gold"]].map(([c]) => (
+            <Swatch key={c} color={c} on={tweaks.shirt === c} onClick={() => set("shirt", c)}/>
+          ))}
+        </Row>
+      </div>
+    </div>
+  );
+}
+
+function TweaksPanel({ tweaks, setTweaks, engine, onClose }) {
+  function set(k, v) {
+    const next = { ...tweaks, [k]: v };
+    setTweaks(next);
+    if (k === "weather") engine.setWeather(v);
+    if (k === "timeOfDay") engine.setTimeOfDay(v);
+    if (k === "hair" || k === "shirt") engine.setPlayerColors(next.hair, next.shirt);
+    window.parent.postMessage({type: '__edit_mode_set_keys', edits: { [k]: v }}, '*');
+  }
+  return (
+    <div style={{
+      position: "fixed", right: 16, bottom: 160,
+      width: 280, background: COLORS.paper, color: COLORS.ink,
+      border: `4px solid ${COLORS.ink}`,
+      boxShadow: `5px 5px 0 ${COLORS.ink}`,
+      fontFamily: fontBody, fontSize: 18, zIndex: 110,
+    }}>
+      <div style={{
+        background: COLORS.accent, color: COLORS.paper,
+        padding: "6px 10px", display: "flex", justifyContent: "space-between",
+        fontFamily: fontHeader, fontSize: 20,
+      }}>
+        <span>Tweaks</span>
+        <button onClick={onClose} style={{
+          background: COLORS.paper, color: COLORS.ink, border: 0,
+          fontFamily: fontHeader, fontSize: 16, cursor: "pointer",
+          padding: "0 6px",
+        }}>✕</button>
+      </div>
+      <div style={{ padding: 12, display: "flex", flexDirection: "column", gap: 10 }}>
+        <Row label="Time">
+          {["day","dusk","night"].map(v => (
+            <Pill key={v} on={tweaks.timeOfDay === v} onClick={() => set("timeOfDay", v)}>{v}</Pill>
+          ))}
+        </Row>
+        <Row label="Weather">
+          {["leaves","fireflies","none"].map(v => (
+            <Pill key={v} on={tweaks.weather === v} onClick={() => set("weather", v)}>{v}</Pill>
+          ))}
+        </Row>
+        <Row label="Hair">
+          {[["#2a2018","black"],["#5b3a1f","brown"],["#a14d70","pink"],["#3a4d8a","blue"]].map(([c,n]) => (
+            <Swatch key={c} color={c} on={tweaks.hair === c} onClick={() => set("hair", c)}/>
+          ))}
+        </Row>
+        <Row label="Shirt">
+          {[["#3b6a8e","blue"],["#7d3a2c","red"],["#3d6a3a","green"],["#5a3a8a","purple"],["#d4a73b","gold"]].map(([c]) => (
+            <Swatch key={c} color={c} on={tweaks.shirt === c} onClick={() => set("shirt", c)}/>
+          ))}
+        </Row>
+      </div>
+    </div>
+  );
+}
+function Row({ label, children }) {
+  return <div>
+    <div style={{ fontFamily: fontHeader, fontSize: 16, color: COLORS.inkSoft, marginBottom: 4 }}>{label}</div>
+    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>{children}</div>
+  </div>;
+}
+function Pill({ on, onClick, children }) {
+  return <button onClick={onClick} style={{
+    background: on ? COLORS.ink : COLORS.paperDark,
+    color: on ? COLORS.paper : COLORS.ink,
+    border: `2px solid ${COLORS.ink}`, padding: "2px 10px",
+    fontFamily: fontHeader, fontSize: 16, cursor: "pointer",
+  }}>{children}</button>;
+}
+function Swatch({ color, on, onClick }) {
+  return <button onClick={onClick} style={{
+    width: 28, height: 28, background: color,
+    border: `${on ? 3 : 2}px solid ${COLORS.ink}`,
+    cursor: "pointer", padding: 0,
+    boxShadow: on ? `0 0 0 2px ${COLORS.gold}` : "none",
+  }}/>;
+}
+
+function GroundIntro() {
+  const [pos, setPos] = React.useState(null);
+  React.useEffect(() => {
+    let raf;
+    function loop() {
+      const s = window.__townState;
+      if (s && s.topDown) {
+        const sx = s.ox + 32 * s.TILE;
+        const sy = s.oy + 30 * s.TILE;
+        setPos({ x: sx, y: sy });
+      }
+      raf = requestAnimationFrame(loop);
+    }
+    loop();
+    return () => cancelAnimationFrame(raf);
+  }, []);
+  if (!pos) return null;
+  const a = SITE_DATA.about;
+  return (<>
+    <div style={{
+      position: "fixed", left: pos.x, top: pos.y - 180,
+      transform: "translate(-50%,0)",
+      pointerEvents: "none", zIndex: 40,
+      fontFamily: fontHeader, textAlign: "center",
+      textShadow: "2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000",
+      color: "#fff5d8", whiteSpace: "nowrap",
+    }}>
+      <div style={{ fontSize: 28, letterSpacing: 2, color:"#ffd86a" }}>✦ WELCOME TO XU TOWN ✦</div>
+      <div style={{ fontSize: 20, marginTop: 4 }}>{a.name} · {a.title}</div>
+      <div style={{ fontSize: 16, marginTop: 2, color:"#ffe9b0" }}>Walk (WASD / arrows / drag) · Press E near a building to enter</div>
+      <div style={{ fontSize: 15, marginTop: 2, color:"#cfd9c4" }}>Library · Notice Board · Café · Studio · Portal · chat with NPCs</div>
+    </div>
+  </>);
+}
+
+// ---------------------------------------------------------------------------
+// Title splash
+function TitleSplash({ onStart }) {
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 200,
+      background: "linear-gradient(180deg, #1a1c3a 0%, #3a4d8a 60%, #6c8a4a 100%)",
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      color: COLORS.paper, fontFamily: fontBody,
+      textAlign: "center",
+    }} onClick={onStart}>
+      <div style={{ fontFamily: fontHeader, fontSize: 96, lineHeight: 1, letterSpacing: 4, whiteSpace: "nowrap" }}>
+        ✦&nbsp;XU&nbsp;TOWN&nbsp;✦
+      </div>
+      <div style={{ fontFamily: fontHeader, fontSize: 30, color: COLORS.gold, marginTop: 32 }}>
+        the academic life of Kaijie (Jay) Xu
+      </div>
+      <div style={{ marginTop: 32, fontSize: 22, opacity: 0.85 }}>
+        a small pixel town · explore freely · meet the locals
+      </div>
+      <div style={{
+        marginTop: 60, padding: "10px 30px",
+        border: `3px solid ${COLORS.paper}`,
+        fontFamily: fontHeader, fontSize: 28, letterSpacing: 2,
+        animation: "bounce 1.2s ease-in-out infinite",
+        cursor: "pointer", background: "rgba(0,0,0,0.3)",
+      }}>▸ PRESS ANY KEY / CLICK TO BEGIN ◂</div>
+      <div style={{ marginTop: 40, fontSize: 16, opacity: 0.7 }}>
+        WASD / arrow keys to move · click to walk · E or SPACE to interact
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// App
+const ENVIRONMENT_PRESETS = [
+  { id: "sunlit-breeze", label: "Sunlit Breeze", shortLabel: "Sunlit", icon: "☀", timeOfDay: "day", weather: "leaves" },
+  { id: "golden-hour", label: "Golden Hour", shortLabel: "Golden", icon: "🌅", timeOfDay: "dusk", weather: "leaves" },
+  { id: "starlit-fireflies", label: "Starlit Fireflies", shortLabel: "Fireflies", icon: "✨", timeOfDay: "night", weather: "fireflies" },
+  { id: "soft-rain", label: "Soft Rain", shortLabel: "Rain", icon: "☔", timeOfDay: "dusk", weather: "rain" },
+];
+
+function pickVisitEnvironment() {
+  return ENVIRONMENT_PRESETS[Math.floor(Math.random() * ENVIRONMENT_PRESETS.length)];
+}
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "hair": "#2a2018",
+  "shirt": "#3b6a8e"
+}/*EDITMODE-END*/;
+
+function App() {
+  const vp = useViewport();
+  const canvasRef = useRef(null);
+  const [engine, setEngine] = useState(null);
+  const [near, setNear] = useState(null);
+  const [activeBuilding, setActiveBuilding] = useState(null);
+  const [activeNpc, setActiveNpc] = useState(null);
+  const [muted, setMuted] = useState(true);
+  const [environment] = useState(() => pickVisitEnvironment());
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  const [tweaksOpen, setTweaksOpen] = useState(false);
+  const [started, setStarted] = useState(true);
+
+  useEffect(() => {
+    function resize() {
+      const c = canvasRef.current;
+      if (!c) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      c.width = window.innerWidth * dpr;
+      c.height = window.innerHeight * dpr;
+      c.style.width = window.innerWidth + "px";
+      c.style.height = window.innerHeight + "px";
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    const e = TownEngine.start(canvasRef.current, {
+      npcs: SITE_DATA.npcs,
+      player: { hair: tweaks.hair, shirt: tweaks.shirt },
+      muted: true,
+      timeOfDay: environment.timeOfDay,
+      weather: environment.weather,
+      intro: {
+        x: 48, y: 53,
+        lines: [
+          { text: "✦ WELCOME TO XU TOWN ✦", size: 24, bold: true, color: "#ffd86a" },
+          { text: SITE_DATA.about.name, size: 22, bold: true, color: "#fff5d8" },
+          { text: SITE_DATA.about.title, size: 16, color: "#ffe9b0" },
+          { text: "", size: 8 },
+          { text: "Second-year PhD candidate in Computer Science at McGill,", size: 15, color: "#f0ead2" },
+          { text: "supervised by Dr. Clark Verbrugge.", size: 15, color: "#f0ead2" },
+          { text: "Previously B.A. in CS & Applied Math at UC Berkeley,", size: 15, color: "#f0ead2" },
+          { text: "M.Sc. at Imperial College London", size: 15, color: "#f0ead2" },
+          { text: "under Dr. Chen Qin and Dr. Cheng Ouyang.", size: 15, color: "#f0ead2" },
+          { text: "", size: 8 },
+          { text: "PCG · Game AI · CV in Games · LLMs · Optimization", size: 14, color: "#c6d8a0" },
+          { text: "", size: 10 },
+          { text: "— WASD / arrows to walk · [E] to interact —", size: 14, color: "#e8c074" },
+        ],
+      },
+      onEnter: (b) => setActiveBuilding(b),
+      onNpc: (n) => setActiveNpc(n),
+      onNear: (n) => setNear(n.kind ? n : null),
+    });
+    setEngine(e);
+    // Edit mode plumbing
+    function onMsg(ev) {
+      const d = ev.data;
+      if (!d || !d.type) return;
+      if (d.type === "__activate_edit_mode") setTweaksOpen(true);
+      if (d.type === "__deactivate_edit_mode") setTweaksOpen(false);
+    }
+    window.addEventListener("message", onMsg);
+    setTimeout(() => {
+      window.parent.postMessage({type: "__edit_mode_available"}, "*");
+    }, 100);
+    return () => {
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("message", onMsg);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!engine) return;
+    engine.setPaused(!started || !!activeBuilding || !!activeNpc);
+  }, [engine, started, activeBuilding, activeNpc]);
+
+  useEffect(() => {
+    if (!engine) return;
+    function onTownEnter() {
+      engine.initAudio();
+      engine.setMuted(false);
+      setMuted(false);
+    }
+    window.addEventListener("xuTownEnter", onTownEnter);
+    return () => window.removeEventListener("xuTownEnter", onTownEnter);
+  }, [engine]);
+
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === "Escape") {
+        if (activeBuilding) setActiveBuilding(null);
+        else if (activeNpc) setActiveNpc(null);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeBuilding, activeNpc]);
+
+  return (
+    <>
+      <canvas ref={canvasRef} style={{
+        display: "block", position: "fixed", inset: 0,
+        imageRendering: "pixelated", cursor: "pointer",
+        background: "#9bd0ff",
+      }}/>
+      {engine && started && <NearPrompt near={near}/>}
+      {engine && started && <Minimap engine={engine} mobile={vp.isMobile}/>}
+      {engine && started && vp.isMobile && <TouchControls engine={engine}/>}
+      {engine && started && (
+        <VisitControlsBar
+          mobile={vp.isMobile}
+          engine={engine}
+          muted={muted} setMuted={setMuted}
+          environment={environment}
+          onAbout={() => setActiveBuilding({ id: "about" })}
+          onTeleport={(id) => engine.teleport(id)}
+        />
+      )}
+      {tweaksOpen && engine && started && (
+        <AvatarTweaksPanel tweaks={tweaks} setTweaks={setTweaks} engine={engine}
+          onClose={() => { setTweaksOpen(false); window.parent.postMessage({type:"__edit_mode_deactivate"},"*"); }}/>
+      )}
+      {false && !started && <TitleSplash onStart={() => {}}/>}
+      {activeBuilding?.id === "about"   && <AboutPanel onClose={() => setActiveBuilding(null)}/>}
+      {activeBuilding?.id === "library" && <LibraryPanel onClose={() => setActiveBuilding(null)}/>}
+      {activeBuilding?.id === "noticeboard" && <NewsPanel onClose={() => setActiveBuilding(null)}/>}
+      {activeBuilding?.id === "cafe"    && <NotebookPanel onClose={() => setActiveBuilding(null)}/>}
+      {activeBuilding?.id === "artifact" && <StudioPanel onClose={() => setActiveBuilding(null)}/>}
+      {activeBuilding?.id === "portal"  && <PortalPanel onClose={() => setActiveBuilding(null)}/>}
+      {activeNpc && <NpcDialog npc={activeNpc} onClose={() => setActiveNpc(null)}/>}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body></html>

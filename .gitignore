@@ -2,3 +2,12 @@
 public/
 resources/
 .hugo_build.lock
+
+# Local tooling and review artifacts
+.claude/
+Personal Website-handoff.zip
+hugo-server*.log
+task_plan.md
+findings.md
+progress.md
+.playwright-mcp/
