@@ -1,0 +1,56 @@
+[
+  {
+    "id": "A1",
+    "name": "world-overview-anchor",
+    "category": "world",
+    "size": "1536x1024",
+    "quality": "medium",
+    "outputPath": "static/xu-town/assets/source-gpt-image-2/world/xu-town_world_anchor-overview_day_v01.png",
+    "prompt": "A cozy academic pixel village seen from a top-down to near top-down game viewpoint, small town square composition, warm late-summer daylight, grassy paths, archive-like library, welcoming sign area, prototype atelier hints, notebook cafe hints, subtle knowledge portal glow in the distance, handcrafted pixel-art game look, polished and readable, designed as the world-style anchor for an interactive personal website. Use wood, paper, brass, terracotta roof, moss green, parchment cream, warm lantern gold, restrained twilight-blue accents. Avoid generic fantasy village energy, painterly blur, and farm clutter overload."
+  },
+  {
+    "id": "A2",
+    "name": "plaza-anchor",
+    "category": "world",
+    "size": "1536x1024",
+    "quality": "medium",
+    "outputPath": "static/xu-town/assets/source-gpt-image-2/world/xu-town_world_anchor-plaza_day_v01.png",
+    "prompt": "Top-down pixel-art town plaza for a cozy academic website game, central notice square with readable stone pattern, warm path transitions, pinned-paper bulletin design language, subtle academic signage, inviting and legible navigation space, handcrafted village materials, polished and brand-forward rather than generic. The square should feel like the social and informational center of a scholar's village. Avoid painterly blur, avoid excessive clutter, avoid fantasy-overload styling."
+  },
+  {
+    "id": "A3",
+    "name": "library-anchor",
+    "category": "buildings",
+    "size": "1536x1024",
+    "quality": "high",
+    "outputPath": "static/xu-town/assets/source-gpt-image-2/buildings/xu-town_building_library_anchor_v01.png",
+    "prompt": "Top-down pixel-art library facade for a cozy academic village, publication archive identity, terracotta roof, warm windows, ledger boxes, stacked books, subtle award and archive motifs, inviting doorway, clear signboard area, polished handcrafted pixel-art look, designed as a reusable source concept for a web-based explorable town. Readable silhouette, not crowded, authoritative but warm."
+  },
+  {
+    "id": "A4",
+    "name": "portal-anchor",
+    "category": "buildings",
+    "size": "1536x1024",
+    "quality": "high",
+    "outputPath": "static/xu-town/assets/source-gpt-image-2/buildings/xu-town_building_portal_anchor_v01.png",
+    "prompt": "Top-down pixel-art knowledge portal structure for a scholarly village website game, gateway rather than pure magic shrine, restrained violet-blue and twilight-blue accents, graph-like or star-map geometry motifs, warm town materials around the base so it still belongs to the village, readable and elegant, slightly mysterious but not dark. Designed as a destination building in a cozy academic world."
+  },
+  {
+    "id": "A5",
+    "name": "character-family-anchor",
+    "category": "characters",
+    "size": "1024x1024",
+    "quality": "high",
+    "outputPath": "static/xu-town/assets/source-gpt-image-2/characters/xu-town_character_anchor-family_v01.png",
+    "prompt": "Pixel-art scholar-town character family concept sheet, top-down game readability, cozy handcrafted pixel look, clear silhouette design, one player-like scholar adventurer plus several villagers with distinct roles such as archivist, mentor, bard-like critic, innkeeper, and mascot cat, unified palette and construction logic, designed for later adaptation into consistent sprite and portrait assets for an interactive website game."
+  },
+  {
+    "id": "A6",
+    "name": "ui-frame-anchor",
+    "category": "ui",
+    "size": "1024x1024",
+    "quality": "high",
+    "outputPath": "static/xu-town/assets/source-gpt-image-2/ui/xu-town_ui_anchor-frame_v01.png",
+    "prompt": "Pixel-art interface frame concept for a cozy academic village website game, paper panel body, ink border, wood or brass title strip, warm highlight accents, elegant but readable, tactile and handcrafted, suitable for modal windows and HUD overlays, visually consistent with a scholarly village made of wood, paper, brass, and warm light. Avoid generic desktop panel styling and avoid ornate fantasy scroll excess."
+  }
+]
