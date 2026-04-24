@@ -43,31 +43,14 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
 }
 .xu-preview-figure{position:relative;overflow:hidden;border-radius:10px;}
 .xu-preview-frame img{display:block;width:100%;height:auto;image-rendering:auto;filter:saturate(0.82) contrast(0.96) brightness(0.98);}
-.xu-preview-pin{
-  position:absolute;
-  transform:translate(-50%,-50%);
-  padding:4px 8px 6px;
-  background:rgba(28,20,14,0.86);
-  color:#fff7e0;
-  border:2px solid rgba(255,239,194,0.82);
-  box-shadow:0 4px 10px rgba(0,0,0,0.22);
-  font-size:18px;
-  line-height:1;
-  white-space:nowrap;
-}
-.xu-preview-legend{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
+.xu-preview-caption{
   margin-top:12px;
-}
-.xu-preview-key{
-  padding:6px 8px;
-  background:rgba(255,248,231,0.82);
-  border:1px solid rgba(77,57,34,0.22);
+  padding:8px 10px;
+  background:rgba(255,248,231,0.78);
+  border:1px solid rgba(77,57,34,0.18);
   color:#5a4a38;
-  font-size:17px;
-  line-height:1.1;
+  font-size:18px;
+  line-height:1.15;
 }
 .xu-wood-button{
   cursor:pointer;
@@ -114,22 +97,9 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
     </div>
     <div class="xu-preview-frame">
       <div class="xu-preview-figure">
-        <img src="assets/source-gpt-image-2/world/xu-town_world_anchor-overview_alt_v01.png" alt="Xu Town art preview" style="display:block;width:100%;height:auto;image-rendering:auto;">
-        <div class="xu-preview-pin" style="left:35%;top:34%;">Publications</div>
-        <div class="xu-preview-pin" style="left:60%;top:31%;">News</div>
-        <div class="xu-preview-pin" style="left:55%;top:58%;">About</div>
-        <div class="xu-preview-pin" style="left:38%;top:62%;">Notebook</div>
-        <div class="xu-preview-pin" style="left:62%;top:62%;">Artifacts</div>
-        <div class="xu-preview-pin" style="left:66%;top:48%;">Links</div>
+        <img src="assets/ui/chooser-preview.jpg" alt="Xu Town preview card" style="display:block;width:100%;height:auto;image-rendering:auto;">
       </div>
-      <div class="xu-preview-legend">
-        <div class="xu-preview-key">Publications</div>
-        <div class="xu-preview-key">News</div>
-        <div class="xu-preview-key">About</div>
-        <div class="xu-preview-key">Notebook</div>
-        <div class="xu-preview-key">Artifacts</div>
-        <div class="xu-preview-key">Links</div>
-      </div>
+      <div class="xu-preview-caption">A small research town: Publications, News, About, Notebook, Artifacts, and Links.</div>
     </div>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <button id="xu-mode-game" type="button" class="xu-wood-button">&#9656; Enter the Town</button>
@@ -2020,7 +1990,7 @@ function PixelPanel({ title, onClose, children, wide, accent = COLORS.accent }) 
     }} onClick={onClose}>
       <div onClick={e => e.stopPropagation()} style={panelSurfaceStyle({ wide })}>
         <div style={panelHeaderStyle(accent, wide)}>
-          <span>&gt; {title}</span>
+          <span style={{ display: "inline-block", transform: "translateY(4px)" }}>&gt; {title}</span>
           <button onClick={onClose} style={{ ...uiCloseButtonStyle(), position: "absolute", right: 18, top: "50%", transform: "translateY(-50%)" }}>x</button>
         </div>
         <div style={panelBodyStyle()}>
