@@ -17,12 +17,15 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
 <div id="root"></div>
 
 <!-- Mode chooser modal: shown on entry so the user can pick game vs classic. -->
-<div id="xu-mode-chooser" role="dialog" aria-modal="true" aria-label="Choose site mode" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:rgba(10,12,30,0.78);font-family:'VT323',monospace;pointer-events:auto;">
-  <div style="background:#fbf3dc;color:#2b2118;border:4px solid #2b2118;padding:26px 34px;max-width:460px;width:88%;box-shadow:0 0 0 4px #7d3a2c, 8px 8px 0 rgba(0,0,0,0.45);text-align:center;image-rendering:pixelated;">
+<div id="xu-mode-chooser" role="dialog" aria-modal="true" aria-label="Choose site mode" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(10,12,30,0.62), rgba(10,12,30,0.82)), url('assets/source-gpt-image-2/world/xu-town_world_anchor-overview_primary_v01.png') center/cover no-repeat;font-family:'VT323',monospace;pointer-events:auto;padding:20px;">
+  <div style="background:rgba(251,243,220,0.94);color:#2b2118;border:4px solid #2b2118;padding:24px 28px;max-width:520px;width:92%;box-shadow:0 0 0 4px #7d3a2c, 10px 10px 0 rgba(0,0,0,0.45);text-align:center;image-rendering:pixelated;backdrop-filter:blur(2px);">
     <div style="font-size:34px;line-height:1;margin-bottom:8px;color:#7d3a2c;letter-spacing:2px;">&#10022; Xu Town &#10022;</div>
     <div style="font-size:22px;margin-bottom:6px;">Welcome, traveler.</div>
     <div style="font-size:18px;margin-bottom:20px;color:#5a4a38;line-height:1.35;">
       Explore Kaijie (Jay) Xu's site as a pixel town,<br>or head to the classic academic page.
+    </div>
+    <div style="margin:0 auto 18px auto;max-width:420px;border:3px solid #2b2118;box-shadow:4px 4px 0 rgba(43,33,24,0.25);overflow:hidden;background:#e8d9b3;">
+      <img src="assets/source-gpt-image-2/world/xu-town_world_anchor-overview_alt_v01.png" alt="Xu Town art preview" style="display:block;width:100%;height:auto;image-rendering:auto;">
     </div>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <button id="xu-mode-game" type="button"
@@ -1558,6 +1561,23 @@ const COLORS = {
 
 const fontHeader = "'VT323', monospace";
 const fontBody = "'VT323', monospace";
+const ART_ASSETS = {
+  worldOverview: "assets/source-gpt-image-2/world/xu-town_world_anchor-overview_primary_v01.png",
+  aboutMarker: "assets/buildings/about-marker.png",
+  library: "assets/buildings/library.png",
+  newsBoard: "assets/buildings/news-board.png",
+  cafe: "assets/buildings/cafe.png",
+  artifact: "assets/buildings/artifact.png",
+  portal: "assets/buildings/portal.png",
+  playerPortrait: "assets/characters/player-portrait.png",
+  npcPortraits: {
+    "Verbrugge·Wizard": "assets/characters/verbrugge-portrait.png",
+    "Town Chronicler": "assets/characters/chronicler-portrait.png",
+    "Cat 'Perlin'": "assets/characters/perlin-portrait.png",
+    "Bard of CHI": "assets/characters/bard-portrait.png",
+    "Innkeeper Berkeley": "assets/characters/berkeley-portrait.png",
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Pixel-styled window/dialog frame
@@ -1570,7 +1590,7 @@ function PixelPanel({ title, onClose, children, wide, accent = COLORS.accent }) 
       animation: "fadeIn .15s ease-out",
     }} onClick={onClose}>
       <div onClick={e => e.stopPropagation()} style={{
-        background: COLORS.paper,
+        background: `linear-gradient(180deg, rgba(251,243,220,0.98), rgba(232,217,179,0.96))`,
         color: COLORS.ink,
         border: `4px solid ${COLORS.ink}`,
         boxShadow: `8px 8px 0 ${COLORS.ink}, inset 0 0 0 2px ${COLORS.paperDark}`,
@@ -1582,7 +1602,7 @@ function PixelPanel({ title, onClose, children, wide, accent = COLORS.accent }) 
         imageRendering: "pixelated",
       }}>
         <div style={{
-          background: accent, color: COLORS.paper,
+          background: `linear-gradient(180deg, ${accent}, ${COLORS.ink})`, color: COLORS.paper,
           padding: "10px 16px", display: "flex", justifyContent: "space-between",
           alignItems: "center", borderBottom: `4px solid ${COLORS.ink}`,
           fontFamily: fontHeader, fontSize: 26, letterSpacing: 1,
@@ -1608,11 +1628,61 @@ function PixelPanel({ title, onClose, children, wide, accent = COLORS.accent }) 
   );
 }
 
+function PanelArtwork({ src, alt, height = 220 }) {
+  return (
+    <div style={{
+      marginBottom: 18,
+      background: COLORS.paperDark,
+      border: `3px solid ${COLORS.ink}`,
+      boxShadow: `4px 4px 0 rgba(43,33,24,0.18)`,
+      overflow: "hidden",
+    }}>
+      <img
+        src={src}
+        alt={alt}
+        style={{
+          display: "block",
+          width: "100%",
+          height,
+          objectFit: "cover",
+          objectPosition: "center top",
+          imageRendering: "auto",
+        }}
+      />
+    </div>
+  );
+}
+
+function PortraitArtwork({ src, alt }) {
+  return (
+    <div style={{
+      width: 160,
+      background: COLORS.paperDark,
+      border: `3px solid ${COLORS.ink}`,
+      boxShadow: `4px 4px 0 rgba(43,33,24,0.18)`,
+      overflow: "hidden",
+      alignSelf: "start",
+    }}>
+      <img
+        src={src}
+        alt={alt}
+        style={{
+          display: "block",
+          width: "100%",
+          height: "auto",
+          imageRendering: "auto",
+        }}
+      />
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Dialog (NPC) — typewriter
 function NpcDialog({ npc, onClose }) {
   const [lineIdx, setLineIdx] = useState(0);
   const [shown, setShown] = useState("");
+  const portrait = ART_ASSETS.npcPortraits[npc.name];
   const fullText = npc.lines[lineIdx];
   useEffect(() => {
     setShown("");
@@ -1657,7 +1727,28 @@ function NpcDialog({ npc, onClose }) {
         fontFamily: fontHeader, fontSize: 20, color: COLORS.accent,
         marginBottom: 6, letterSpacing: 1,
       }}>● {npc.name} <span style={{color: COLORS.inkSoft}}>· {npc.role}</span></div>
-      <div style={{ minHeight: 50 }}>{shown}<span className="dialog-cursor">▌</span></div>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: portrait && !isMobile ? "116px 1fr" : "1fr",
+        gap: 12,
+        alignItems: "start",
+      }}>
+        {portrait && !isMobile ? (
+          <div style={{
+            border: `2px solid ${COLORS.ink}`,
+            background: COLORS.paperDark,
+            overflow: "hidden",
+          }}>
+            <img src={portrait} alt={`${npc.name} portrait`} style={{
+              display: "block",
+              width: "100%",
+              height: "auto",
+              imageRendering: "auto",
+            }}/>
+          </div>
+        ) : null}
+        <div style={{ minHeight: 50 }}>{shown}<span className="dialog-cursor">▌</span></div>
+      </div>
       <div style={{
         marginTop: 8, textAlign: "right", color: COLORS.inkSoft,
         fontFamily: fontHeader, fontSize: 16,
@@ -1675,15 +1766,9 @@ function AboutPanel({ onClose }) {
   const a = SITE_DATA.about;
   return (
     <PixelPanel title="Town Signboard · About" onClose={onClose} accent={COLORS.green}>
-      <div style={{ display: "grid", gridTemplateColumns: "120px 1fr", gap: 24 }}>
-        <div style={{
-          width: 120, height: 120, background: COLORS.paperDark,
-          border: `3px solid ${COLORS.ink}`, position: "relative",
-          imageRendering: "pixelated", overflow: "hidden",
-        }}>
-          {/* pixel portrait */}
-          <PixelPortrait />
-        </div>
+      <PanelArtwork src={ART_ASSETS.aboutMarker} alt="Xu Town welcome marker concept art" height={250} />
+      <div style={{ display: "grid", gridTemplateColumns: "160px 1fr", gap: 24, alignItems: "start" }}>
+        <PortraitArtwork src={ART_ASSETS.playerPortrait} alt="Kaijie Xu portrait concept" />
         <div>
           <div style={{ fontFamily: fontHeader, fontSize: 36, lineHeight: 1, marginBottom: 4 }}>
             {a.name}
@@ -1767,6 +1852,7 @@ function LibraryPanel({ onClose }) {
   for (let i = 0; i < list.length; i += 5) shelves.push(list.slice(i, i+5));
   return (
     <PixelPanel title="Library of Publications" onClose={onClose} wide accent="#7d3a2c">
+      <PanelArtwork src={ART_ASSETS.library} alt="Publication archive concept art" height={260} />
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18, minHeight: 400 }}>
         <div>
           <div style={{ marginBottom: 14, display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -1881,6 +1967,7 @@ function Book({ p, selected, onClick }) {
 function NewsPanel({ onClose }) {
   return (
     <PixelPanel title="Town Notice Board · News" onClose={onClose} wide accent="#7d4f24">
+      <PanelArtwork src={ART_ASSETS.newsBoard} alt="News board concept art" height={240} />
       <div style={{
         background: "#c79d68",
         border: `4px solid #5e3b1f`,
@@ -1930,6 +2017,7 @@ function NotebookPanel({ onClose }) {
   ];
   return (
     <PixelPanel title="Research Studio · Notebook Wall" onClose={onClose} wide accent="#5d6f7a">
+      <PanelArtwork src={ART_ASSETS.cafe} alt="Notebook cafe concept art" height={260} />
       <div style={{
         background: "linear-gradient(180deg, #cfc6a8 0%, #b8af90 100%)",
         border: `4px solid ${COLORS.ink}`,
@@ -1973,21 +2061,24 @@ function NotebookPanel({ onClose }) {
 function StudioPanel({ onClose }) {
   return (
     <PixelPanel title="Artifact Gallery" onClose={onClose} accent="#5a3a8a" wide>
-      <div style={{
-        minHeight: 320,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        background: COLORS.paperDark, border: `3px dashed ${COLORS.inkSoft}`,
-        padding: 30,
-      }}>
-        <div style={{ textAlign: "center", color: COLORS.inkSoft, maxWidth: 420 }}>
-          <div style={{ fontFamily: fontHeader, fontSize: 40, color: COLORS.ink, marginBottom: 10, letterSpacing: 2 }}>
-            {"\u25C7"} Empty Plinth {"\u25C7"}
-          </div>
-          <div style={{ fontSize: 20, lineHeight: 1.35, marginBottom: 8 }}>
-            The gallery hasn't been curated yet.
-          </div>
-          <div style={{ fontSize: 18, lineHeight: 1.35 }}>
-            Artifacts, project demos, and interactive pieces will be exhibited here soon.
+      <div style={{ display: "grid", gridTemplateColumns: "minmax(320px, 1fr) 1fr", gap: 22, alignItems: "start" }}>
+        <PanelArtwork src={ART_ASSETS.artifact} alt="Prototype atelier concept art" height={320} />
+        <div style={{
+          minHeight: 320,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: COLORS.paperDark, border: `3px dashed ${COLORS.inkSoft}`,
+          padding: 30,
+        }}>
+          <div style={{ textAlign: "center", color: COLORS.inkSoft, maxWidth: 420 }}>
+            <div style={{ fontFamily: fontHeader, fontSize: 40, color: COLORS.ink, marginBottom: 10, letterSpacing: 2 }}>
+              {"\u25C7"} Empty Plinth {"\u25C7"}
+            </div>
+            <div style={{ fontSize: 20, lineHeight: 1.35, marginBottom: 8 }}>
+              The gallery hasn't been curated yet.
+            </div>
+            <div style={{ fontSize: 18, lineHeight: 1.35 }}>
+              Artifacts, project demos, and interactive pieces will be exhibited here soon.
+            </div>
           </div>
         </div>
       </div>
@@ -2000,6 +2091,7 @@ function StudioPanel({ onClose }) {
 function PortalPanel({ onClose }) {
   return (
     <PixelPanel title="Travel Portal · Links" onClose={onClose} accent="#5a3a8a">
+      <PanelArtwork src={ART_ASSETS.portal} alt="Knowledge portal concept art" height={260} />
       <div style={{ textAlign: "center", marginBottom: 16, fontSize: 20 }}>
         ◈ Choose your destination ◈
       </div>
