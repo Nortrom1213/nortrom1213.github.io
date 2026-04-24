@@ -7,39 +7,96 @@
 <style>
 html,body{margin:0;padding:0;height:100%;overflow:hidden;background:#1a1c3a;font-family:'VT323',monospace;color:#fbf3dc;image-rendering:pixelated;user-select:none;touch-action:none;}
 *{box-sizing:border-box;}
+:root{
+  --xu-ui-panel-surface:url('assets/ui/panel-surface.png');
+  --xu-ui-panel-header:url('assets/ui/panel-header.png');
+  --xu-ui-button-plate:url('assets/ui/button-plate.png');
+}
 @keyframes shimmer{from{box-shadow:0 0 6px 1px rgba(255,220,90,0.7),0 0 3px 1px rgba(255,220,90,0.9);}to{box-shadow:0 0 18px 4px rgba(255,220,90,1),0 0 8px 2px rgba(255,220,90,1);}}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-6px);}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .dialog-cursor{animation:blink .8s steps(2) infinite;color:#9a4a2b;}@keyframes blink{50%{opacity:0;}}
 button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
 ::-webkit-scrollbar{width:12px;height:12px;}::-webkit-scrollbar-track{background:#e8d9b3;}::-webkit-scrollbar-thumb{background:#2b2118;border:2px solid #e8d9b3;}
+.xu-chooser-panel{
+  background:
+    linear-gradient(180deg, rgba(255,249,238,0.90), rgba(241,228,198,0.88)),
+    var(--xu-ui-panel-surface) center/100% 100% no-repeat;
+  color:#2b2118;
+  padding:36px 36px 28px;
+  max-width:560px;
+  width:92%;
+  box-shadow:0 18px 40px rgba(0,0,0,0.45);
+  text-align:center;
+  image-rendering:auto;
+  backdrop-filter:blur(2px);
+}
+.xu-preview-frame{
+  margin:0 auto 20px;
+  max-width:440px;
+  padding:14px;
+  background:
+    linear-gradient(180deg, rgba(255,249,236,0.84), rgba(227,209,170,0.82)),
+    var(--xu-ui-panel-surface) center/100% 100% no-repeat;
+  box-shadow:0 8px 18px rgba(43,33,24,0.16);
+}
+.xu-preview-frame img{display:block;width:100%;height:auto;image-rendering:auto;}
+.xu-wood-button{
+  cursor:pointer;
+  font-family:'VT323',monospace;
+  font-size:24px;
+  line-height:1;
+  min-width:178px;
+  min-height:58px;
+  padding:10px 24px 14px;
+  border:0;
+  background:transparent var(--xu-ui-button-plate) center/100% 100% no-repeat;
+  color:#fbf3dc;
+  text-shadow:0 2px 0 rgba(43,33,24,0.9);
+  box-shadow:0 8px 14px rgba(43,33,24,0.18);
+}
+.xu-wood-button-secondary{filter:saturate(0.82) brightness(0.94);}
+.xu-floating-link{
+  position:fixed;
+  top:10px;
+  left:10px;
+  z-index:500;
+  min-width:156px;
+  min-height:48px;
+  padding:9px 18px 12px;
+  font-family:'VT323',monospace;
+  font-size:19px;
+  line-height:1;
+  background:transparent var(--xu-ui-button-plate) center/100% 100% no-repeat;
+  color:#fbf3dc;
+  text-decoration:none;
+  text-shadow:0 2px 0 rgba(43,33,24,0.9);
+  display:none;
+}
 </style></head><body>
 <div id="root"></div>
 
 <!-- Mode chooser modal: shown on entry so the user can pick game vs classic. -->
 <div id="xu-mode-chooser" role="dialog" aria-modal="true" aria-label="Choose site mode" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(10,12,30,0.62), rgba(10,12,30,0.82)), url('assets/source-gpt-image-2/world/xu-town_world_anchor-overview_primary_v01.png') center/cover no-repeat;font-family:'VT323',monospace;pointer-events:auto;padding:20px;">
-  <div style="background:rgba(251,243,220,0.94);color:#2b2118;border:4px solid #2b2118;padding:24px 28px;max-width:520px;width:92%;box-shadow:0 0 0 4px #7d3a2c, 10px 10px 0 rgba(0,0,0,0.45);text-align:center;image-rendering:pixelated;backdrop-filter:blur(2px);">
+  <div class="xu-chooser-panel">
     <div style="font-size:34px;line-height:1;margin-bottom:8px;color:#7d3a2c;letter-spacing:2px;">&#10022; Xu Town &#10022;</div>
     <div style="font-size:22px;margin-bottom:6px;">Welcome, traveler.</div>
     <div style="font-size:18px;margin-bottom:20px;color:#5a4a38;line-height:1.35;">
       Explore Kaijie (Jay) Xu's site as a pixel town,<br>or head to the classic academic page.
     </div>
-    <div style="margin:0 auto 18px auto;max-width:420px;border:3px solid #2b2118;box-shadow:4px 4px 0 rgba(43,33,24,0.25);overflow:hidden;background:#e8d9b3;">
+    <div class="xu-preview-frame">
       <img src="assets/source-gpt-image-2/world/xu-town_world_anchor-overview_alt_v01.png" alt="Xu Town art preview" style="display:block;width:100%;height:auto;image-rendering:auto;">
     </div>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <button id="xu-mode-game" type="button"
-        style="cursor:pointer;font-family:'VT323',monospace;font-size:22px;padding:8px 20px;background:#7d3a2c;color:#fbf3dc;border:3px solid #2b2118;box-shadow:3px 3px 0 #2b2118;">&#9656; Enter the Town</button>
-      <button id="xu-mode-classic" type="button"
-        style="cursor:pointer;font-family:'VT323',monospace;font-size:22px;padding:8px 20px;background:#fbf3dc;color:#2b2118;border:3px solid #2b2118;box-shadow:3px 3px 0 #2b2118;">&#9671; Classic Site</button>
+      <button id="xu-mode-game" type="button" class="xu-wood-button">&#9656; Enter the Town</button>
+      <button id="xu-mode-classic" type="button" class="xu-wood-button xu-wood-button-secondary">&#9671; Classic Site</button>
     </div>
     <div style="font-size:15px;margin-top:14px;color:#8a7e64;">You can switch modes anytime from the top-right.</div>
   </div>
 </div>
 
 <!-- Floating switch to classic site (visible once the game is active). -->
-<a id="xu-classic-link" href="/classic/" title="Switch to classic academic site"
-   style="position:fixed;top:10px;left:10px;z-index:500;font-family:'VT323',monospace;font-size:16px;background:rgba(43,33,24,0.82);color:#fbf3dc;border:2px solid #fbf3dc;padding:4px 10px;text-decoration:none;display:none;">&#9671; Classic Site</a>
+<a id="xu-classic-link" class="xu-floating-link" href="/classic/" title="Switch to classic academic site">&#9671; Classic Site</a>
 
 <script>
 (function () {
@@ -809,8 +866,27 @@ window.SITE_DATA = {
     }
   };
 
+  const WORLD_TERRAIN = {
+    grass: { src: "assets/terrain/grass.png", patternSize: 160 },
+    grassFlower: { src: "assets/terrain/grass-flower.png", patternSize: 160 },
+    grassTuft: { src: "assets/terrain/grass-tuft.png", patternSize: 160 },
+    grassDark: { src: "assets/terrain/grass-dark.png", patternSize: 160 },
+    path: { src: "assets/terrain/path.png", patternSize: 160 },
+    plaza: { src: "assets/terrain/plaza.png", patternSize: 180 },
+    sand: { src: "assets/terrain/sand.png", patternSize: 160 },
+    water: { src: "assets/terrain/water.png", patternSize: 180 },
+    waterDeep: { src: "assets/terrain/water-deep.png", patternSize: 180 },
+  };
+
+  const WORLD_PROPS = {
+    tree: { src: "assets/props/tree.png", heightPx: 72, groundLift: 8, shadow: { rx: 16, ry: 5, dy: 6 } },
+    bush: { src: "assets/props/bush.png", heightPx: 24, groundLift: 4, shadow: { rx: 10, ry: 3, dy: 3 } },
+    rock: { src: "assets/props/rock.png", heightPx: 20, groundLift: 3, shadow: { rx: 9, ry: 3, dy: 3 } },
+    flower: { src: "assets/props/flower.png", heightPx: 14, groundLift: 2, shadow: { rx: 5, ry: 2, dy: 2 } },
+  };
+
   function loadWorldSprites() {
-    const bank = { buildings: {}, characters: {} };
+    const bank = { buildings: {}, characters: {}, terrain: {}, props: {} };
     for (const [id, spec] of Object.entries(WORLD_SPRITES.buildings)) {
       const img = new Image();
       img.src = spec.src;
@@ -820,6 +896,16 @@ window.SITE_DATA = {
       const img = new Image();
       img.src = spec.src;
       bank.characters[id] = { ...spec, img };
+    }
+    for (const [id, spec] of Object.entries(WORLD_TERRAIN)) {
+      const img = new Image();
+      img.src = spec.src;
+      bank.terrain[id] = { ...spec, img, pattern: null, patternCtx: null };
+    }
+    for (const [id, spec] of Object.entries(WORLD_PROPS)) {
+      const img = new Image();
+      img.src = spec.src;
+      bank.props[id] = { ...spec, img };
     }
     return bank;
   }
@@ -847,6 +933,80 @@ window.SITE_DATA = {
     const drawW = drawH * (sprite.img.naturalWidth / sprite.img.naturalHeight);
     const groundY = sy + 14 + bob;
     ctx.drawImage(sprite.img, sx - drawW / 2, groundY - drawH, drawW, drawH);
+    return true;
+  }
+
+  function getTerrainSpecForTile(spriteBank, t) {
+    if (t === T.GRASS) return spriteBank.terrain.grass;
+    if (t === T.GRASS_FLOWER) return spriteBank.terrain.grassFlower;
+    if (t === T.GRASS_TUFT) return spriteBank.terrain.grassTuft;
+    if (t === T.GRASS_DARK) return spriteBank.terrain.grassDark;
+    if (t === T.PATH) return spriteBank.terrain.path;
+    if (t === T.PLAZA || t === T.PLAZA_ALT) return spriteBank.terrain.plaza;
+    if (t === T.SAND) return spriteBank.terrain.sand;
+    if (t === T.WATER) return spriteBank.terrain.water;
+    if (t === T.WATER_DEEP) return spriteBank.terrain.waterDeep;
+    return null;
+  }
+
+  function ensureTerrainPattern(ctx, spec) {
+    if (!spec || !imageReady(spec.img)) return null;
+    if (spec.pattern && spec.patternCtx === ctx) return spec.pattern;
+    const patternCanvas = document.createElement("canvas");
+    const size = spec.patternSize || 160;
+    patternCanvas.width = size;
+    patternCanvas.height = size;
+    const pctx = patternCanvas.getContext("2d");
+    pctx.imageSmoothingEnabled = true;
+    pctx.drawImage(spec.img, 0, 0, size, size);
+    spec.pattern = ctx.createPattern(patternCanvas, "repeat");
+    spec.patternCtx = ctx;
+    return spec.pattern;
+  }
+
+  function drawWorldTerrainTile(ctx, spriteBank, t, px, py, time) {
+    const spec = getTerrainSpecForTile(spriteBank, t);
+    const pattern = ensureTerrainPattern(ctx, spec);
+    if (!pattern) return false;
+    ctx.fillStyle = pattern;
+    ctx.fillRect(px, py, TILE, TILE);
+    if (t === T.PLAZA_ALT) {
+      ctx.fillStyle = "rgba(88, 76, 58, 0.14)";
+      ctx.fillRect(px, py, TILE, TILE);
+    } else if (t === T.WATER || t === T.WATER_DEEP) {
+      const off = (time * 0.03 + px * 0.02 + py * 0.02);
+      ctx.fillStyle = t === T.WATER_DEEP ? "rgba(188, 224, 255, 0.22)" : "rgba(255, 255, 255, 0.24)";
+      ctx.fillRect(px + (((off + 8) | 0) % TILE), py + 10, 8, 2);
+      ctx.fillRect(px + (((off + 24) | 0) % TILE), py + 25, 7, 2);
+    }
+    return true;
+  }
+
+  function drawWorldPropShadow(ctx, spec, sx, sy, size) {
+    if (!spec || !spec.shadow) return;
+    ctx.fillStyle = "rgba(0,0,0,0.23)";
+    ctx.beginPath();
+    ctx.ellipse(
+      sx,
+      sy + (spec.shadow.dy || 4) * size,
+      (spec.shadow.rx || 10) * size,
+      (spec.shadow.ry || 3) * size,
+      0,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+  }
+
+  function drawWorldPropSprite(ctx, spriteBank, obstacle, sx, sy) {
+    const spec = spriteBank.props[obstacle.kind];
+    if (!spec || !imageReady(spec.img)) return false;
+    const size = obstacle.size || 1;
+    drawWorldPropShadow(ctx, spec, sx, sy, size);
+    const drawH = spec.heightPx * size;
+    const drawW = drawH * (spec.img.naturalWidth / spec.img.naturalHeight);
+    const groundY = sy + (spec.groundLift || 3) * size;
+    ctx.drawImage(spec.img, sx - drawW / 2, groundY - drawH, drawW, drawH);
     return true;
   }
 
@@ -1361,7 +1521,10 @@ window.SITE_DATA = {
       const tileMaxY = Math.min(WORLD_H, Math.ceil((canvas.height-oy)/TILE) + 1);
       for (let y = tileMinY; y < tileMaxY; y++) {
         for (let x = tileMinX; x < tileMaxX; x++) {
-          drawTile(ctx, map[y][x], ox + x*TILE, oy + y*TILE, time);
+          const px = ox + x*TILE;
+          const py = oy + y*TILE;
+          const drewTerrain = drawWorldTerrainTile(ctx, spriteBank, map[y][x], px, py, time);
+          if (!drewTerrain) drawTile(ctx, map[y][x], px, py, time);
         }
       }
       // Outside-world extension: paint dark forest floor beyond
@@ -1376,10 +1539,13 @@ window.SITE_DATA = {
       for (const o of obstacles) {
         const sx = ox + o.x*TILE, sy = oy + o.y*TILE;
         items.push({ z: o.y, draw: () => {
-          if (o.kind === "tree") drawTree(ctx, sx, sy, o.size || 1, time);
-          else if (o.kind === "bush") drawBush(ctx, sx, sy, o.size || 1);
-          else if (o.kind === "rock") drawRock(ctx, sx, sy, o.size || 1);
-          else if (o.kind === "flower") drawFlower(ctx, sx, sy, o.color || "#e8e04a");
+          const drewProp = drawWorldPropSprite(ctx, spriteBank, o, sx, sy);
+          if (!drewProp) {
+            if (o.kind === "tree") drawTree(ctx, sx, sy, o.size || 1, time);
+            else if (o.kind === "bush") drawBush(ctx, sx, sy, o.size || 1);
+            else if (o.kind === "rock") drawRock(ctx, sx, sy, o.size || 1);
+            else if (o.kind === "flower") drawFlower(ctx, sx, sy, o.color || "#e8e04a");
+          }
         }});
       }
       for (const b of buildings) {
@@ -1634,12 +1800,11 @@ const fontHeader = "'VT323', monospace";
 const fontBody = "'VT323', monospace";
 const ART_ASSETS = {
   worldOverview: "assets/source-gpt-image-2/world/xu-town_world_anchor-overview_primary_v01.png",
-  aboutMarker: "assets/buildings/about-marker.png",
-  library: "assets/buildings/library.png",
-  newsBoard: "assets/buildings/news-board.png",
-  cafe: "assets/buildings/cafe.png",
-  artifact: "assets/buildings/artifact.png",
-  portal: "assets/buildings/portal.png",
+  ui: {
+    panelSurface: "assets/ui/panel-surface.png",
+    panelHeader: "assets/ui/panel-header.png",
+    buttonPlate: "assets/ui/button-plate.png",
+  },
   playerPortrait: "assets/characters/player-portrait.png",
   npcPortraits: {
     "Verbrugge·Wizard": "assets/characters/verbrugge-portrait.png",
@@ -1649,6 +1814,149 @@ const ART_ASSETS = {
     "Innkeeper Berkeley": "assets/characters/berkeley-portrait.png",
   },
 };
+
+function panelSurfaceStyle({ wide } = {}) {
+  return {
+    backgroundColor: "rgba(249, 239, 215, 0.94)",
+    backgroundImage: `linear-gradient(180deg, rgba(255,250,241,0.94), rgba(235,220,189,0.90)), url(${ART_ASSETS.ui.panelSurface})`,
+    backgroundPosition: "center, center",
+    backgroundSize: "100% 100%, 100% 100%",
+    backgroundRepeat: "no-repeat",
+    color: COLORS.ink,
+    maxWidth: wide ? 960 : 680,
+    width: "100%",
+    maxHeight: "85vh",
+    display: "flex",
+    flexDirection: "column",
+    fontFamily: fontBody,
+    imageRendering: "auto",
+    boxShadow: "0 18px 38px rgba(0,0,0,0.38)",
+    padding: "16px 18px 18px",
+  };
+}
+
+function panelHeaderStyle(accent = COLORS.accent) {
+  return {
+    minHeight: 68,
+    padding: "14px 18px 16px 22px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.18)), url(${ART_ASSETS.ui.panelHeader})`,
+    backgroundSize: "100% 100%, 100% 100%",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    color: COLORS.paper,
+    textShadow: `0 2px 0 ${accent}`,
+    fontFamily: fontHeader,
+    fontSize: 26,
+    letterSpacing: 1,
+  };
+}
+
+function panelBodyStyle() {
+  return {
+    overflow: "auto",
+    padding: "14px 20px 10px",
+    fontSize: 20,
+    lineHeight: 1.35,
+  };
+}
+
+function panelFooterStyle() {
+  return {
+    padding: "6px 18px 0",
+    fontFamily: fontHeader,
+    fontSize: 16,
+    color: COLORS.inkSoft,
+    textAlign: "right",
+  };
+}
+
+function uiButtonStyle({ active = false, compact = false, secondary = false, minWidth } = {}) {
+  return {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+    minWidth: minWidth || (compact ? 96 : 152),
+    minHeight: compact ? 42 : 54,
+    padding: compact ? "7px 16px 11px" : "10px 22px 14px",
+    border: 0,
+    appearance: "none",
+    backgroundColor: "transparent",
+    backgroundImage: `url(${ART_ASSETS.ui.buttonPlate})`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "100% 100%",
+    color: COLORS.paper,
+    textDecoration: "none",
+    fontFamily: fontHeader,
+    fontSize: compact ? 18 : 22,
+    lineHeight: 1,
+    letterSpacing: 1,
+    cursor: "pointer",
+    textShadow: "0 2px 0 rgba(43,33,24,0.9)",
+    boxShadow: active ? "0 8px 14px rgba(43,33,24,0.22)" : "0 5px 12px rgba(43,33,24,0.16)",
+    filter: secondary ? "saturate(0.82) brightness(0.94)" : active ? "brightness(1.02)" : "saturate(0.96)",
+    transform: active ? "translateY(-1px)" : "none",
+  };
+}
+
+function uiCloseButtonStyle() {
+  return {
+    background: "rgba(251,243,220,0.92)",
+    color: COLORS.ink,
+    border: `2px solid ${COLORS.ink}`,
+    borderRadius: 8,
+    cursor: "pointer",
+    fontFamily: fontHeader,
+    fontSize: 20,
+    width: 34,
+    height: 34,
+    lineHeight: 1,
+    padding: 0,
+    boxShadow: "0 3px 8px rgba(43,33,24,0.15)",
+  };
+}
+
+function floatingPanelShellStyle(width = 280) {
+  return {
+    position: "fixed",
+    right: 16,
+    bottom: 160,
+    width,
+    backgroundColor: "rgba(249, 239, 215, 0.94)",
+    backgroundImage: `linear-gradient(180deg, rgba(255,250,241,0.92), rgba(235,220,189,0.88)), url(${ART_ASSETS.ui.panelSurface})`,
+    backgroundPosition: "center, center",
+    backgroundSize: "100% 100%, 100% 100%",
+    backgroundRepeat: "no-repeat",
+    color: COLORS.ink,
+    padding: "14px 14px 16px",
+    boxShadow: "0 14px 30px rgba(0,0,0,0.3)",
+    fontFamily: fontBody,
+    fontSize: 18,
+    zIndex: 110,
+  };
+}
+
+function floatingPanelHeaderStyle() {
+  return {
+    minHeight: 58,
+    padding: "10px 14px 12px 16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.18)), url(${ART_ASSETS.ui.panelHeader})`,
+    backgroundSize: "100% 100%, 100% 100%",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    color: COLORS.paper,
+    textShadow: "0 2px 0 rgba(43,33,24,0.85)",
+    fontFamily: fontHeader,
+    fontSize: 20,
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Pixel-styled window/dialog frame
@@ -1660,66 +1968,22 @@ function PixelPanel({ title, onClose, children, wide, accent = COLORS.accent }) 
       zIndex: 100, padding: 20,
       animation: "fadeIn .15s ease-out",
     }} onClick={onClose}>
-      <div onClick={e => e.stopPropagation()} style={{
-        background: `linear-gradient(180deg, rgba(251,243,220,0.98), rgba(232,217,179,0.96))`,
-        color: COLORS.ink,
-        border: `4px solid ${COLORS.ink}`,
-        boxShadow: `8px 8px 0 ${COLORS.ink}, inset 0 0 0 2px ${COLORS.paperDark}`,
-        maxWidth: wide ? 920 : 640,
-        width: "100%",
-        maxHeight: "85vh",
-        display: "flex", flexDirection: "column",
-        fontFamily: fontBody,
-        imageRendering: "pixelated",
-      }}>
-        <div style={{
-          background: `linear-gradient(180deg, ${accent}, ${COLORS.ink})`, color: COLORS.paper,
-          padding: "10px 16px", display: "flex", justifyContent: "space-between",
-          alignItems: "center", borderBottom: `4px solid ${COLORS.ink}`,
-          fontFamily: fontHeader, fontSize: 26, letterSpacing: 1,
-        }}>
-          <span>▸ {title}</span>
-          <button onClick={onClose} style={{
-            background: COLORS.paper, color: COLORS.ink, border: `2px solid ${COLORS.ink}`,
-            cursor: "pointer", fontFamily: fontHeader, fontSize: 22,
-            width: 32, height: 32, lineHeight: 1, padding: 0,
-          }}>✕</button>
+      <div onClick={e => e.stopPropagation()} style={panelSurfaceStyle({ wide })}>
+        <div style={panelHeaderStyle(accent)}>
+          <span>&gt; {title}</span>
+          <button onClick={onClose} style={uiCloseButtonStyle()}>x</button>
         </div>
-        <div style={{ overflow: "auto", padding: 24, fontSize: 20, lineHeight: 1.35 }}>
+        <div style={panelBodyStyle()}>
           {children}
         </div>
-        <div style={{
-          background: COLORS.paperDark, padding: "6px 16px",
-          borderTop: `2px solid ${COLORS.ink}`,
-          fontFamily: fontHeader, fontSize: 16, color: COLORS.inkSoft,
-          textAlign: "right",
-        }}>press ESC or click outside to close</div>
-      </div>
-    </div>
-  );
-}
+        <div style={panelFooterStyle()}>press ESC or click outside to close</div>
 
-function PanelArtwork({ src, alt, height = 220 }) {
-  return (
-    <div style={{
-      marginBottom: 18,
-      background: COLORS.paperDark,
-      border: `3px solid ${COLORS.ink}`,
-      boxShadow: `4px 4px 0 rgba(43,33,24,0.18)`,
-      overflow: "hidden",
-    }}>
-      <img
-        src={src}
-        alt={alt}
-        style={{
-          display: "block",
-          width: "100%",
-          height,
-          objectFit: "cover",
-          objectPosition: "center top",
-          imageRendering: "auto",
-        }}
-      />
+
+
+
+
+
+      </div>
     </div>
   );
 }
@@ -1825,7 +2089,7 @@ function NpcDialog({ npc, onClose }) {
         fontFamily: fontHeader, fontSize: 16,
       }}>
         {shown.length < fullText.length ? "(click / SPACE to skip)"
-          : (lineIdx < npc.lines.length - 1 ? "▼ next" : "▼ end")}
+          : (lineIdx < npc.lines.length - 1 ? "â–¼ next" : "â–¼ end")}
       </div>
     </div>
   );
@@ -1837,7 +2101,6 @@ function AboutPanel({ onClose }) {
   const a = SITE_DATA.about;
   return (
     <PixelPanel title="Town Signboard · About" onClose={onClose} accent={COLORS.green}>
-      <PanelArtwork src={ART_ASSETS.aboutMarker} alt="Xu Town welcome marker concept art" height={250} />
       <div style={{ display: "grid", gridTemplateColumns: "160px 1fr", gap: 24, alignItems: "start" }}>
         <PortraitArtwork src={ART_ASSETS.playerPortrait} alt="Kaijie Xu portrait concept" />
         <div>
@@ -1923,18 +2186,16 @@ function LibraryPanel({ onClose }) {
   for (let i = 0; i < list.length; i += 5) shelves.push(list.slice(i, i+5));
   return (
     <PixelPanel title="Library of Publications" onClose={onClose} wide accent="#7d3a2c">
-      <PanelArtwork src={ART_ASSETS.library} alt="Publication archive concept art" height={260} />
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18, minHeight: 400 }}>
         <div>
           <div style={{ marginBottom: 14, display: "flex", gap: 8, flexWrap: "wrap" }}>
             <span style={{ fontFamily: fontHeader, fontSize: 18, color: COLORS.inkSoft, alignSelf: "center" }}>FILTER:</span>
             {years.map(y => (
-              <button key={y} onClick={() => setFilter(y)} style={{
-                background: filter === y ? COLORS.ink : COLORS.paperDark,
-                color: filter === y ? COLORS.paper : COLORS.ink,
-                border: `2px solid ${COLORS.ink}`, padding: "2px 10px",
-                fontFamily: fontHeader, fontSize: 18, cursor: "pointer",
-              }}>{y}</button>
+              <button
+                key={y}
+                onClick={() => setFilter(y)}
+                style={uiButtonStyle({ active: filter === y, compact: true, secondary: filter !== y, minWidth: 88 })}
+              >{y}</button>
             ))}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -1977,15 +2238,16 @@ function LibraryPanel({ onClose }) {
                 <em>{selected.venueFull}</em>
                 {selected.status && <span style={{color: COLORS.accent}}> · {selected.status}</span>}
               </div>
-              <a href={selected.link} target="_blank" rel="noopener" style={{
-                display: "inline-block", background: COLORS.ink, color: COLORS.paper,
-                padding: "4px 12px", fontFamily: fontHeader, fontSize: 18,
-                textDecoration: "none", border: `2px solid ${COLORS.ink}`,
-              }}>▸ READ PAPER</a>
+              <a
+                href={selected.link}
+                target="_blank"
+                rel="noopener"
+                style={uiButtonStyle({ active: true, compact: true, minWidth: 172 })}
+              >&gt; READ PAPER</a>
             </>
           ) : (
             <div style={{ color: COLORS.inkSoft, textAlign: "center", paddingTop: 80 }}>
-              ◇<br/>Click a book on the shelf<br/>to read its details.
+              â—‡<br/>Click a book on the shelf<br/>to read its details.
             </div>
           )}
         </div>
@@ -2038,7 +2300,6 @@ function Book({ p, selected, onClick }) {
 function NewsPanel({ onClose }) {
   return (
     <PixelPanel title="Town Notice Board · News" onClose={onClose} wide accent="#7d4f24">
-      <PanelArtwork src={ART_ASSETS.newsBoard} alt="News board concept art" height={240} />
       <div style={{
         background: "#c79d68",
         border: `4px solid #5e3b1f`,
@@ -2066,7 +2327,7 @@ function NewsPanel({ onClose }) {
               display: "inline-block", marginTop: 8,
               fontFamily: fontHeader, fontSize: 16, color: COLORS.ink,
               borderBottom: `2px solid ${COLORS.ink}`, textDecoration: "none",
-            }}>▸ visit conference</a>}
+            }}>â–¸ visit conference</a>}
           </div>
         ))}
       </div>
@@ -2088,7 +2349,6 @@ function NotebookPanel({ onClose }) {
   ];
   return (
     <PixelPanel title="Research Studio · Notebook Wall" onClose={onClose} wide accent="#5d6f7a">
-      <PanelArtwork src={ART_ASSETS.cafe} alt="Notebook cafe concept art" height={260} />
       <div style={{
         background: "linear-gradient(180deg, #cfc6a8 0%, #b8af90 100%)",
         border: `4px solid ${COLORS.ink}`,
@@ -2132,24 +2392,21 @@ function NotebookPanel({ onClose }) {
 function StudioPanel({ onClose }) {
   return (
     <PixelPanel title="Artifact Gallery" onClose={onClose} accent="#5a3a8a" wide>
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(320px, 1fr) 1fr", gap: 22, alignItems: "start" }}>
-        <PanelArtwork src={ART_ASSETS.artifact} alt="Prototype atelier concept art" height={320} />
-        <div style={{
-          minHeight: 320,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          background: COLORS.paperDark, border: `3px dashed ${COLORS.inkSoft}`,
-          padding: 30,
-        }}>
-          <div style={{ textAlign: "center", color: COLORS.inkSoft, maxWidth: 420 }}>
-            <div style={{ fontFamily: fontHeader, fontSize: 40, color: COLORS.ink, marginBottom: 10, letterSpacing: 2 }}>
-              {"\u25C7"} Empty Plinth {"\u25C7"}
-            </div>
-            <div style={{ fontSize: 20, lineHeight: 1.35, marginBottom: 8 }}>
-              The gallery hasn't been curated yet.
-            </div>
-            <div style={{ fontSize: 18, lineHeight: 1.35 }}>
-              Artifacts, project demos, and interactive pieces will be exhibited here soon.
-            </div>
+      <div style={{
+        minHeight: 320,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        background: COLORS.paperDark, border: `3px dashed ${COLORS.inkSoft}`,
+        padding: 30,
+      }}>
+        <div style={{ textAlign: "center", color: COLORS.inkSoft, maxWidth: 420 }}>
+          <div style={{ fontFamily: fontHeader, fontSize: 40, color: COLORS.ink, marginBottom: 10, letterSpacing: 2 }}>
+            {"\u25C7"} Empty Plinth {"\u25C7"}
+          </div>
+          <div style={{ fontSize: 20, lineHeight: 1.35, marginBottom: 8 }}>
+            The gallery hasn't been curated yet.
+          </div>
+          <div style={{ fontSize: 18, lineHeight: 1.35 }}>
+            Artifacts, project demos, and interactive pieces will be exhibited here soon.
           </div>
         </div>
       </div>
@@ -2162,9 +2419,8 @@ function StudioPanel({ onClose }) {
 function PortalPanel({ onClose }) {
   return (
     <PixelPanel title="Travel Portal · Links" onClose={onClose} accent="#5a3a8a">
-      <PanelArtwork src={ART_ASSETS.portal} alt="Knowledge portal concept art" height={260} />
       <div style={{ textAlign: "center", marginBottom: 16, fontSize: 20 }}>
-        ◈ Choose your destination ◈
+        â—ˆ Choose your destination â—ˆ
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
         {SITE_DATA.links.map(l => (
@@ -2176,7 +2432,7 @@ function PortalPanel({ onClose }) {
             textDecoration: "none",
             fontFamily: fontHeader, fontSize: 26, letterSpacing: 1,
             textAlign: "center",
-          }}>▸ {l.label}</a>
+          }}>â–¸ {l.label}</a>
         ))}
       </div>
     </PixelPanel>
@@ -2361,7 +2617,7 @@ function Minimap({ engine, mobile }) {
       <div style={{
         fontFamily: fontHeader, fontSize: mobile?11:14, color: COLORS.paper,
         textAlign: "center", letterSpacing: 1,
-      }}>◇ MAP ◇</div>
+      }}>â—‡ MAP â—‡</div>
       <canvas ref={ref} width={128} height={128} style={{
         display: "block", imageRendering: "pixelated",
         width: mobile ? 72 : 128, height: mobile ? 72 : 128,
@@ -2406,7 +2662,7 @@ function VisitControlsBar({ engine, muted, setMuted, environment, onAbout, onTel
         <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰</CtrlBtn>
         <CtrlBtn onClick={() => onTeleport("cafe")}>☕</CtrlBtn>
         <CtrlBtn onClick={() => onTeleport("artifact")}>🏺</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>◈</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>â—ˆ</CtrlBtn>
         <CtrlBtn onClick={() => {
           engine.initAudio();
           const next = !muted;
@@ -2436,7 +2692,7 @@ function VisitControlsBar({ engine, muted, setMuted, environment, onAbout, onTel
         <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰 News</CtrlBtn>
         <CtrlBtn onClick={() => onTeleport("cafe")}>☕ Café</CtrlBtn>
         <CtrlBtn onClick={() => onTeleport("artifact")}>🏺 Artifact</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>◈ Portal</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>â—ˆ Portal</CtrlBtn>
         <CtrlBtn onClick={() => {
           engine.initAudio();
           const next = !muted;
@@ -2466,7 +2722,7 @@ function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout
         <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰</CtrlBtn>
         <CtrlBtn onClick={() => onTeleport("cafe")}>☕</CtrlBtn>
         <CtrlBtn onClick={() => onTeleport("artifact")}>🏺</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>◈</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>â—ˆ</CtrlBtn>
         <CtrlBtn onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>{muted?"🔇":"🔊"}</CtrlBtn>
         <CtrlBtn onClick={() => {
           const next = timeOfDay === "day" ? "dusk" : timeOfDay === "dusk" ? "night" : "day";
@@ -2495,7 +2751,7 @@ function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout
         <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰 News</CtrlBtn>
         <CtrlBtn onClick={() => onTeleport("cafe")}>☕ Café</CtrlBtn>
         <CtrlBtn onClick={() => onTeleport("artifact")}>🏺 Artifact</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>◈ Portal</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>â—ˆ Portal</CtrlBtn>
         <CtrlBtn onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>
           {muted ? "🔇 BGM Off" : "🔊 BGM On"}
         </CtrlBtn>
@@ -2511,13 +2767,7 @@ function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout
   );
 }
 function CtrlBtn({ children, onClick }) {
-  return <button onClick={onClick} style={{
-    background: COLORS.paper, color: COLORS.ink,
-    border: `2px solid ${COLORS.ink}`,
-    padding: "5px 10px", fontFamily: fontHeader, fontSize: 18,
-    cursor: "pointer", letterSpacing: 1,
-    boxShadow: `2px 2px 0 ${COLORS.ink}`,
-  }}>{children}</button>;
+  return <button onClick={onClick} style={uiButtonStyle({ compact: true, minWidth: 124 })}>{children}</button>;
 }
 
 // ---------------------------------------------------------------------------
@@ -2530,24 +2780,10 @@ function AvatarTweaksPanel({ tweaks, setTweaks, engine, onClose }) {
     window.parent.postMessage({type: '__edit_mode_set_keys', edits: { [k]: v }}, '*');
   }
   return (
-    <div style={{
-      position: "fixed", right: 16, bottom: 160,
-      width: 280, background: COLORS.paper, color: COLORS.ink,
-      border: `4px solid ${COLORS.ink}`,
-      boxShadow: `5px 5px 0 ${COLORS.ink}`,
-      fontFamily: fontBody, fontSize: 18, zIndex: 110,
-    }}>
-      <div style={{
-        background: COLORS.accent, color: COLORS.paper,
-        padding: "6px 10px", display: "flex", justifyContent: "space-between",
-        fontFamily: fontHeader, fontSize: 20,
-      }}>
+    <div style={floatingPanelShellStyle(280)}>
+      <div style={floatingPanelHeaderStyle()}>
         <span>Tweaks</span>
-        <button onClick={onClose} style={{
-          background: COLORS.paper, color: COLORS.ink, border: 0,
-          fontFamily: fontHeader, fontSize: 16, cursor: "pointer",
-          padding: "0 6px",
-        }}>✕</button>
+        <button onClick={onClose} style={uiCloseButtonStyle()}>x</button>
       </div>
       <div style={{ padding: 12, display: "flex", flexDirection: "column", gap: 10 }}>
         <div style={{
@@ -2584,24 +2820,10 @@ function TweaksPanel({ tweaks, setTweaks, engine, onClose }) {
     window.parent.postMessage({type: '__edit_mode_set_keys', edits: { [k]: v }}, '*');
   }
   return (
-    <div style={{
-      position: "fixed", right: 16, bottom: 160,
-      width: 280, background: COLORS.paper, color: COLORS.ink,
-      border: `4px solid ${COLORS.ink}`,
-      boxShadow: `5px 5px 0 ${COLORS.ink}`,
-      fontFamily: fontBody, fontSize: 18, zIndex: 110,
-    }}>
-      <div style={{
-        background: COLORS.accent, color: COLORS.paper,
-        padding: "6px 10px", display: "flex", justifyContent: "space-between",
-        fontFamily: fontHeader, fontSize: 20,
-      }}>
+    <div style={floatingPanelShellStyle(280)}>
+      <div style={floatingPanelHeaderStyle()}>
         <span>Tweaks</span>
-        <button onClick={onClose} style={{
-          background: COLORS.paper, color: COLORS.ink, border: 0,
-          fontFamily: fontHeader, fontSize: 16, cursor: "pointer",
-          padding: "0 6px",
-        }}>✕</button>
+        <button onClick={onClose} style={uiCloseButtonStyle()}>x</button>
       </div>
       <div style={{ padding: 12, display: "flex", flexDirection: "column", gap: 10 }}>
         <Row label="Time">
@@ -2635,12 +2857,7 @@ function Row({ label, children }) {
   </div>;
 }
 function Pill({ on, onClick, children }) {
-  return <button onClick={onClick} style={{
-    background: on ? COLORS.ink : COLORS.paperDark,
-    color: on ? COLORS.paper : COLORS.ink,
-    border: `2px solid ${COLORS.ink}`, padding: "2px 10px",
-    fontFamily: fontHeader, fontSize: 16, cursor: "pointer",
-  }}>{children}</button>;
+  return <button onClick={onClick} style={uiButtonStyle({ active: on, compact: true, secondary: !on, minWidth: 92 })}>{children}</button>;
 }
 function Swatch({ color, on, onClick }) {
   return <button onClick={onClick} style={{
@@ -2712,7 +2929,7 @@ function TitleSplash({ onStart }) {
         fontFamily: fontHeader, fontSize: 28, letterSpacing: 2,
         animation: "bounce 1.2s ease-in-out infinite",
         cursor: "pointer", background: "rgba(0,0,0,0.3)",
-      }}>▸ PRESS ANY KEY / CLICK TO BEGIN ◂</div>
+      }}>â–¸ PRESS ANY KEY / CLICK TO BEGIN â—'</div>
       <div style={{ marginTop: 40, fontSize: 16, opacity: 0.7 }}>
         WASD / arrow keys to move · click to walk · E or SPACE to interact
       </div>
