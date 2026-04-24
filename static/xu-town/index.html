@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
-<title>Xu Town · Kaijie Xu</title>
+<title>Xu Town - Kaijie Xu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <style>
@@ -39,8 +39,36 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
     linear-gradient(180deg, rgba(255,249,236,0.84), rgba(227,209,170,0.82)),
     var(--xu-ui-panel-surface) center/100% 100% no-repeat;
   box-shadow:0 8px 18px rgba(43,33,24,0.16);
+  position:relative;
 }
-.xu-preview-frame img{display:block;width:100%;height:auto;image-rendering:auto;}
+.xu-preview-figure{position:relative;overflow:hidden;border-radius:10px;}
+.xu-preview-frame img{display:block;width:100%;height:auto;image-rendering:auto;filter:saturate(0.82) contrast(0.96) brightness(0.98);}
+.xu-preview-pin{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  padding:4px 8px 6px;
+  background:rgba(28,20,14,0.86);
+  color:#fff7e0;
+  border:2px solid rgba(255,239,194,0.82);
+  box-shadow:0 4px 10px rgba(0,0,0,0.22);
+  font-size:18px;
+  line-height:1;
+  white-space:nowrap;
+}
+.xu-preview-legend{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-top:12px;
+}
+.xu-preview-key{
+  padding:6px 8px;
+  background:rgba(255,248,231,0.82);
+  border:1px solid rgba(77,57,34,0.22);
+  color:#5a4a38;
+  font-size:17px;
+  line-height:1.1;
+}
 .xu-wood-button{
   cursor:pointer;
   font-family:'VT323',monospace;
@@ -85,7 +113,23 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
       Explore Kaijie (Jay) Xu's site as a pixel town,<br>or head to the classic academic page.
     </div>
     <div class="xu-preview-frame">
-      <img src="assets/source-gpt-image-2/world/xu-town_world_anchor-overview_alt_v01.png" alt="Xu Town art preview" style="display:block;width:100%;height:auto;image-rendering:auto;">
+      <div class="xu-preview-figure">
+        <img src="assets/source-gpt-image-2/world/xu-town_world_anchor-overview_alt_v01.png" alt="Xu Town art preview" style="display:block;width:100%;height:auto;image-rendering:auto;">
+        <div class="xu-preview-pin" style="left:35%;top:34%;">Publications</div>
+        <div class="xu-preview-pin" style="left:60%;top:31%;">News</div>
+        <div class="xu-preview-pin" style="left:55%;top:58%;">About</div>
+        <div class="xu-preview-pin" style="left:38%;top:62%;">Notebook</div>
+        <div class="xu-preview-pin" style="left:62%;top:62%;">Artifacts</div>
+        <div class="xu-preview-pin" style="left:66%;top:48%;">Links</div>
+      </div>
+      <div class="xu-preview-legend">
+        <div class="xu-preview-key">Publications</div>
+        <div class="xu-preview-key">News</div>
+        <div class="xu-preview-key">About</div>
+        <div class="xu-preview-key">Notebook</div>
+        <div class="xu-preview-key">Artifacts</div>
+        <div class="xu-preview-key">Links</div>
+      </div>
     </div>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
       <button id="xu-mode-game" type="button" class="xu-wood-button">&#9656; Enter the Town</button>
@@ -1835,13 +1879,19 @@ function panelSurfaceStyle({ wide } = {}) {
   };
 }
 
-function panelHeaderStyle(accent = COLORS.accent) {
+function panelHeaderStyle(accent = COLORS.accent, wide = false) {
   return {
-    minHeight: 68,
-    padding: "14px 18px 16px 22px",
+    position: "relative",
+    alignSelf: "center",
+    width: "100%",
+    maxWidth: wide ? 620 : 500,
+    minHeight: 74,
+    margin: "0 auto 8px",
+    padding: "16px 62px 18px",
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
+    textAlign: "center",
     backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.18)), url(${ART_ASSETS.ui.panelHeader})`,
     backgroundSize: "100% 100%, 100% 100%",
     backgroundRepeat: "no-repeat",
@@ -1969,20 +2019,14 @@ function PixelPanel({ title, onClose, children, wide, accent = COLORS.accent }) 
       animation: "fadeIn .15s ease-out",
     }} onClick={onClose}>
       <div onClick={e => e.stopPropagation()} style={panelSurfaceStyle({ wide })}>
-        <div style={panelHeaderStyle(accent)}>
+        <div style={panelHeaderStyle(accent, wide)}>
           <span>&gt; {title}</span>
-          <button onClick={onClose} style={uiCloseButtonStyle()}>x</button>
+          <button onClick={onClose} style={{ ...uiCloseButtonStyle(), position: "absolute", right: 18, top: "50%", transform: "translateY(-50%)" }}>x</button>
         </div>
         <div style={panelBodyStyle()}>
           {children}
         </div>
         <div style={panelFooterStyle()}>press ESC or click outside to close</div>
-
-
-
-
-
-
       </div>
     </div>
   );
@@ -2082,14 +2126,14 @@ function NpcDialog({ npc, onClose }) {
             }}/>
           </div>
         ) : null}
-        <div style={{ minHeight: 50 }}>{shown}<span className="dialog-cursor">▌</span></div>
+        <div style={{ minHeight: 50 }}>{shown}<span className="dialog-cursor">|</span></div>
       </div>
       <div style={{
         marginTop: 8, textAlign: "right", color: COLORS.inkSoft,
         fontFamily: fontHeader, fontSize: 16,
       }}>
         {shown.length < fullText.length ? "(click / SPACE to skip)"
-          : (lineIdx < npc.lines.length - 1 ? "â–¼ next" : "â–¼ end")}
+          : (lineIdx < npc.lines.length - 1 ? "> next" : "end")}
       </div>
     </div>
   );
@@ -2247,7 +2291,7 @@ function LibraryPanel({ onClose }) {
             </>
           ) : (
             <div style={{ color: COLORS.inkSoft, textAlign: "center", paddingTop: 80 }}>
-              â—‡<br/>Click a book on the shelf<br/>to read its details.
+              Select a book on the shelf<br/>to read its details.
             </div>
           )}
         </div>
@@ -2327,7 +2371,7 @@ function NewsPanel({ onClose }) {
               display: "inline-block", marginTop: 8,
               fontFamily: fontHeader, fontSize: 16, color: COLORS.ink,
               borderBottom: `2px solid ${COLORS.ink}`, textDecoration: "none",
-            }}>â–¸ visit conference</a>}
+            }}>&gt; visit conference</a>}
           </div>
         ))}
       </div>
@@ -2418,9 +2462,9 @@ function StudioPanel({ onClose }) {
 // Portal (Links)
 function PortalPanel({ onClose }) {
   return (
-    <PixelPanel title="Travel Portal · Links" onClose={onClose} accent="#5a3a8a">
+    <PixelPanel title="Travel Portal - Links" onClose={onClose} accent="#5a3a8a">
       <div style={{ textAlign: "center", marginBottom: 16, fontSize: 20 }}>
-        â—ˆ Choose your destination â—ˆ
+        Choose your destination
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
         {SITE_DATA.links.map(l => (
@@ -2432,7 +2476,7 @@ function PortalPanel({ onClose }) {
             textDecoration: "none",
             fontFamily: fontHeader, fontSize: 26, letterSpacing: 1,
             textAlign: "center",
-          }}>â–¸ {l.label}</a>
+          }}>&gt; {l.label}</a>
         ))}
       </div>
     </PixelPanel>
@@ -2617,7 +2661,7 @@ function Minimap({ engine, mobile }) {
       <div style={{
         fontFamily: fontHeader, fontSize: mobile?11:14, color: COLORS.paper,
         textAlign: "center", letterSpacing: 1,
-      }}>â—‡ MAP â—‡</div>
+      }}>MAP</div>
       <canvas ref={ref} width={128} height={128} style={{
         display: "block", imageRendering: "pixelated",
         width: mobile ? 72 : 128, height: mobile ? 72 : 128,
@@ -2657,18 +2701,18 @@ function VisitControlsBar({ engine, muted, setMuted, environment, onAbout, onTel
         background: "rgba(20,15,10,0.6)", border: `2px solid ${COLORS.paper}`,
         fontFamily: fontHeader, zIndex: 60,
       }}>
-        <CtrlBtn onClick={onAbout}>★</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("library")}>📚</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("cafe")}>☕</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("artifact")}>🏺</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>â—ˆ</CtrlBtn>
+        <CtrlBtn onClick={onAbout}>About</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("library")}>Pubs</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("cafe")}>Notes</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
         <CtrlBtn onClick={() => {
           engine.initAudio();
           const next = !muted;
           setMuted(next);
           engine.setMuted(next);
-        }}>{muted ? "🔊" : "🔇"}</CtrlBtn>
+        }}>{muted ? "Unmute" : "Mute"}</CtrlBtn>
         <EnvironmentChip environment={environment} mobile />
       </div>
     );
@@ -2684,22 +2728,22 @@ function VisitControlsBar({ engine, muted, setMuted, environment, onAbout, onTel
         border: `3px solid ${COLORS.paper}`, padding: "8px 12px",
         fontFamily: fontHeader, fontSize: 16, letterSpacing: 1,
       }}>
-        ⌨ WASD / ← → ↑ ↓ to move · 🖱 click to walk · [E/SPACE] interact
+        WASD / arrows to move | click to walk | [E/SPACE] interact
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", maxWidth: 620 }}>
-        <CtrlBtn onClick={onAbout}>★ About</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("library")}>📚 Library</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰 News</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("cafe")}>☕ Café</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("artifact")}>🏺 Artifact</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>â—ˆ Portal</CtrlBtn>
+        <CtrlBtn onClick={onAbout}>About</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("library")}>Publications</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("cafe")}>Notebook</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
         <CtrlBtn onClick={() => {
           engine.initAudio();
           const next = !muted;
           setMuted(next);
           engine.setMuted(next);
         }}>
-          {muted ? "🔊 Unmute" : "🔇 Mute"}
+          {muted ? "Unmute" : "Mute"}
         </CtrlBtn>
         <EnvironmentChip environment={environment} />
       </div>
@@ -2717,18 +2761,18 @@ function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout
         background: "rgba(20,15,10,0.6)", border: `2px solid ${COLORS.paper}`,
         fontFamily: fontHeader, zIndex: 60,
       }}>
-        <CtrlBtn onClick={onAbout}>★</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("library")}>📚</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("cafe")}>☕</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("artifact")}>🏺</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>â—ˆ</CtrlBtn>
-        <CtrlBtn onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>{muted?"🔇":"🔊"}</CtrlBtn>
+        <CtrlBtn onClick={onAbout}>About</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("library")}>Pubs</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("cafe")}>Notes</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
+        <CtrlBtn onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>{muted ? "Unmute" : "Mute"}</CtrlBtn>
         <CtrlBtn onClick={() => {
           const next = timeOfDay === "day" ? "dusk" : timeOfDay === "dusk" ? "night" : "day";
           setTimeOfDay(next); engine.setTimeOfDay(next);
           engine.setWeather(next === "night" ? "fireflies" : "leaves");
-        }}>{timeOfDay==="day"?"☀":timeOfDay==="dusk"?"🌅":"🌙"}</CtrlBtn>
+        }}>{timeOfDay==="day" ? "Day" : timeOfDay==="dusk" ? "Dusk" : "Night"}</CtrlBtn>
       </div>
     );
   }
@@ -2743,24 +2787,24 @@ function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout
         border: `3px solid ${COLORS.paper}`, padding: "8px 12px",
         fontFamily: fontHeader, fontSize: 16, letterSpacing: 1,
       }}>
-        ⌨ WASD / ← → ↑ ↓ to move · 🖱 click to walk · [E/SPACE] interact
+        WASD / arrows to move | click to walk | [E/SPACE] interact
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", maxWidth: 520 }}>
-        <CtrlBtn onClick={onAbout}>★ About</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("library")}>📚 Library</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("noticeboard")}>📰 News</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("cafe")}>☕ Café</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("artifact")}>🏺 Artifact</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>â—ˆ Portal</CtrlBtn>
+        <CtrlBtn onClick={onAbout}>About</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("library")}>Publications</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("cafe")}>Notebook</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
+        <CtrlBtn onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
         <CtrlBtn onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>
-          {muted ? "🔇 BGM Off" : "🔊 BGM On"}
+          {muted ? "BGM Off" : "BGM On"}
         </CtrlBtn>
         <CtrlBtn onClick={() => {
           const next = timeOfDay === "day" ? "dusk" : timeOfDay === "dusk" ? "night" : "day";
           setTimeOfDay(next); engine.setTimeOfDay(next);
           engine.setWeather(next === "night" ? "fireflies" : "leaves");
         }}>
-          {timeOfDay === "day" ? "☀ Day" : timeOfDay === "dusk" ? "🌅 Dusk" : "🌙 Night"}
+          {timeOfDay === "day" ? "Day" : timeOfDay === "dusk" ? "Dusk" : "Night"}
         </CtrlBtn>
       </div>
     </div>
@@ -2929,9 +2973,9 @@ function TitleSplash({ onStart }) {
         fontFamily: fontHeader, fontSize: 28, letterSpacing: 2,
         animation: "bounce 1.2s ease-in-out infinite",
         cursor: "pointer", background: "rgba(0,0,0,0.3)",
-      }}>â–¸ PRESS ANY KEY / CLICK TO BEGIN â—'</div>
+      }}>PRESS ANY KEY / CLICK TO BEGIN</div>
       <div style={{ marginTop: 40, fontSize: 16, opacity: 0.7 }}>
-        WASD / arrow keys to move · click to walk · E or SPACE to interact
+        WASD / arrow keys to move | click to walk | E or SPACE to interact
       </div>
     </div>
   );
