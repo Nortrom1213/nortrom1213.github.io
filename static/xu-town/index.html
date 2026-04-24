@@ -790,6 +790,66 @@ window.SITE_DATA = {
     }
   }
 
+  const WORLD_SPRITES = {
+    buildings: {
+      about: { src: "assets/world/about-marker-world.png", widthTiles: 5.4 },
+      library: { src: "assets/world/library-world.png", widthTiles: 8.8 },
+      noticeboard: { src: "assets/world/news-board-world.png", widthTiles: 4.8 },
+      cafe: { src: "assets/world/cafe-world.png", widthTiles: 7.2 },
+      artifact: { src: "assets/world/artifact-world.png", widthTiles: 7.8 },
+      portal: { src: "assets/world/portal-world.png", widthTiles: 4.6 },
+    },
+    characters: {
+      player: { src: "assets/world/player-world.png", heightPx: 58 },
+      "Verbrugge·Wizard": { src: "assets/world/verbrugge-world.png", heightPx: 62 },
+      "Town Chronicler": { src: "assets/world/chronicler-world.png", heightPx: 58 },
+      "Cat 'Perlin'": { src: "assets/world/perlin-world.png", heightPx: 38 },
+      "Bard of CHI": { src: "assets/world/bard-world.png", heightPx: 58 },
+      "Innkeeper Berkeley": { src: "assets/world/berkeley-world.png", heightPx: 58 },
+    }
+  };
+
+  function loadWorldSprites() {
+    const bank = { buildings: {}, characters: {} };
+    for (const [id, spec] of Object.entries(WORLD_SPRITES.buildings)) {
+      const img = new Image();
+      img.src = spec.src;
+      bank.buildings[id] = { ...spec, img };
+    }
+    for (const [id, spec] of Object.entries(WORLD_SPRITES.characters)) {
+      const img = new Image();
+      img.src = spec.src;
+      bank.characters[id] = { ...spec, img };
+    }
+    return bank;
+  }
+
+  function imageReady(img) {
+    return !!(img && img.complete && img.naturalWidth > 0);
+  }
+
+  function drawWorldBuildingSprite(ctx, spriteBank, building, px, py) {
+    const sprite = spriteBank.buildings[building.id];
+    if (!sprite || !imageReady(sprite.img)) return false;
+    const drawW = TILE * sprite.widthTiles;
+    const drawH = drawW * (sprite.img.naturalHeight / sprite.img.naturalWidth);
+    const groundX = px + (building.w * TILE) / 2;
+    const groundY = py + building.h * TILE;
+    ctx.drawImage(sprite.img, groundX - drawW / 2, groundY - drawH, drawW, drawH);
+    return true;
+  }
+
+  function drawWorldCharacterSprite(ctx, spriteBank, key, sx, sy, frame) {
+    const sprite = spriteBank.characters[key];
+    if (!sprite || !imageReady(sprite.img)) return false;
+    const bob = Math.floor(frame/10)%2 === 0 ? 0 : -1;
+    const drawH = sprite.heightPx;
+    const drawW = drawH * (sprite.img.naturalWidth / sprite.img.naturalHeight);
+    const groundY = sy + 14 + bob;
+    ctx.drawImage(sprite.img, sx - drawW / 2, groundY - drawH, drawW, drawH);
+    return true;
+  }
+
   // Intro text on the ground (world-coord-anchored)
   function drawGroundIntro(ctx, ox, oy, intro) {
     const cx = (intro.x ?? 48) * TILE + ox;
@@ -850,6 +910,7 @@ window.SITE_DATA = {
     const buildings = makeBuildings();
     const npcs = makeNPCs(opts.npcs || []);
     const obstacles = makeObstacles();
+    const spriteBank = loadWorldSprites();
     const buildingColliders = buildings.filter(b => b.kind !== "signboard").map(b => ({
       minX: b.tx, maxX: b.tx + b.w, minY: b.ty, maxY: b.ty + b.h,
     }));
@@ -1325,13 +1386,16 @@ window.SITE_DATA = {
         const sx = ox + b.tx*TILE, sy = oy + b.ty*TILE;
         const zz = b.ty + b.h - 0.1;
         items.push({ z: zz, draw: () => {
-          if (b.kind === "library") drawLibrary(ctx, sx, sy, b.w, b.h);
-          else if (b.kind === "notice") drawNotice(ctx, sx, sy, b.w, b.h, b.sign);
-          else if (b.kind === "cafe") drawCafe(ctx, sx, sy, b.w, b.h, time);
-          else if (b.kind === "studio") drawStudio(ctx, sx, sy, b.w, b.h, time);
-          else if (b.kind === "portal") drawPortal(ctx, sx, sy, b.w, b.h, time);
-          else if (b.kind === "signboard") drawSignboard(ctx, sx, sy);
-          if (b.door && (b.kind === "library" || b.kind === "cafe" || b.kind === "studio")) {
+          const drewSprite = drawWorldBuildingSprite(ctx, spriteBank, b, sx, sy);
+          if (!drewSprite) {
+            if (b.kind === "library") drawLibrary(ctx, sx, sy, b.w, b.h);
+            else if (b.kind === "notice") drawNotice(ctx, sx, sy, b.w, b.h, b.sign);
+            else if (b.kind === "cafe") drawCafe(ctx, sx, sy, b.w, b.h, time);
+            else if (b.kind === "studio") drawStudio(ctx, sx, sy, b.w, b.h, time);
+            else if (b.kind === "portal") drawPortal(ctx, sx, sy, b.w, b.h, time);
+            else if (b.kind === "signboard") drawSignboard(ctx, sx, sy);
+          }
+          if (!drewSprite && b.door && (b.kind === "library" || b.kind === "cafe" || b.kind === "studio")) {
             // Use the building's horizontal center — that's where drawLibrary/drawCafe/drawStudio
             // actually render the door, regardless of the door tile index (door.x+0.5 drifts by half
             // a tile when the building has an even width).
@@ -1346,11 +1410,15 @@ window.SITE_DATA = {
       for (const n of npcs) {
         const sx = ox + n.x*TILE, sy = oy + n.y*TILE;
         items.push({ z: n.y, draw: () => {
-          drawCharacter(ctx, sx, sy, n.state === "moving" ? n.frame : 0, n.dir || "down",
-            n.hair || "#3a2a18",
-            n.shirt || (n.name && n.name.includes("Verbrugge") ? "#6a4a3a" :
-                       n.name && n.name.includes("Berkeley") ? "#3b6a8e" : "#4f6e3b"),
-            n.name && (n.name.includes("Verbrugge") || n.name.includes("Berkeley")));
+          const frame = n.state === "moving" ? n.frame : 0;
+          const drewSprite = drawWorldCharacterSprite(ctx, spriteBank, n.name, sx, sy, frame);
+          if (!drewSprite) {
+            drawCharacter(ctx, sx, sy, frame, n.dir || "down",
+              n.hair || "#3a2a18",
+              n.shirt || (n.name && n.name.includes("Verbrugge") ? "#6a4a3a" :
+                         n.name && n.name.includes("Berkeley") ? "#3b6a8e" : "#4f6e3b"),
+              n.name && (n.name.includes("Verbrugge") || n.name.includes("Berkeley")));
+          }
           ctx.fillStyle = "rgba(0,0,0,0.55)";
           const label = n.name || "";
           const lf = 11 * fontScale;
@@ -1368,9 +1436,12 @@ window.SITE_DATA = {
       {
         const sx = ox + state.px*TILE, sy = oy + state.py*TILE;
         items.push({ z: state.py + 0.01, draw: () => {
-          drawCharacter(ctx, sx, sy, state.frame, state.dir,
-            opts.player?.hair || "#3a2a18",
-            opts.player?.shirt || "#c25a3a", true);
+          const drewSprite = drawWorldCharacterSprite(ctx, spriteBank, "player", sx, sy, state.frame);
+          if (!drewSprite) {
+            drawCharacter(ctx, sx, sy, state.frame, state.dir,
+              opts.player?.hair || "#3a2a18",
+              opts.player?.shirt || "#c25a3a", true);
+          }
         }});
       }
       items.sort((a, b) => a.z - b.z);
