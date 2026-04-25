@@ -88,6 +88,10 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
   text-shadow:0 2px 0 rgba(43,33,24,0.9);
   display:none;
 }
+body.xu-town-active .xu-floating-link{display:inline-flex;}
+@media (max-width: 820px) {
+  body.xu-town-active .xu-floating-link{display:none!important;}
+}
 @media (max-width: 640px), (max-height: 740px) {
   html,body{height:100dvh;}
   #xu-mode-chooser{
@@ -156,10 +160,12 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
   function show() {
     chooser.style.display = 'flex';
     classicLink.style.display = 'none';
+    document.body.classList.remove('xu-town-active');
   }
   function hide() {
     chooser.style.display = 'none';
-    classicLink.style.display = 'inline-block';
+    classicLink.style.display = 'inline-flex';
+    document.body.classList.add('xu-town-active');
   }
   function toClassic() { window.location.href = '/classic/'; }
   show();
@@ -2735,30 +2741,36 @@ function EnvironmentChip({ environment, mobile }) {
   );
 }
 
+function mobileHudBarStyle() {
+  return {
+    position: "fixed",
+    top: 7,
+    left: 7,
+    right: 92,
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    gap: 5,
+    padding: 5,
+    background: "rgba(20,15,10,0.68)",
+    border: `2px solid ${COLORS.paper}`,
+    fontFamily: fontHeader,
+    zIndex: 60,
+    touchAction: "manipulation",
+  };
+}
+
 function VisitControlsBar({ engine, muted, setMuted, environment, onAbout, onTeleport, mobile }) {
   if (mobile) {
     return (
-      <div style={{
-        position:"fixed", top: 88, left: 8, right: 8,
-        display:"flex", gap: 6, overflowX: "auto", padding: 5,
-        background: "rgba(20,15,10,0.68)", border: `2px solid ${COLORS.paper}`,
-        fontFamily: fontHeader, zIndex: 60,
-        touchAction: "pan-x",
-        WebkitOverflowScrolling: "touch",
-      }}>
+      <div style={mobileHudBarStyle()}>
+        <HudLink href="/classic/">Classic</HudLink>
         <CtrlBtn mobile onClick={onAbout}>About</CtrlBtn>
-        <CtrlBtn mobile onClick={() => onTeleport("library")}>Pubs</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("library")}>Publications</CtrlBtn>
         <CtrlBtn mobile onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
-        <CtrlBtn mobile onClick={() => onTeleport("cafe")}>Notes</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("cafe")}>Notebook</CtrlBtn>
         <CtrlBtn mobile onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
-        <CtrlBtn mobile onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
-        <CtrlBtn onClick={() => {
-          engine.initAudio();
-          const next = !muted;
-          setMuted(next);
-          engine.setMuted(next);
-        }} mobile>{muted ? "Unmute" : "Mute"}</CtrlBtn>
-        <EnvironmentChip environment={environment} mobile />
+        <CtrlBtn mobile onClick={() => onTeleport("portal")}>Links</CtrlBtn>
       </div>
     );
   }
@@ -2798,28 +2810,15 @@ function VisitControlsBar({ engine, muted, setMuted, environment, onAbout, onTel
 
 function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout, onTeleport, mobile }) {
   if (mobile) {
-    // Compact top strip: scrollable teleport icons + sound/day
     return (
-      <div style={{
-        position:"fixed", top: 88, left: 8, right: 8,
-        display:"flex", gap: 6, overflowX: "auto", padding: 5,
-        background: "rgba(20,15,10,0.68)", border: `2px solid ${COLORS.paper}`,
-        fontFamily: fontHeader, zIndex: 60,
-        touchAction: "pan-x",
-        WebkitOverflowScrolling: "touch",
-      }}>
+      <div style={mobileHudBarStyle()}>
+        <HudLink href="/classic/">Classic</HudLink>
         <CtrlBtn mobile onClick={onAbout}>About</CtrlBtn>
-        <CtrlBtn mobile onClick={() => onTeleport("library")}>Pubs</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("library")}>Publications</CtrlBtn>
         <CtrlBtn mobile onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
-        <CtrlBtn mobile onClick={() => onTeleport("cafe")}>Notes</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("cafe")}>Notebook</CtrlBtn>
         <CtrlBtn mobile onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
-        <CtrlBtn mobile onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
-        <CtrlBtn mobile onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>{muted ? "Unmute" : "Mute"}</CtrlBtn>
-        <CtrlBtn onClick={() => {
-          const next = timeOfDay === "day" ? "dusk" : timeOfDay === "dusk" ? "night" : "day";
-          setTimeOfDay(next); engine.setTimeOfDay(next);
-          engine.setWeather(next === "night" ? "fireflies" : "leaves");
-        }} mobile>{timeOfDay==="day" ? "Day" : timeOfDay==="dusk" ? "Dusk" : "Night"}</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("portal")}>Links</CtrlBtn>
       </div>
     );
   }
@@ -2857,12 +2856,21 @@ function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout
     </div>
   );
 }
+function HudLink({ href, children }) {
+  return <a href={href} style={{
+    ...uiButtonStyle({ compact: true, minWidth: 74 }),
+    minHeight: 32,
+    padding: "5px 10px 8px",
+    fontSize: 15,
+    letterSpacing: 0,
+  }}>{children}</a>;
+}
 function CtrlBtn({ children, onClick, mobile = false }) {
   return <button onClick={onClick} style={{
-    ...uiButtonStyle({ compact: true, minWidth: mobile ? 88 : 124 }),
-    fontSize: mobile ? 16 : 18,
-    minHeight: mobile ? 38 : 42,
-    padding: mobile ? "6px 12px 9px" : "7px 16px 11px",
+    ...uiButtonStyle({ compact: true, minWidth: mobile ? 74 : 124 }),
+    fontSize: mobile ? 15 : 18,
+    minHeight: mobile ? 32 : 42,
+    padding: mobile ? "5px 10px 8px" : "7px 16px 11px",
     letterSpacing: 0,
   }}>{children}</button>;
 }
