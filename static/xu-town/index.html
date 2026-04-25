@@ -52,6 +52,10 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
   font-size:18px;
   line-height:1.15;
 }
+.xu-chooser-title{font-size:34px;line-height:1;margin-bottom:8px;color:#7d3a2c;letter-spacing:2px;}
+.xu-chooser-subtitle{font-size:22px;margin-bottom:6px;}
+.xu-chooser-copy{font-size:18px;margin-bottom:20px;color:#5a4a38;line-height:1.35;}
+.xu-chooser-footnote{font-size:15px;margin-top:14px;color:#8a7e64;}
 .xu-wood-button{
   cursor:pointer;
   font-family:'VT323',monospace;
@@ -71,7 +75,7 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
   position:fixed;
   top:10px;
   left:10px;
-  z-index:500;
+  z-index:70;
   min-width:156px;
   min-height:48px;
   padding:9px 18px 12px;
@@ -84,15 +88,46 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
   text-shadow:0 2px 0 rgba(43,33,24,0.9);
   display:none;
 }
+@media (max-width: 640px), (max-height: 740px) {
+  html,body{height:100dvh;}
+  #xu-mode-chooser{
+    align-items:flex-start!important;
+    padding:10px!important;
+    overflow-y:auto;
+    touch-action:pan-y;
+  }
+  .xu-chooser-panel{
+    width:min(100%,440px);
+    max-height:calc(100dvh - 20px);
+    overflow-y:auto;
+    padding:18px 14px 16px;
+    margin:auto 0;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
+  .xu-chooser-title{font-size:30px;margin-bottom:5px;letter-spacing:1px;}
+  .xu-chooser-subtitle{font-size:19px;margin-bottom:4px;}
+  .xu-chooser-copy{font-size:16px;margin-bottom:12px;line-height:1.22;}
+  .xu-preview-frame{max-width:min(76vw,300px);padding:8px;margin-bottom:12px;}
+  .xu-preview-figure{border-radius:7px;}
+  .xu-preview-caption{font-size:15px;line-height:1.1;margin-top:8px;padding:7px 8px;}
+  .xu-wood-button{font-size:20px;min-width:148px;min-height:48px;padding:8px 16px 11px;}
+  .xu-chooser-footnote{font-size:13px;margin-top:9px;}
+  .xu-floating-link{top:8px;left:8px;min-width:124px;min-height:40px;font-size:16px;padding:8px 12px 10px;}
+}
+@media (max-width: 380px) {
+  .xu-preview-frame{max-width:min(72vw,260px);}
+  .xu-wood-button{width:100%;max-width:260px;}
+}
 </style></head><body>
 <div id="root"></div>
 
 <!-- Mode chooser modal: shown on entry so the user can pick game vs classic. -->
 <div id="xu-mode-chooser" role="dialog" aria-modal="true" aria-label="Choose site mode" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(10,12,30,0.62), rgba(10,12,30,0.82)), url('assets/source-gpt-image-2/world/xu-town_world_anchor-overview_primary_v01.png') center/cover no-repeat;font-family:'VT323',monospace;pointer-events:auto;padding:20px;">
   <div class="xu-chooser-panel">
-    <div style="font-size:34px;line-height:1;margin-bottom:8px;color:#7d3a2c;letter-spacing:2px;">&#10022; Xu Town &#10022;</div>
-    <div style="font-size:22px;margin-bottom:6px;">Welcome, traveler.</div>
-    <div style="font-size:18px;margin-bottom:20px;color:#5a4a38;line-height:1.35;">
+    <div class="xu-chooser-title">&#10022; Xu Town &#10022;</div>
+    <div class="xu-chooser-subtitle">Welcome, traveler.</div>
+    <div class="xu-chooser-copy">
       Explore Kaijie (Jay) Xu's site as a pixel town,<br>or head to the classic academic page.
     </div>
     <div class="xu-preview-frame">
@@ -105,7 +140,7 @@ button:hover{filter:brightness(1.08);}a:hover{filter:brightness(1.1);}
       <button id="xu-mode-game" type="button" class="xu-wood-button">&#9656; Enter the Town</button>
       <button id="xu-mode-classic" type="button" class="xu-wood-button xu-wood-button-secondary">&#9671; Classic Site</button>
     </div>
-    <div style="font-size:15px;margin-top:14px;color:#8a7e64;">You can switch modes anytime from the top-right.</div>
+    <div class="xu-chooser-footnote">You can switch modes anytime from the top-right.</div>
   </div>
 </div>
 
@@ -1829,7 +1864,7 @@ const ART_ASSETS = {
   },
 };
 
-function panelSurfaceStyle({ wide } = {}) {
+function panelSurfaceStyle({ wide, mobile } = {}) {
   return {
     backgroundColor: "rgba(249, 239, 215, 0.94)",
     backgroundImage: `linear-gradient(180deg, rgba(255,250,241,0.94), rgba(235,220,189,0.90)), url(${ART_ASSETS.ui.panelSurface})`,
@@ -1837,27 +1872,27 @@ function panelSurfaceStyle({ wide } = {}) {
     backgroundSize: "100% 100%, 100% 100%",
     backgroundRepeat: "no-repeat",
     color: COLORS.ink,
-    maxWidth: wide ? 960 : 680,
-    width: "100%",
-    maxHeight: "85vh",
+    maxWidth: mobile ? "none" : (wide ? 960 : 680),
+    width: mobile ? "min(100%, calc(100vw - 14px))" : "100%",
+    maxHeight: mobile ? "calc(100dvh - 18px)" : "85vh",
     display: "flex",
     flexDirection: "column",
     fontFamily: fontBody,
     imageRendering: "auto",
-    boxShadow: "0 18px 38px rgba(0,0,0,0.38)",
-    padding: "16px 18px 18px",
+    boxShadow: mobile ? "0 10px 26px rgba(0,0,0,0.42)" : "0 18px 38px rgba(0,0,0,0.38)",
+    padding: mobile ? "10px 10px 12px" : "16px 18px 18px",
   };
 }
 
-function panelHeaderStyle(accent = COLORS.accent, wide = false) {
+function panelHeaderStyle(accent = COLORS.accent, wide = false, mobile = false) {
   return {
     position: "relative",
     alignSelf: "center",
     width: "100%",
-    maxWidth: wide ? 620 : 500,
-    minHeight: 74,
-    margin: "0 auto 8px",
-    padding: "16px 62px 18px",
+    maxWidth: mobile ? "100%" : (wide ? 620 : 500),
+    minHeight: mobile ? 60 : 74,
+    margin: mobile ? "0 auto 6px" : "0 auto 8px",
+    padding: mobile ? "11px 48px 14px" : "16px 62px 18px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -1869,22 +1904,27 @@ function panelHeaderStyle(accent = COLORS.accent, wide = false) {
     color: COLORS.paper,
     textShadow: `0 2px 0 ${accent}`,
     fontFamily: fontHeader,
-    fontSize: 26,
-    letterSpacing: 1,
+    fontSize: mobile ? 21 : 26,
+    lineHeight: 1.02,
+    letterSpacing: mobile ? 0 : 1,
   };
 }
 
-function panelBodyStyle() {
+function panelBodyStyle(mobile = false) {
   return {
     overflow: "auto",
-    padding: "14px 20px 10px",
-    fontSize: 20,
-    lineHeight: 1.35,
+    padding: mobile ? "10px 10px 8px" : "14px 20px 10px",
+    fontSize: mobile ? 18 : 20,
+    lineHeight: mobile ? 1.28 : 1.35,
+    touchAction: "pan-y",
+    overscrollBehavior: "contain",
+    WebkitOverflowScrolling: "touch",
   };
 }
 
-function panelFooterStyle() {
+function panelFooterStyle(mobile = false) {
   return {
+    display: mobile ? "none" : "block",
     padding: "6px 18px 0",
     fontFamily: fontHeader,
     fontSize: 16,
@@ -1981,22 +2021,26 @@ function floatingPanelHeaderStyle() {
 // ---------------------------------------------------------------------------
 // Pixel-styled window/dialog frame
 function PixelPanel({ title, onClose, children, wide, accent = COLORS.accent }) {
+  const vp = useViewport();
+  const mobile = vp.isMobile;
   return (
     <div style={{
       position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      zIndex: 100, padding: 20,
+      display: "flex", alignItems: mobile ? "flex-start" : "center", justifyContent: "center",
+      zIndex: 100, padding: mobile ? 7 : 20,
       animation: "fadeIn .15s ease-out",
+      touchAction: "pan-y",
+      overflowY: "auto",
     }} onClick={onClose}>
-      <div onClick={e => e.stopPropagation()} style={panelSurfaceStyle({ wide })}>
-        <div style={panelHeaderStyle(accent, wide)}>
-          <span style={{ display: "inline-block", transform: "translateY(4px)" }}>&gt; {title}</span>
-          <button onClick={onClose} style={{ ...uiCloseButtonStyle(), position: "absolute", right: 18, top: "50%", transform: "translateY(-50%)" }}>x</button>
+      <div onClick={e => e.stopPropagation()} style={panelSurfaceStyle({ wide, mobile })}>
+        <div style={panelHeaderStyle(accent, wide, mobile)}>
+          <span style={{ display: "inline-block", transform: mobile ? "translateY(3px)" : "translateY(4px)", maxWidth: mobile ? "calc(100% - 12px)" : "none", overflowWrap: "anywhere" }}>&gt; {title}</span>
+          <button onClick={onClose} style={{ ...uiCloseButtonStyle(), position: "absolute", right: mobile ? 10 : 18, top: "50%", transform: "translateY(-50%)", width: mobile ? 32 : 34, height: mobile ? 32 : 34 }}>x</button>
         </div>
-        <div style={panelBodyStyle()}>
+        <div style={panelBodyStyle(mobile)}>
           {children}
         </div>
-        <div style={panelFooterStyle()}>press ESC or click outside to close</div>
+        <div style={panelFooterStyle(mobile)}>press ESC or click outside to close</div>
       </div>
     </div>
   );
@@ -2064,16 +2108,20 @@ function NpcDialog({ npc, onClose }) {
   return (
     <div style={{
       position: "fixed", left: isMobile?8:24, right: isMobile?8:24,
-      bottom: isMobile ? 140 : 24,
+      bottom: isMobile ? 132 : 24,
       background: COLORS.paper, color: COLORS.ink,
       border: `4px solid ${COLORS.ink}`,
       boxShadow: `6px 6px 0 ${COLORS.ink}`,
       padding: isMobile?12:18, fontFamily: fontBody,
-      fontSize: isMobile?18:22, lineHeight: 1.3,
+      fontSize: isMobile?17:22, lineHeight: isMobile ? 1.24 : 1.3,
       zIndex: 90, cursor: "pointer",
+      maxHeight: isMobile ? "34dvh" : "none",
+      overflowY: "auto",
+      touchAction: "pan-y",
+      WebkitOverflowScrolling: "touch",
     }} onClick={next}>
       <div style={{
-        fontFamily: fontHeader, fontSize: 20, color: COLORS.accent,
+        fontFamily: fontHeader, fontSize: isMobile ? 18 : 20, color: COLORS.accent,
         marginBottom: 6, letterSpacing: 1,
       }}>● {npc.name} <span style={{color: COLORS.inkSoft}}>· {npc.role}</span></div>
       <div style={{
@@ -2112,16 +2160,18 @@ function NpcDialog({ npc, onClose }) {
 // ---------------------------------------------------------------------------
 // About signboard
 function AboutPanel({ onClose }) {
+  const vp = useViewport();
+  const mobile = vp.isMobile;
   const a = SITE_DATA.about;
   return (
     <PixelPanel title="Town Signboard · About" onClose={onClose} accent={COLORS.green}>
-      <div style={{ display: "grid", gridTemplateColumns: "160px 1fr", gap: 24, alignItems: "start" }}>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "160px 1fr", gap: mobile ? 14 : 24, alignItems: "start", justifyItems: mobile ? "center" : "stretch" }}>
         <PortraitArtwork src={ART_ASSETS.playerPortrait} alt="Kaijie Xu portrait concept" />
-        <div>
-          <div style={{ fontFamily: fontHeader, fontSize: 36, lineHeight: 1, marginBottom: 4 }}>
+        <div style={{ width: "100%" }}>
+          <div style={{ fontFamily: fontHeader, fontSize: mobile ? 30 : 36, lineHeight: 1, marginBottom: 4, textAlign: mobile ? "center" : "left" }}>
             {a.name}
           </div>
-          <div style={{ color: COLORS.accent, fontSize: 22, marginBottom: 16 }}>
+          <div style={{ color: COLORS.accent, fontSize: mobile ? 19 : 22, marginBottom: mobile ? 12 : 16, textAlign: mobile ? "center" : "left" }}>
             {a.title}
           </div>
           <div style={{ marginBottom: 14 }}>{a.blurb}</div>
@@ -2135,9 +2185,10 @@ function AboutPanel({ onClose }) {
         </div>
       </div>
       <div style={{
-        marginTop: 24, padding: 12, background: COLORS.paperDark,
+        marginTop: mobile ? 16 : 24, padding: mobile ? 10 : 12, background: COLORS.paperDark,
         border: `2px solid ${COLORS.ink}`,
-        fontFamily: fontHeader, fontSize: 18,
+        fontFamily: fontHeader, fontSize: mobile ? 16 : 18,
+        lineHeight: mobile ? 1.2 : 1.25,
       }}>
         ⌂ TOWN GUIDE ⌂<br/>
         ▸ NW · the LIBRARY holds my publications. Glowing tomes are my featured work.<br/>
@@ -2190,6 +2241,8 @@ function PixelPortrait() {
 // ---------------------------------------------------------------------------
 // Library
 function LibraryPanel({ onClose }) {
+  const vp = useViewport();
+  const mobile = vp.isMobile;
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState("all");
   const pubs = SITE_DATA.publications;
@@ -2200,19 +2253,19 @@ function LibraryPanel({ onClose }) {
   for (let i = 0; i < list.length; i += 5) shelves.push(list.slice(i, i+5));
   return (
     <PixelPanel title="Library of Publications" onClose={onClose} wide accent="#7d3a2c">
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 18, minHeight: 400 }}>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 320px", gap: mobile ? 12 : 18, minHeight: mobile ? 0 : 400 }}>
         <div>
-          <div style={{ marginBottom: 14, display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <span style={{ fontFamily: fontHeader, fontSize: 18, color: COLORS.inkSoft, alignSelf: "center" }}>FILTER:</span>
+          <div style={{ marginBottom: mobile ? 10 : 14, display: "flex", gap: mobile ? 6 : 8, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: fontHeader, fontSize: mobile ? 16 : 18, color: COLORS.inkSoft, alignSelf: "center" }}>FILTER:</span>
             {years.map(y => (
               <button
                 key={y}
                 onClick={() => setFilter(y)}
-                style={uiButtonStyle({ active: filter === y, compact: true, secondary: filter !== y, minWidth: 88 })}
+                style={uiButtonStyle({ active: filter === y, compact: true, secondary: filter !== y, minWidth: mobile ? 70 : 88 })}
               >{y}</button>
             ))}
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: mobile ? 10 : 14 }}>
             {shelves.map((shelf, si) => (
               <div key={si}>
                 <div style={{
@@ -2236,7 +2289,7 @@ function LibraryPanel({ onClose }) {
         </div>
         <div style={{
           background: COLORS.paperDark, border: `3px solid ${COLORS.ink}`,
-          padding: 14, fontSize: 18, lineHeight: 1.3,
+          padding: mobile ? 11 : 14, fontSize: mobile ? 16 : 18, lineHeight: 1.3,
         }}>
           {selected ? (
             <>
@@ -2312,18 +2365,20 @@ function Book({ p, selected, onClick }) {
 // ---------------------------------------------------------------------------
 // Notice board
 function NewsPanel({ onClose }) {
+  const vp = useViewport();
+  const mobile = vp.isMobile;
   return (
     <PixelPanel title="Town Notice Board · News" onClose={onClose} wide accent="#7d4f24">
       <div style={{
         background: "#c79d68",
         border: `4px solid #5e3b1f`,
-        padding: 18,
-        display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14,
+        padding: mobile ? 10 : 18,
+        display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 10 : 14,
       }}>
         {SITE_DATA.news.map((n, i) => (
           <div key={i} style={{
             background: i % 3 === 0 ? "#fffdf2" : i % 3 === 1 ? "#fff5d8" : "#fffae0",
-            padding: "14px 14px 16px",
+            padding: mobile ? "11px 11px 13px" : "14px 14px 16px",
             transform: `rotate(${(i % 2 === 0 ? -1 : 1) * (0.3 + (i%3)*0.3)}deg)`,
             boxShadow: "3px 3px 0 rgba(0,0,0,0.25)",
             position: "relative", border: "1px solid #d8c79e",
@@ -2334,9 +2389,9 @@ function NewsPanel({ onClose }) {
               border: "1px solid #6a1a1a",
             }}/>
             <div style={{
-              fontFamily: fontHeader, fontSize: 18, color: COLORS.accent, marginBottom: 6,
+              fontFamily: fontHeader, fontSize: mobile ? 17 : 18, color: COLORS.accent, marginBottom: 6,
             }}>📌 {n.date}</div>
-            <div style={{ fontSize: 18, lineHeight: 1.3 }}>{n.text}</div>
+            <div style={{ fontSize: mobile ? 16 : 18, lineHeight: 1.3 }}>{n.text}</div>
             {n.link && <a href={n.link} target="_blank" rel="noopener" style={{
               display: "inline-block", marginTop: 8,
               fontFamily: fontHeader, fontSize: 16, color: COLORS.ink,
@@ -2352,6 +2407,8 @@ function NewsPanel({ onClose }) {
 // ---------------------------------------------------------------------------
 // Notebook (Café walls)
 function NotebookPanel({ onClose }) {
+  const vp = useViewport();
+  const mobile = vp.isMobile;
   const sections = [
     { title: "🎮 Core Gaming Conferences", items: SITE_DATA.notebook.confs_gaming, color: "#f3c450" },
     { title: "🎯 Workshops", items: SITE_DATA.notebook.workshops, color: "#7faedb" },
@@ -2366,30 +2423,31 @@ function NotebookPanel({ onClose }) {
       <div style={{
         background: "linear-gradient(180deg, #cfc6a8 0%, #b8af90 100%)",
         border: `4px solid ${COLORS.ink}`,
-        padding: 16,
+        padding: mobile ? 10 : 16,
       }}>
         {sections.map((s, si) => (
-          <div key={si} style={{ marginBottom: 18 }}>
+          <div key={si} style={{ marginBottom: mobile ? 14 : 18 }}>
             <div style={{
-              fontFamily: fontHeader, fontSize: 22, color: COLORS.ink, marginBottom: 8,
+              fontFamily: fontHeader, fontSize: mobile ? 19 : 22, color: COLORS.ink, marginBottom: 8,
               borderBottom: `2px dashed ${COLORS.inkSoft}`, paddingBottom: 4,
             }}>{s.title}</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: mobile ? 7 : 8 }}>
               {s.items.map((it, ii) => {
                 const tilt = ((si*3 + ii) % 5 - 2) * 1.2;
                 return (
                   <a key={ii} href={it.url} target="_blank" rel="noopener" style={{
                     background: s.color,
-                    width: 150, padding: "8px 10px",
-                    fontSize: 16, lineHeight: 1.2, color: COLORS.ink,
+                    width: mobile ? "calc(50% - 4px)" : 150, padding: mobile ? "8px 8px" : "8px 10px",
+                    minWidth: mobile ? 132 : "auto",
+                    fontSize: mobile ? 15 : 16, lineHeight: 1.2, color: COLORS.ink,
                     textDecoration: "none",
                     transform: `rotate(${tilt}deg)`,
                     boxShadow: "2px 3px 0 rgba(0,0,0,0.2)",
                     border: "1px solid rgba(0,0,0,0.15)",
                     fontFamily: fontBody,
                   }}>
-                    <div style={{ fontFamily: fontHeader, fontSize: 18 }}>{it.name}</div>
-                    <div style={{ fontSize: 14, color: "rgba(0,0,0,0.65)" }}>{it.desc}</div>
+                    <div style={{ fontFamily: fontHeader, fontSize: mobile ? 16 : 18 }}>{it.name}</div>
+                    <div style={{ fontSize: mobile ? 12 : 14, color: "rgba(0,0,0,0.65)" }}>{it.desc}</div>
                   </a>
                 );
               })}
@@ -2431,20 +2489,22 @@ function StudioPanel({ onClose }) {
 // ---------------------------------------------------------------------------
 // Portal (Links)
 function PortalPanel({ onClose }) {
+  const vp = useViewport();
+  const mobile = vp.isMobile;
   return (
     <PixelPanel title="Travel Portal - Links" onClose={onClose} accent="#5a3a8a">
-      <div style={{ textAlign: "center", marginBottom: 16, fontSize: 20 }}>
+      <div style={{ textAlign: "center", marginBottom: mobile ? 12 : 16, fontSize: mobile ? 18 : 20 }}>
         Choose your destination
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+      <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: mobile ? 10 : 14 }}>
         {SITE_DATA.links.map(l => (
           <a key={l.id} href={l.url} target="_blank" rel="noopener" style={{
-            display: "block", padding: "16px 18px",
+            display: "block", padding: mobile ? "13px 14px" : "16px 18px",
             background: l.color, color: "#fff",
             border: `4px solid ${COLORS.ink}`,
             boxShadow: `4px 4px 0 ${COLORS.ink}`,
             textDecoration: "none",
-            fontFamily: fontHeader, fontSize: 26, letterSpacing: 1,
+            fontFamily: fontHeader, fontSize: mobile ? 22 : 26, letterSpacing: mobile ? 0 : 1,
             textAlign: "center",
           }}>&gt; {l.label}</a>
         ))}
@@ -2486,17 +2546,24 @@ function BuildingLabels() {
 // ---------------------------------------------------------------------------
 // Proximity prompt
 function NearPrompt({ near }) {
+  const vp = useViewport();
   if (!near || !near.kind) return null;
   const label = near.kind === "building" ? `Enter ${near.obj.label}` : `Talk to ${near.obj.name}`;
+  const mobile = vp.isMobile;
   return (
     <div style={{
-      position: "fixed", left: "50%", bottom: 110,
+      position: "fixed", left: "50%", bottom: mobile ? 136 : 110,
       transform: "translateX(-50%)",
       background: "rgba(20,15,10,0.86)", color: COLORS.paper,
       border: `2px solid ${COLORS.paper}`,
-      padding: "6px 14px", fontFamily: fontHeader, fontSize: 22,
-      letterSpacing: 1, pointerEvents: "none",
+      padding: mobile ? "6px 10px" : "6px 14px", fontFamily: fontHeader, fontSize: mobile ? 18 : 22,
+      lineHeight: 1.05,
+      letterSpacing: mobile ? 0 : 1, pointerEvents: "none",
+      maxWidth: mobile ? "calc(100vw - 28px)" : "none",
+      textAlign: "center",
+      whiteSpace: mobile ? "normal" : "nowrap",
       animation: "bounce 1s ease-in-out infinite",
+      zIndex: 86,
     }}>
       [E / SPACE] {label}
     </div>
@@ -2505,6 +2572,8 @@ function NearPrompt({ near }) {
 
 // Touch joystick + interact button (mobile)
 function TouchControls({ engine }) {
+  const vp = useViewport();
+  const compact = vp.w < 390 || vp.h < 720;
   const [stick, setStick] = React.useState({ active: false, dx: 0, dy: 0, cx: 0, cy: 0 });
   const held = React.useRef({ w:false, a:false, s:false, d:false });
   function setKeys(next) {
@@ -2524,7 +2593,7 @@ function TouchControls({ engine }) {
     const t = e.touches ? e.touches[0] : e;
     if (!t) return;
     const dx = t.clientX - stick.cx, dy = t.clientY - stick.cy;
-    const m = Math.hypot(dx, dy), max = 45;
+    const m = Math.hypot(dx, dy), max = compact ? 38 : 44;
     const nx = m > max ? dx/m*max : dx;
     const ny = m > max ? dy/m*max : dy;
     setStick(s => ({ ...s, dx: nx, dy: ny }));
@@ -2542,19 +2611,21 @@ function TouchControls({ engine }) {
     window.dispatchEvent(new KeyboardEvent("keydown", { key: "e" }));
     window.dispatchEvent(new KeyboardEvent("keyup", { key: "e" }));
   }
-  const size = 130;
+  const size = compact ? 112 : 124;
+  const knob = compact ? 48 : 54;
+  const interactSize = compact ? 78 : 88;
   return (<>
     <div onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd}
       onMouseDown={onStart} onMouseMove={stick.active ? onMove : undefined}
       onMouseUp={onEnd} onMouseLeave={onEnd}
       style={{
-        position:"fixed", left: 18, bottom: 22, width: size, height: size,
+        position:"fixed", left: compact ? 12 : 16, bottom: "max(14px, env(safe-area-inset-bottom))", width: size, height: size,
         borderRadius: "50%", background: "rgba(20,15,10,0.45)",
         border: `3px solid ${COLORS.paper}`, zIndex: 95, touchAction: "none",
       }}>
       <div style={{
-        position:"absolute", left: size/2 - 28 + stick.dx, top: size/2 - 28 + stick.dy,
-        width: 56, height: 56, borderRadius: "50%",
+        position:"absolute", left: size/2 - knob/2 + stick.dx, top: size/2 - knob/2 + stick.dy,
+        width: knob, height: knob, borderRadius: "50%",
         background: COLORS.paper, border: `3px solid ${COLORS.ink}`,
         pointerEvents:"none",
       }}/>
@@ -2562,7 +2633,7 @@ function TouchControls({ engine }) {
     <button onTouchStart={(e)=>{e.preventDefault();interact();}}
       onClick={(e)=>{e.preventDefault();interact();}}
       style={{
-        position:"fixed", right: 18, bottom: 22, width: 96, height: 96,
+        position:"fixed", right: compact ? 12 : 16, bottom: "max(14px, env(safe-area-inset-bottom))", width: interactSize, height: interactSize,
         borderRadius: "50%", background: COLORS.accent, color: COLORS.paper,
         border: `4px solid ${COLORS.ink}`, boxShadow: `3px 3px 0 ${COLORS.ink}`,
         fontFamily: fontHeader, zIndex: 95, cursor:"pointer",
@@ -2570,8 +2641,8 @@ function TouchControls({ engine }) {
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
         gap: 0, lineHeight: 1,
       }}>
-      <span style={{ fontSize: 32, lineHeight: 1 }}>E</span>
-      <span style={{ fontSize: 13, letterSpacing: 1, marginTop: 2, opacity: 0.95 }}>Interact</span>
+      <span style={{ fontSize: compact ? 27 : 31, lineHeight: 1 }}>E</span>
+      <span style={{ fontSize: compact ? 10 : 12, letterSpacing: 0, marginTop: 2, opacity: 0.95 }}>Interact</span>
     </button>
   </>);
 }
@@ -2579,6 +2650,8 @@ function TouchControls({ engine }) {
 // ---------------------------------------------------------------------------
 // Minimap
 function Minimap({ engine, mobile }) {
+  const vp = useViewport();
+  const compact = mobile && (vp.w < 390 || vp.h < 720);
   const ref = useRef(null);
   useEffect(() => {
     if (!engine) return;
@@ -2623,7 +2696,7 @@ function Minimap({ engine, mobile }) {
   }, [engine]);
   return (
     <div style={{
-      position: "fixed", top: mobile ? 6 : 16, right: mobile ? 6 : 16,
+      position: "fixed", top: mobile ? 7 : 16, right: mobile ? 7 : 16,
       background: "rgba(20,15,10,0.88)", padding: mobile ? 3 : 6,
       border: `${mobile?2:3}px solid ${COLORS.paper}`,
       boxShadow: `3px 3px 0 rgba(0,0,0,0.6)`, zIndex: 80,
@@ -2634,7 +2707,7 @@ function Minimap({ engine, mobile }) {
       }}>MAP</div>
       <canvas ref={ref} width={128} height={128} style={{
         display: "block", imageRendering: "pixelated",
-        width: mobile ? 72 : 128, height: mobile ? 72 : 128,
+        width: mobile ? (compact ? 64 : 72) : 128, height: mobile ? (compact ? 64 : 72) : 128,
       }}/>
     </div>
   );
@@ -2666,23 +2739,25 @@ function VisitControlsBar({ engine, muted, setMuted, environment, onAbout, onTel
   if (mobile) {
     return (
       <div style={{
-        position:"fixed", top: 6, left: 140, right: 90,
-        display:"flex", gap: 5, overflowX: "auto", padding: 4,
-        background: "rgba(20,15,10,0.6)", border: `2px solid ${COLORS.paper}`,
+        position:"fixed", top: 88, left: 8, right: 8,
+        display:"flex", gap: 6, overflowX: "auto", padding: 5,
+        background: "rgba(20,15,10,0.68)", border: `2px solid ${COLORS.paper}`,
         fontFamily: fontHeader, zIndex: 60,
+        touchAction: "pan-x",
+        WebkitOverflowScrolling: "touch",
       }}>
-        <CtrlBtn onClick={onAbout}>About</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("library")}>Pubs</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("cafe")}>Notes</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
+        <CtrlBtn mobile onClick={onAbout}>About</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("library")}>Pubs</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("cafe")}>Notes</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
         <CtrlBtn onClick={() => {
           engine.initAudio();
           const next = !muted;
           setMuted(next);
           engine.setMuted(next);
-        }}>{muted ? "Unmute" : "Mute"}</CtrlBtn>
+        }} mobile>{muted ? "Unmute" : "Mute"}</CtrlBtn>
         <EnvironmentChip environment={environment} mobile />
       </div>
     );
@@ -2726,23 +2801,25 @@ function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout
     // Compact top strip: scrollable teleport icons + sound/day
     return (
       <div style={{
-        position:"fixed", top: 6, left: 140, right: 90,
-        display:"flex", gap: 5, overflowX: "auto", padding: 4,
-        background: "rgba(20,15,10,0.6)", border: `2px solid ${COLORS.paper}`,
+        position:"fixed", top: 88, left: 8, right: 8,
+        display:"flex", gap: 6, overflowX: "auto", padding: 5,
+        background: "rgba(20,15,10,0.68)", border: `2px solid ${COLORS.paper}`,
         fontFamily: fontHeader, zIndex: 60,
+        touchAction: "pan-x",
+        WebkitOverflowScrolling: "touch",
       }}>
-        <CtrlBtn onClick={onAbout}>About</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("library")}>Pubs</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("cafe")}>Notes</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
-        <CtrlBtn onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
-        <CtrlBtn onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>{muted ? "Unmute" : "Mute"}</CtrlBtn>
+        <CtrlBtn mobile onClick={onAbout}>About</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("library")}>Pubs</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("noticeboard")}>News</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("cafe")}>Notes</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("artifact")}>Artifacts</CtrlBtn>
+        <CtrlBtn mobile onClick={() => onTeleport("portal")}>Portal</CtrlBtn>
+        <CtrlBtn mobile onClick={() => { engine.initAudio(); setMuted(!muted); engine.setMuted(!muted); }}>{muted ? "Unmute" : "Mute"}</CtrlBtn>
         <CtrlBtn onClick={() => {
           const next = timeOfDay === "day" ? "dusk" : timeOfDay === "dusk" ? "night" : "day";
           setTimeOfDay(next); engine.setTimeOfDay(next);
           engine.setWeather(next === "night" ? "fireflies" : "leaves");
-        }}>{timeOfDay==="day" ? "Day" : timeOfDay==="dusk" ? "Dusk" : "Night"}</CtrlBtn>
+        }} mobile>{timeOfDay==="day" ? "Day" : timeOfDay==="dusk" ? "Dusk" : "Night"}</CtrlBtn>
       </div>
     );
   }
@@ -2780,8 +2857,14 @@ function ControlsBar({ engine, muted, setMuted, timeOfDay, setTimeOfDay, onAbout
     </div>
   );
 }
-function CtrlBtn({ children, onClick }) {
-  return <button onClick={onClick} style={uiButtonStyle({ compact: true, minWidth: 124 })}>{children}</button>;
+function CtrlBtn({ children, onClick, mobile = false }) {
+  return <button onClick={onClick} style={{
+    ...uiButtonStyle({ compact: true, minWidth: mobile ? 88 : 124 }),
+    fontSize: mobile ? 16 : 18,
+    minHeight: mobile ? 38 : 42,
+    padding: mobile ? "6px 12px 9px" : "7px 16px 11px",
+    letterSpacing: 0,
+  }}>{children}</button>;
 }
 
 // ---------------------------------------------------------------------------
