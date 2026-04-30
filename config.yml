@@ -61,11 +61,11 @@ params:
           imageHeight: 160
           buttons:
           - name: News
-            url: news/
+            url: /news/
           - name: Publications
-            url: publications/
+            url: /publications/
           - name: Notebook
-            url: notebook/
+            url: /notebook/
 
 
     socialIcons:
