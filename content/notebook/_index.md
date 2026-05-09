@@ -10,31 +10,31 @@ Here I document important resources, references, and notes related to my researc
 ## 📚 Conferences 
 
 ### 🎮 Core Gaming Conferences
-- **[IEEE CoG](https://ieee-cog.org/)** - IEEE Conference on Games
-- **[AIIDE](https://sites.google.com/ualberta.ca/aiide2025/home)** - AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment
-- **[FDG](https://fdg2025.org/)** - Foundations of Digital Games
-- **[ACM CHI PLAY](https://chiplay.acm.org/)** - Player Experience & HCI in Games
-- **[DiGRA](https://digra.org/)** - Digital Games Research Association
+- **[IEEE CoG](https://cog2026.fdi.ucm.es/)** - IEEE Conference on Games
+- **[AIIDE](https://sites.google.com/view/aiide2026/home)** - AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment
+- **[FDG](https://fdg2026.org/)** - Foundations of Digital Games
+- **[ACM CHI PLAY](https://chiplay.acm.org/2026/)** - Player Experience & HCI in Games
+- **[DiGRA](https://www.digraconference2026.com/)** - Digital Games Research Association
 
 ### 🎯 Important Workshops
 - **[PCG Workshop](https://www.pcgworkshop.com/)** - Procedural Content Generation Workshop (FDG)
 - **[EXAG](https://www.exag.org/)** - Experimental AI in Games Workshop (AIIDE)
 
 ### 🖥️ Graphics & Interaction Conferences
-- **[ACM SIGGRAPH](https://s2025.siggraph.org/)** - Computer Graphics & Interactive Techniques
-- **[I3D](https://i3dsymposium.org/)** - Interactive 3D Graphics and Games
+- **[ACM SIGGRAPH](https://s2026.siggraph.org/)** - Computer Graphics & Interactive Techniques
+- **[I3D](https://i3dsymposium.org/2026/)** - Interactive 3D Graphics and Games
 - **[MIG](https://mig.siggraph.org/)** - Motion, Interaction and Games
-- **[IEEE VR](https://ieeevr.org/)** - Virtual Reality Conference
+- **[IEEE VR](https://ieeevr.org/2026/)** - Virtual Reality Conference
 - **[ACM CHI](https://chi2026.acm.org/)** - Human-Computer Interaction
 
 ### 🤖 AI & Multimedia Conferences
-- **[AAAI](https://aaai.org/conference/)** - Association for the Advancement of Artificial Intelligence
-- **[IJCAI](https://ijcai.org/)** - International Joint Conference on Artificial Intelligence
-- **[NeurIPS](https://neurips.cc/)** - Neural Information Processing Systems
-- **[ICML](https://icml.cc/)** - International Conference on Machine Learning
-- **[CVPR](https://cvpr.thecvf.com/)** - Computer Vision and Pattern Recognition
-- **[AAMAS](https://aamas2025.org/)** - Autonomous Agents and Multi-Agent Systems
-- **[ACM Multimedia](https://acmmm2025.org/)** - Multimedia Research
+- **[AAAI](https://aaai.org/conference/aaai/aaai-26/)** - Association for the Advancement of Artificial Intelligence
+- **[IJCAI](https://2026.ijcai.org/)** - International Joint Conference on Artificial Intelligence
+- **[NeurIPS](https://neurips.cc/Conferences/2026)** - Neural Information Processing Systems
+- **[ICML](https://icml.cc/Conferences/2026)** - International Conference on Machine Learning
+- **[CVPR](https://cvpr.thecvf.com/Conferences/2026)** - Computer Vision and Pattern Recognition
+- **[AAMAS](https://cyprusconferences.org/aamas2026/)** - Autonomous Agents and Multi-Agent Systems
+- **[ACM Multimedia](https://2026.acmmm.org/)** - Multimedia Research
 
 ---
 

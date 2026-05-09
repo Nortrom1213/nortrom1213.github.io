@@ -34,6 +34,16 @@ description: "Selected research publications and complete publication list"
   *Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2026)* (in press)  
   [Paper](https://ojs.aaai.org/index.php/AAAI/article/view/38453) | [Details](2026-aaai-csp4sdg/)
 
++ **Generate Diverse Skills with Large Language Models** (2026)<br>
+  Kaijie Xu, Clark Verbrugge<br>
+  *Proceedings of the 17th Workshop on Procedural Content Generation (PCG 2026)* (in press)<br>
+  [Details](2026-fdg-generate-diverse-skills-llms/)
+
++ **Path2Patrol: Path-Conditioned Guard Generation in Stealth Games through MAP-Elites** (2026)<br>
+  Yiwei Zhang, Kaijie Xu, Richard Zhao, Clark Verbrugge<br>
+  *IEEE Conference on Games (CoG 2026)* (in press)<br>
+  [Details](2026-cog-path2patrol/)
+
 + **High Dimensional Procedural Content Generation** (2026)  
   Kaijie Xu, Clark Verbrugge  
   *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press)  
