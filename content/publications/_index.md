@@ -44,6 +44,26 @@ description: "Selected research publications and complete publication list"
   *IEEE Conference on Games (CoG 2026)* (in press)<br>
   [Details](2026-cog-path2patrol/)
 
++ **Scene-Modular LLM-Driven Procedural Level Generation for Anomaly-Detection Games** (2026)<br>
+  Kaijie Xu, Fandi Meng, Clark Verbrugge<br>
+  *IEEE Conference on Games (CoG 2026)* (in press)<br>
+  [Details](2026-cog-scene-modular-anomaly-generation/)
+
++ **Efficient Multi-Guard Patrol through Extended Composite Potential Fields** (2026)<br>
+  Kaijie Xu, Yiwei Zhang, Clark Verbrugge<br>
+  *IEEE Conference on Games (CoG 2026)* (in press)<br>
+  [Details](2026-cog-efficient-multi-guard-patrol/)
+
++ **Boss Fights as Spatio-Temporal Level Generation** (2026)<br>
+  Kaijie Xu, Clark Verbrugge<br>
+  *IEEE Conference on Games (CoG 2026)* (in press)<br>
+  [Details](2026-cog-boss-fight-generation/)
+
++ **Action Selection in Multiplayer Hidden-Information Games with Expected Target Entropy** (2026)<br>
+  Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas<br>
+  *IEEE Conference on Games (CoG 2026)* (in press)<br>
+  [Details](2026-cog-expected-target-entropy/)
+
 + **High Dimensional Procedural Content Generation** (2026)  
   Kaijie Xu, Clark Verbrugge  
   *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press)  

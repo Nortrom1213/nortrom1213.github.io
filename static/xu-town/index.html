@@ -218,7 +218,32 @@ window.SITE_DATA = {
       title: "Path2Patrol: Path-Conditioned Guard Generation in Stealth Games through MAP-Elites",
       authors: "Yiwei Zhang, Kaijie Xu, Richard Zhao, Clark Verbrugge",
       venue: "CoG 2026", venueFull: "IEEE Conference on Games",
-      status: "in press" },
+      status: "in press",
+      detail: "/publications/2026-cog-path2patrol/" },
+    { id: "cog26-anomaly", year: 2026,
+      title: "Scene-Modular LLM-Driven Procedural Level Generation for Anomaly-Detection Games",
+      authors: "Kaijie Xu, Fandi Meng, Clark Verbrugge",
+      venue: "CoG 2026", venueFull: "IEEE Conference on Games",
+      status: "in press",
+      detail: "/publications/2026-cog-scene-modular-anomaly-generation/" },
+    { id: "cog26-multiguard", year: 2026,
+      title: "Efficient Multi-Guard Patrol through Extended Composite Potential Fields",
+      authors: "Kaijie Xu, Yiwei Zhang, Clark Verbrugge",
+      venue: "CoG 2026", venueFull: "IEEE Conference on Games",
+      status: "in press",
+      detail: "/publications/2026-cog-efficient-multi-guard-patrol/" },
+    { id: "cog26-boss", year: 2026,
+      title: "Boss Fights as Spatio-Temporal Level Generation",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "CoG 2026", venueFull: "IEEE Conference on Games",
+      status: "in press",
+      detail: "/publications/2026-cog-boss-fight-generation/" },
+    { id: "cog26-ete", year: 2026,
+      title: "Action Selection in Multiplayer Hidden-Information Games with Expected Target Entropy",
+      authors: "Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas",
+      venue: "CoG 2026", venueFull: "IEEE Conference on Games",
+      status: "in press",
+      detail: "/publications/2026-cog-expected-target-entropy/" },
     { id: "fdg26-hd", year: 2026,
       title: "High Dimensional Procedural Content Generation",
       authors: "Kaijie Xu, Clark Verbrugge",
@@ -280,7 +305,7 @@ window.SITE_DATA = {
   ],
 
   news: [
-    { year: 2026, date: "2026", text: "One paper accepted at CoG 2026 - Madrid, Spain · Sep 1-4.", link: "https://cog2026.fdi.ucm.es/" },
+    { year: 2026, date: "2026", text: "Five papers accepted at CoG 2026 - Madrid, Spain · Sep 1-4.", link: "https://cog2026.fdi.ucm.es/" },
     { year: 2026, date: "2026", text: "One paper accepted at the PCG Workshop 2026 at FDG 2026 - Copenhagen, Denmark · Aug 10-13.", link: "https://www.pcgworkshop.com/" },
     { year: 2026, date: "2026", text: "Three papers accepted at FDG 2026 — Copenhagen, Denmark · Aug 10–13. Three oral presentations.", link: "https://fdg2026.org/" },
     { year: 2025, date: "2025", text: "One paper accepted at CHI 2026 — Barcelona, Spain · Apr 13–17. One oral.", link: "https://chi2026.acm.org/" },
@@ -1861,7 +1886,12 @@ function LibraryPanel({ onClose }) {
                 <em>{selected.venueFull}</em>
                 {selected.status && <span style={{color: COLORS.accent}}> · {selected.status}</span>}
               </div>
-              {selected.link ? (
+              {selected.detail ? (
+                <a
+                  href={selected.detail}
+                  style={uiButtonStyle({ active: true, compact: true, minWidth: 172 })}
+                >&gt; DETAILS</a>
+              ) : selected.link ? (
                 <a
                   href={selected.link}
                   target="_blank"
