@@ -1,7 +1,7 @@
 ---
 title: "(Perlin) Noise as AI coordinator"
 date: 2026-02-21
-lastmod: 2026-02-21
+lastmod: 2026-08-26
 tags: ["Game AI","Perlin Noise","Coordination","NPCs","Procedural Generation"]
 author: ["Kaijie Xu, Clark Verbrugge (FDG 2026)"]
 description: "A general framework that uses continuous noise fields (e.g., Perlin noise) as a scalable coordinator for large-scale nonplayer agent control."
@@ -18,23 +18,24 @@ Large scale control of nonplayer agents is central to modern games, while produc
 
 ##### Links
 
-+ [Link](https://arxiv.org/abs/2602.18947)
++ [ACM Digital Library](https://dl.acm.org/doi/10.1145/3815598.3815608)
 
 ---
 
 ##### Citation
 
-Xu, K., & Verbrugge, C. (2026). (Perlin) Noise as AI coordinator. In *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press).
+Xu, K., & Verbrugge, C. (2026). (Perlin) Noise as AI coordinator. In *Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)* (Article 9, pp. 1–17). ACM. https://doi.org/10.1145/3815598.3815608
 
 ```BibTeX
-@misc{xu2026perlinnoiseasaicoordinator,
-      title={(Perlin) Noise as AI coordinator},
-      author={Kaijie Xu and Clark Verbrugge},
-      year={2026},
-      eprint={2602.18947},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2602.18947},
+@inproceedings{xu2026perlinnoiseasaicoordinator,
+  author    = {Kaijie Xu and Clark Verbrugge},
+  title     = {{(Perlin) Noise as AI coordinator}},
+  booktitle = {Proceedings of the 21st International Conference on the Foundations of Digital Games},
+  pages     = {9:1--9:17},
+  publisher = {ACM},
+  year      = {2026},
+  doi       = {10.1145/3815598.3815608},
+  url       = {https://doi.org/10.1145/3815598.3815608}
 }
 ```
 

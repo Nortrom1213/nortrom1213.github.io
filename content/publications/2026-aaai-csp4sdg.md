@@ -1,7 +1,7 @@
 ---
 title: "CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference"
 date: 2025-11-12
-lastmod: 2025-11-12
+lastmod: 2026-08-26
 tags: ["Social Deduction Games","Artificial Intelligence","Information Theory","Constraint Satisfaction","LLMs"]
 author: ["Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas (AAAI 2026)"]
 description: "A probabilistic, constraint-satisfaction framework with information-theoretic weighting for interpretable role inference in social deduction games."
@@ -24,17 +24,19 @@ In Social Deduction Games (SDGs) such as Avalon, Mafia, and Werewolf, players co
 
 ##### Citation
 
-Xu, K., Meng, F., Verbrugge, C., & Lucas, S. (2026). CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference. In *Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2026)* (in press).
+Xu, K., Meng, F., Verbrugge, C., & Lucas, S. M. (2026). CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference. *Proceedings of the AAAI Conference on Artificial Intelligence, 40*(17), 14380–14387. https://doi.org/10.1609/aaai.v40i17.38453
 
 ```BibTeX
-@misc{xu2025csp4sdgconstraintinformationtheorybased,
-      title={CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference}, 
-      author={Kaijie Xu and Fandi Meng and Clark Verbrugge and Simon Lucas},
-      year={2025},
-      eprint={2511.06175},
-      archivePrefix={arXiv},
-      primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2511.06175}, 
+@article{xu2026csp4sdg,
+  author  = {Kaijie Xu and Fandi Meng and Clark Verbrugge and Simon Mark Lucas},
+  title   = {CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference},
+  journal = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume  = {40},
+  number  = {17},
+  pages   = {14380--14387},
+  year    = {2026},
+  doi     = {10.1609/aaai.v40i17.38453},
+  url     = {https://ojs.aaai.org/index.php/AAAI/article/view/38453}
 }
 ```
 

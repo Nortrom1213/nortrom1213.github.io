@@ -1,7 +1,7 @@
 ---
 title: "Generate Diverse Skills with Large Language Models"
 date: 2026-05-09
-lastmod: 2026-05-09
+lastmod: 2026-08-26
 tags: ["Procedural Content Generation","Large Language Models","Game AI","Roguelike","Auto-battler","Skill Generation"]
 author: ["Kaijie Xu, Clark Verbrugge (FDG 2026 PCG Workshop)"]
 description: "Neural Spore Genesis evaluates local open-weight LLMs for generating coherent and diverse auto-battler combat skills from spatial elemental layouts."
@@ -18,20 +18,23 @@ Roguelike and auto-battler games derive much of their replayability from randomi
 
 ##### Links
 
-+ Paper coming soon.
++ [ACM Digital Library](https://dl.acm.org/doi/10.1145/3815598.3815673)
 
 ---
 
 ##### Citation
 
-Xu, K., & Verbrugge, C. (2026). Generate Diverse Skills with Large Language Models. In *Proceedings of the 17th Workshop on Procedural Content Generation (PCG 2026)* (in press).
+Xu, K., & Verbrugge, C. (2026). Generate Diverse Skills with Large Language Models. In *Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)* (Article 107, pp. 1–10). ACM. https://doi.org/10.1145/3815598.3815673
 
 ```BibTeX
 @inproceedings{xu2026generatediverseskills,
   author    = {Kaijie Xu and Clark Verbrugge},
   title     = {Generate Diverse Skills with Large Language Models},
-  booktitle = {Proceedings of the 17th Workshop on Procedural Content Generation (PCG 2026)},
-  year      = {2026}
+  booktitle = {Proceedings of the 21st International Conference on the Foundations of Digital Games},
+  pages     = {107:1--107:10},
+  publisher = {ACM},
+  year      = {2026},
+  doi       = {10.1145/3815598.3815673},
+  url       = {https://doi.org/10.1145/3815598.3815673}
 }
 ```
-

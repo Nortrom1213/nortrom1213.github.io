@@ -1,7 +1,7 @@
 ---
 title: "Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework"
 date: 2026-03-19
-lastmod: 2026-03-19
+lastmod: 2026-08-26
 tags: ["Human-Computer Interaction","Mission Design","Open-World Games","Procedural Content Analysis","Game Design"]
 author: ["Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge (CHI 2026)"]
 description: "A six-dimensional Mission Action Quality Vector (MAQV) framework and action block grammar for systematic analysis of open-world mission design at scale."
@@ -18,22 +18,23 @@ Open-world missions often rely on repeated formulas, yet designers lack systemat
 
 ##### Links
 
-+ [Link](https://arxiv.org/abs/2603.18398)
++ [ACM Digital Library](https://dl.acm.org/doi/10.1145/3772318.3790625)
 
 ---
 
 ##### Citation
 
-Xu, K., Zhang, Y., Yang, B., & Verbrugge, C. (2026). Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework. In *Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026)* (in press).
+Xu, K., Zhang, Y., Yang, B., & Verbrugge, C. (2026). Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework. In *Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems* (Article 450, pp. 1–31). ACM. https://doi.org/10.1145/3772318.3790625
 
 ```BibTeX
-@misc{xu2026deconstructing,
-      title={Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework},
-      author={Kaijie Xu and Yiwei Zhang and Brian Yang and Clark Verbrugge},
-      year={2026},
-      eprint={2603.18398},
-      archivePrefix={arXiv},
-      primaryClass={cs.HC},
-      url={https://arxiv.org/abs/2603.18398},
+@inproceedings{xu2026deconstructing,
+  author    = {Kaijie Xu and Yiwei Zhang and Brian Yang and Clark Verbrugge},
+  title     = {Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework},
+  booktitle = {Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems},
+  pages     = {450:1--450:31},
+  publisher = {ACM},
+  year      = {2026},
+  doi       = {10.1145/3772318.3790625},
+  url       = {https://doi.org/10.1145/3772318.3790625}
 }
 ```

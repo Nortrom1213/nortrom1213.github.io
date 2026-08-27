@@ -5,15 +5,20 @@ description: "Selected research publications and complete publication list"
 
 ## Selected Publications
 
-+ **Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework** (2026)  
-  Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge  
-  *Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026)* (in press)  
-  [Paper](https://arxiv.org/abs/2603.18398) | [Details](2026-chi-mission-design/)
++ **Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework** (2026)<br>
+  Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge<br>
+  *Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems*<br>
+  [Paper](https://dl.acm.org/doi/10.1145/3772318.3790625) | [Details](2026-chi-mission-design/)
 
-+ **CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference** (2026)  
-  Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas  
-  *Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2026)* (in press)  
++ **CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference** (2026)<br>
+  Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Mark Lucas<br>
+  *Proceedings of the AAAI Conference on Artificial Intelligence, 40*(17), 14380–14387<br>
   [Paper](https://ojs.aaai.org/index.php/AAAI/article/view/38453) | [Details](2026-aaai-csp4sdg/)
+
++ **High Dimensional Procedural Content Generation** (2026)<br>
+  Kaijie Xu, Clark Verbrugge<br>
+  *Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)* — Honourable Mention<br>
+  [Paper](https://dl.acm.org/doi/10.1145/3815598.3815606) | [Details](2026-fdg-hdpcg/)
 
 + **Generic Guard AI in Stealth Games with Composite Potential Fields** (2025)  
   Kaijie Xu, Clark Verbrugge  
@@ -24,20 +29,25 @@ description: "Selected research publications and complete publication list"
 
 ## All Publications
 
-+ **Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework** (2026)  
-  Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge  
-  *Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI 2026)* (in press)  
-  [Paper](https://arxiv.org/abs/2603.18398) | [Details](2026-chi-mission-design/)
++ **From Experience to 3D Platformer Levels via Topological Graphs** (2026)<br>
+  Kaijie Xu, Clark Verbrugge<br>
+  *AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2026)* (accepted)<br>
+  [Details](2026-aiide-experience-platformer-levels/)
 
-+ **CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference** (2026)  
-  Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas  
-  *Proceedings of the AAAI Conference on Artificial Intelligence (AAAI 2026)* (in press)  
++ **Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework** (2026)<br>
+  Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge<br>
+  *Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems*<br>
+  [Paper](https://dl.acm.org/doi/10.1145/3772318.3790625) | [Details](2026-chi-mission-design/)
+
++ **CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference** (2026)<br>
+  Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Mark Lucas<br>
+  *Proceedings of the AAAI Conference on Artificial Intelligence, 40*(17), 14380–14387<br>
   [Paper](https://ojs.aaai.org/index.php/AAAI/article/view/38453) | [Details](2026-aaai-csp4sdg/)
 
 + **Generate Diverse Skills with Large Language Models** (2026)<br>
   Kaijie Xu, Clark Verbrugge<br>
-  *Proceedings of the 17th Workshop on Procedural Content Generation (PCG 2026)* (in press)<br>
-  [Details](2026-fdg-generate-diverse-skills-llms/)
+  *Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)* — 17th Workshop on Procedural Content Generation<br>
+  [Paper](https://dl.acm.org/doi/10.1145/3815598.3815673) | [Details](2026-fdg-generate-diverse-skills-llms/)
 
 + **Path2Patrol: Path-Conditioned Guard Generation in Stealth Games through MAP-Elites** (2026)<br>
   Yiwei Zhang, Kaijie Xu, Richard Zhao, Clark Verbrugge<br>
@@ -64,20 +74,20 @@ description: "Selected research publications and complete publication list"
   *IEEE Conference on Games (CoG 2026)* (in press)<br>
   [Details](2026-cog-expected-target-entropy/)
 
-+ **High Dimensional Procedural Content Generation** (2026)  
-  Kaijie Xu, Clark Verbrugge  
-  *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press)  
-  [Paper](https://arxiv.org/abs/2602.18943) | [Details](2026-fdg-hdpcg/)
++ **High Dimensional Procedural Content Generation** (2026)<br>
+  Kaijie Xu, Clark Verbrugge<br>
+  *Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)* — Honourable Mention<br>
+  [Paper](https://dl.acm.org/doi/10.1145/3815598.3815606) | [Details](2026-fdg-hdpcg/)
 
-+ **(Perlin) Noise as AI coordinator** (2026)  
-  Kaijie Xu, Clark Verbrugge  
-  *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press)  
-  [Paper](https://arxiv.org/abs/2602.18947) | [Details](2026-fdg-perlin-noise-ai-coordinator/)
++ **(Perlin) Noise as AI coordinator** (2026)<br>
+  Kaijie Xu, Clark Verbrugge<br>
+  *Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)*<br>
+  [Paper](https://dl.acm.org/doi/10.1145/3815598.3815608) | [Details](2026-fdg-perlin-noise-ai-coordinator/)
 
-+ **How Far Can We Go with Pixels Alone? A Pilot Study on Screen-Only Navigation in Commercial 3D ARPGs** (2026)  
-  Kaijie Xu, Mustafa Bugti, Clark Verbrugge  
-  *Proceedings of the 21st Foundations of Digital Games Conference (FDG 2026)* (in press)  
-  [Paper](https://arxiv.org/abs/2602.18981) | [Details](2026-fdg-pixels-alone-navigation/)
++ **How Far Can We Go with Pixels Alone? A Pilot Study on Screen-Only Navigation in Commercial 3D ARPGs** (2026)<br>
+  Kaijie Xu, Mustafa Bugti, Clark Verbrugge<br>
+  *Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)*<br>
+  [Paper](https://dl.acm.org/doi/10.1145/3815598.3815607) | [Details](2026-fdg-pixels-alone-navigation/)
 
 + **Generic Guard AI in Stealth Games with Composite Potential Fields** (2025)  
   Kaijie Xu, Clark Verbrugge  
