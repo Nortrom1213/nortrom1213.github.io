@@ -1,0 +1,115 @@
+/* Shared mini-game UI: result screen, leaderboard, difficulty picker, how-to demo. */
+
+/* ---------- Result screen ---------- */
+.mgx-result { display: flex; flex-direction: column; gap: 14px; }
+.mgx-hero {
+  position: relative; overflow: hidden;
+  display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center;
+  padding: 14px 16px; border-radius: 14px;
+  background: linear-gradient(135deg, #fff8e6, #f3e3bd);
+  border: 2px solid #e2c98e;
+}
+.mgx-hero.lose { background: linear-gradient(135deg, #f8ece6, #ead6cc); border-color: #d9b2a2; }
+.mgx-hero .ico {
+  width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center;
+  font-size: 2.2rem; background: #fffaf0; border: 2px solid #e2c98e; box-shadow: 0 3px 0 #d8c08a;
+}
+.mgx-hero.lose .ico { border-color: #d9b2a2; box-shadow: 0 3px 0 #c9a090; filter: saturate(0.6); }
+.mgx-hero h3 { font-family: var(--font-head); font-size: 1.7rem; margin: 0; line-height: 1.1; }
+.mgx-hero .sub { color: var(--ink-soft); margin-top: 4px; font-size: 0.95rem; line-height: 1.4; }
+.mgx-hero .diff { display: inline-block; margin-top: 6px; }
+.mgx-ribbon {
+  position: absolute; top: 14px; right: -38px; transform: rotate(35deg);
+  background: linear-gradient(90deg, #e8a92c, #f7d266, #e8a92c); color: #4a2e00;
+  font-weight: 900; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 44px; box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  animation: mgx-shine 2.4s ease-in-out infinite;
+}
+@keyframes mgx-shine { 50% { filter: brightness(1.15); } }
+
+.mgx-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px; }
+.mgx-stat { background: #fffaf0; border: 1px solid #ead9b6; border-radius: 12px; padding: 8px 10px; }
+.mgx-stat .k { font-size: 0.74rem; font-weight: 800; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; }
+.mgx-stat .v { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.mgx-stat .h { font-size: 0.75rem; color: var(--ink-soft); }
+
+.mgx-cols { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; align-items: start; }
+.mgx-box { background: #fffaf0; border: 1px solid #ead9b6; border-radius: 12px; padding: 10px 12px; }
+.mgx-box h4 { font-family: var(--font-head); margin: 0 0 6px; font-size: 1.02rem; }
+
+.mgx-lb-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+.mgx-lb-tabs .tab { padding: 3px 10px; font-size: 0.78rem; }
+.mgx-lb { list-style: none; margin: 0; padding: 0; }
+.mgx-lb li {
+  display: grid; grid-template-columns: 28px 1fr auto; gap: 8px; align-items: baseline;
+  padding: 5px 6px; border-radius: 8px; font-size: 0.9rem;
+}
+.mgx-lb li + li { border-top: 1px dashed #e6d6b2; }
+.mgx-lb li .r { font-weight: 900; text-align: center; }
+.mgx-lb li .t { font-weight: 800; font-variant-numeric: tabular-nums; }
+.mgx-lb li .n { font-size: 0.78rem; color: var(--ink-soft); font-weight: 600; margin-left: 6px; }
+.mgx-lb li .d { font-size: 0.74rem; color: var(--ink-soft); white-space: nowrap; }
+.mgx-lb li.me { background: #fff1c9; border-top-color: transparent; box-shadow: inset 0 0 0 2px #e8c25a; }
+.mgx-lb li.me + li { border-top-color: transparent; }
+.mgx-lb .empty { color: var(--ink-soft); font-size: 0.86rem; display: block; padding: 4px 2px; }
+
+.mgx-badge { display: grid; grid-template-columns: 48px 1fr; gap: 10px; align-items: center; }
+.mgx-badge .bi { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; background: var(--paper-2); border: 2px solid #dcc79c; }
+.mgx-badge.got .bi { background: #fff1c9; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(217, 164, 58, 0.18); }
+.mgx-badge.new .bi { animation: mgx-pop 0.6s ease-out; }
+.mgx-badge b { display: block; }
+.mgx-badge span { font-size: 0.8rem; color: var(--ink-soft); }
+@keyframes mgx-pop { 0% { transform: scale(0.4); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+.mgx-viz { background: #fffaf0; border: 1px solid #ead9b6; border-radius: 12px; padding: 10px 12px 12px; }
+.mgx-viz h4 { font-family: var(--font-head); margin: 0 0 8px; font-size: 1.02rem; }
+.mgx-viz-panes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.mgx-pane { min-width: 0; }
+.mgx-pane .pl { font-size: 0.74rem; font-weight: 800; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.mgx-pane canvas { display: block; width: 100%; border-radius: 10px; background: #f6ecd6; }
+.mgx-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; font-size: 0.76rem; font-weight: 700; color: var(--ink-soft); }
+.mgx-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.mgx-caption { margin: 8px 0 0; font-size: 0.86rem; line-height: 1.45; color: var(--ink); background: rgba(47, 125, 116, 0.08); border-radius: 8px; padding: 7px 10px; }
+
+.mgx-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---------- Difficulty picker ---------- */
+.mgx-diff { margin: 10px 0; }
+.mgx-seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 12px; background: var(--paper-2); border: 2px solid #dcc79c; flex-wrap: wrap; }
+.mgx-seg button {
+  appearance: none; border: 0; cursor: pointer; border-radius: 9px; padding: 7px 14px; min-height: 36px;
+  font-weight: 800; font-size: 0.9rem; color: var(--ink); background: transparent; font-family: inherit;
+}
+.mgx-seg button:hover { background: rgba(255,255,255,0.6); }
+.mgx-seg button.on { background: var(--accent); color: #fff; box-shadow: 0 2px 0 #1f5a53; }
+.mgx-diff .desc { font-size: 0.85rem; color: var(--ink-soft); margin-top: 6px; line-height: 1.4; }
+.mgx-diff .lbl { font-weight: 800; margin-right: 8px; }
+
+/* ---------- How to play ---------- */
+.mgx-howto { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 14px; align-items: center; margin: 10px 0; }
+.mgx-howto .demo { position: relative; border-radius: 12px; overflow: hidden; border: 2px solid #e0cda6; background: #1d2338; }
+.mgx-howto .demo canvas { display: block; width: 100%; }
+.mgx-howto .demo .tagline {
+  position: absolute; left: 8px; top: 8px; font-size: 0.68rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #fff; background: rgba(0,0,0,0.38); padding: 2px 7px; border-radius: 99px; pointer-events: none;
+}
+.mgx-howto ol { margin: 0; padding-left: 0; list-style: none; counter-reset: mgx; }
+.mgx-howto li { counter-increment: mgx; position: relative; padding-left: 34px; margin: 0 0 10px; line-height: 1.4; font-size: 0.93rem; }
+.mgx-howto li:last-child { margin-bottom: 0; }
+.mgx-howto li::before {
+  content: counter(mgx); position: absolute; left: 0; top: -1px; width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 900; font-size: 0.82rem; color: #fff; background: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .mgx-cols, .mgx-howto { grid-template-columns: 1fr; }
+  .mgx-hero { grid-template-columns: 1fr; text-align: center; justify-items: center; padding-top: 18px; }
+  .mgx-hero h3 { font-size: 1.45rem; }
+  .mgx-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mgx-actions .btn { flex: 1 1 auto; justify-content: center; }
+  .mgx-seg { display: flex; }
+  .mgx-seg button { flex: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mgx-ribbon, .mgx-badge.new .bi { animation: none; }
+}

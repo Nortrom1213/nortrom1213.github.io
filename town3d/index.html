@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Xu Town · Kaijie (Jay) Xu</title>
+    <meta name="description" content="A small 3D town you can walk around to explore Kaijie (Jay) Xu's research, news and games." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kaijie (Jay) Xu" />
+    <meta property="og:title" content="Xu Town · Kaijie (Jay) Xu" />
+    <meta property="og:description" content="Kaijie (Jay) Xu's homepage as a little 3D town: game AI and procedural content generation research, playable." />
+    <meta property="og:url" content="https://nortrom1213.github.io/" />
+    <meta property="og:image" content="https://nortrom1213.github.io/xu-town-og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://nortrom1213.github.io/xu-town-og.jpg" />
+    <link rel="icon" href="/favicon.ico" />
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Kaijie Xu", "alternateName": "Jay Xu", "url": "https://nortrom1213.github.io/", "image": "https://nortrom1213.github.io/me.jpg", "jobTitle": "PhD Candidate in Computer Science", "affiliation": {"@type": "CollegeOrUniversity", "name": "McGill University"}, "alumniOf": [{"@type": "CollegeOrUniversity", "name": "University of California, Berkeley"}, {"@type": "CollegeOrUniversity", "name": "Imperial College London"}], "knowsAbout": ["Procedural content generation", "Game AI", "Computer vision in games", "Large language models", "Optimization and evolutionary computation"], "sameAs": ["https://scholar.google.com/citations?user=Ks6qgVQAAAAJ", "https://www.linkedin.com/in/kaijie-xu-051705263/", "https://github.com/Nortrom1213"]}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="sr-summary">
+      <h1>Kaijie (Jay) Xu</h1>
+      <p>PhD candidate in Computer Science at McGill University, supervised by Dr Clark Verbrugge. Previously B.A. in Computer Science &amp; Applied Mathematics at UC Berkeley and M.Sc. at Imperial College London. Research: procedural content generation, game AI, computer vision in games, large language models, optimization and evolutionary computation.</p>
+      <ul>
+        <li><a href="/">Classic homepage</a></li>
+        <li><a href="/publications/">Publications</a></li>
+        <li><a href="/news/">News</a></li>
+        <li><a href="/notebook/">Research notebook</a></li>
+        <li><a href="/games/">Indie games</a></li>
+        <li><a href="https://scholar.google.com/citations?user=Ks6qgVQAAAAJ">Google Scholar</a></li>
+      </ul>
+    </div>
+    <canvas id="scene" tabindex="0" aria-label="Xu Town 3D scene"></canvas>
+    <div id="loading">
+      <div class="loading-card">
+        <h1>Xu Town</h1>
+        <p>Building the town…</p>
+        <div class="bar"><div id="load-bar"></div></div>
+        <div class="loading-tip" id="load-tip"></div>
+        <noscript><p>Xu Town needs JavaScript. <a href="/" style="color:#f7d98a">Open the classic site</a>.</p></noscript>
+      </div>
+    </div>
+    <div id="chooser" class="hidden" role="dialog" aria-modal="true" aria-labelledby="chooser-title">
+      <div class="chooser-card">
+        <h1 id="chooser-title">Xu Town</h1>
+        <p class="sub">Welcome, traveller! This is Kaijie (Jay) Xu's homepage as a little 3D town: papers in the library, news on the notice board, games in the hall, four research mini-games, and Kaijie himself on the plaza.</p>
+        <div id="avatar-slot"></div>
+        <div class="actions">
+          <button class="btn" id="enter-town">▶ Enter the Town</button>
+          <a class="btn secondary" href="/">Classic Site</a>
+        </div>
+        <div class="controls" id="controls-help"></div>
+        <div class="alt"><a href="/xu-town-2d/">Prefer the old 2D town?</a></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

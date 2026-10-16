@@ -1,0 +1,9 @@
+{{- /* Renders data/news.yaml grouped by year. */ -}}
+{{- $md := slice -}}
+{{- range site.Data.news -}}
+  {{- $md = $md | append (printf "## %v" .year) -}}
+  {{- $items := slice -}}
+  {{- range .items }}{{ $items = $items | append (printf "- %s" .) }}{{ end -}}
+  {{- $md = $md | append (delimit $items "\n") -}}
+{{- end -}}
+{{ .Page.RenderString (delimit $md "\n\n") }}

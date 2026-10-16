@@ -1,0 +1,13 @@
+{{- /* Renders data/notebook.yaml (sections > groups > links). */ -}}
+{{- $sections := slice -}}
+{{- range site.Data.notebook -}}
+  {{- $md := slice (printf "## %s" .title) -}}
+  {{- range .groups -}}
+    {{- $md = $md | append (printf "### %s" .title) -}}
+    {{- $items := slice -}}
+    {{- range .items }}{{ $items = $items | append (printf "- **[%s](%s)** - %s" .name .url .desc) }}{{ end -}}
+    {{- $md = $md | append (delimit $items "\n") -}}
+  {{- end -}}
+  {{- $sections = $sections | append (delimit $md "\n\n") -}}
+{{- end -}}
+{{ .Page.RenderString (delimit $sections "\n\n---\n\n") }}

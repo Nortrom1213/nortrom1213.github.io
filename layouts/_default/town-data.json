@@ -1,0 +1,40 @@
+{{- /* JSON consumed by the 3D Xu Town (town3d/). Built from data/*.yaml + config. */ -}}
+{{- $pubs := slice -}}
+{{- range site.Data.publications -}}
+  {{- $p := dict "id" (.id | default "") "year" (.year | default 0) "title" (.title | default "") "authors" (.authors | default "") "venue" (.venue | default "")
+        "venueFull" (.venue_md | markdownify | plainify | htmlUnescape)
+        "link" (.link | default "") "detail" (cond (isset . "detail") (printf "/publications/%s/" .detail) "")
+        "featured" (.featured | default false) "award" (.award | default "") "status" (.status | default "") -}}
+  {{- /* Abstract + tags from the paper's Hugo page (content/publications/<detail>.md). */ -}}
+  {{- $abstract := "" -}}
+  {{- $tags := slice -}}
+  {{- with .detail -}}
+    {{- with site.GetPage (printf "/publications/%s" .) -}}
+      {{- $tags = .Params.tags | default slice -}}
+      {{- $raw := printf "%s\n---\n" .RawContent -}}
+      {{- with findRE `(?s)##### Abstract[^\n]*\n.*?\n(?:---|#####)` $raw 1 -}}
+        {{- $abstract = index . 0 | replaceRE `(?s)^##### Abstract[^\n]*\n(.*?)\n(?:---|#####)$` "$1" | replaceRE `(?m)^\s*(\d+)\.\s+` "($1) " | strings.TrimSpace -}}
+        {{- $abstract = $abstract | markdownify | plainify | htmlUnescape | strings.TrimSpace -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $p = merge $p (dict "abstract" $abstract "tags" $tags "figure" (.figure | default "") "figureCaption" (.figure_caption | default "")) -}}
+  {{- $pubs = $pubs | append $p -}}
+{{- end -}}
+{{- $news := slice -}}
+{{- range site.Data.news -}}
+  {{- $year := .year -}}
+  {{- range .items -}}
+    {{- $link := index (findRE `https?://[^)\s]+` .) 0 | default "" -}}
+    {{- $news = $news | append (dict "year" $year "html" (. | markdownify) "text" (. | markdownify | plainify | htmlUnescape) "link" $link) -}}
+  {{- end -}}
+{{- end -}}
+{{- $links := slice -}}
+{{- range site.Params.socialIcons -}}
+  {{- $links = $links | append (dict "label" .name "url" .url) -}}
+{{- end -}}
+{{- $links = $links | append (dict "label" "Indie Games" "url" ("games/" | relURL)) (dict "label" "Classic Site" "url" ("" | relURL)) -}}
+{{- $pm := site.Params.profileMode -}}
+{{- $about := dict "name" $pm.title "title" "PhD Candidate · McGill University" "bioHtml" ($pm.subtitle | safeHTML) "bio" ($pm.subtitle | plainify | htmlUnescape) "image" ($pm.imageUrl | relURL) -}}
+{{- $out := dict "generated" (now.Format "2006-01-02") "about" $about "publications" $pubs "news" $news "notebook" site.Data.notebook "games" site.Data.games "links" $links -}}
+{{- $out | jsonify (dict "indent" "  ") -}}

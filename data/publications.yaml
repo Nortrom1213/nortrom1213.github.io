@@ -1,0 +1,251 @@
+# Single source of truth for publications (classic site + Xu Town).
+# Order = display order. venue_md is the italic venue line on the classic site;
+# venue is the short label used in Xu Town; featured => Selected Publications.
+
+- id: tog26-stealth
+  year: 2026
+  title: "Stealth in Games: A Survey"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "IEEE ToG"
+  venue_md: "*IEEE Transactions on Games* (Early Access)"
+  link: "https://doi.org/10.1109/TG.2026.3734827"
+  detail: "2026-tog-stealth-survey"
+  status: "Early Access"
+
+- id: arxiv26-ainative
+  year: 2026
+  title: "AI Native Games: A Survey and Roadmap"
+  authors: "Zhiyue Xu, Fandi Meng, Kaijie Xu, Clark Verbrugge, Simon Lucas, Jian Zhao"
+  venue: "arXiv 2026"
+  venue_md: "*arXiv preprint arXiv:2607.00527*"
+  link: "https://arxiv.org/abs/2607.00527"
+  detail: "2026-arxiv-ai-native-games"
+  figure: "/papers/2026-arxiv-ai-native-games.webp"
+  figure_caption: "A representative timeline of AI-native games and adjacent artifacts, from early interactive drama (Façade, 2005) to runtime generative-AI games."
+  status: "preprint"
+
+- id: aiide26-platformer
+  year: 2026
+  title: "From Experience to 3D Platformer Levels via Topological Graphs"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "AIIDE 2026"
+  venue_md: "*AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2026)* (accepted)"
+  detail: "2026-aiide-experience-platformer-levels"
+  figure: "/papers/2026-aiide-experience-platformer-levels.webp"
+  figure_caption: "Illustration: an Experience Topological Graph is realised into a playable 3D platformer level, with a local validator guarding progression."
+  status: "accepted"
+
+- id: chi26
+  year: 2026
+  title: "Deconstructing Open-World Game Mission Design Formula: A Thematic Analysis Using an Action-Block Framework"
+  authors: "Kaijie Xu, Yiwei Zhang, Brian Yang, Clark Verbrugge"
+  venue: "CHI 2026"
+  venue_md: "*Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems*"
+  link: "https://dl.acm.org/doi/10.1145/3772318.3790625"
+  detail: "2026-chi-mission-design"
+  figure: "/papers/2026-chi-mission-design.webp"
+  figure_caption: "End-to-end workflow: Fandom walkthroughs become action sequences, scored with MAQV and explored in a dashboard, then validated and analysed."
+  featured: true
+
+- id: aaai26
+  year: 2026
+  title: "CSP4SDG: Constraint and Information-Theory Based Role Identification in Social Deduction Games with LLM-Enhanced Inference"
+  authors: "Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Mark Lucas"
+  venue: "AAAI 2026"
+  venue_md: "*Proceedings of the AAAI Conference on Artificial Intelligence, 40*(17), 14380–14387"
+  link: "https://ojs.aaai.org/index.php/AAAI/article/view/38453"
+  detail: "2026-aaai-csp4sdg"
+  figure: "/papers/2026-aaai-csp4sdg.webp"
+  figure_caption: "Overview: game history becomes hard and soft constraints, reasoned over by a CSP solver, an LLM, or both, to infer each player's role."
+  featured: true
+
+- id: fdg26-skills
+  year: 2026
+  title: "Generate Diverse Skills with Large Language Models"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "PCG Workshop 2026"
+  venue_md: "*Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)* — 17th Workshop on Procedural Content Generation"
+  link: "https://dl.acm.org/doi/10.1145/3815598.3815673"
+  detail: "2026-fdg-generate-diverse-skills-llms"
+  figure: "/papers/2026-fdg-generate-diverse-skills-llms.webp"
+  figure_caption: "Pipeline: elemental cells arranged on a 5×5 grid become grid features, which an LLM compiles into an executable skill."
+
+- id: cog26-path2patrol
+  year: 2026
+  title: "Path2Patrol: Path-Conditioned Guard Generation in Stealth Games through MAP-Elites"
+  authors: "Yiwei Zhang, Kaijie Xu, Richard Zhao, Clark Verbrugge"
+  venue: "CoG 2026"
+  venue_md: "*IEEE Conference on Games (CoG 2026)* (in press)"
+  detail: "2026-cog-path2patrol"
+  figure: "/papers/2026-cog-path2patrol.webp"
+  figure_caption: "Illustration: from a designer's intended player path, MAP-Elites generates diverse guard patrols that keep that path feasible."
+  status: "in press"
+
+- id: cog26-anomaly
+  year: 2026
+  title: "Scene-Modular LLM-Driven Procedural Level Generation for Anomaly-Detection Games"
+  authors: "Kaijie Xu, Fandi Meng, Clark Verbrugge"
+  venue: "CoG 2026"
+  venue_md: "*IEEE Conference on Games (CoG 2026)* (in press)"
+  detail: "2026-cog-scene-modular-anomaly-generation"
+  figure: "/papers/2026-cog-scene-modular-anomaly-generation.webp"
+  figure_caption: "Illustration: the scene is split into addressable objects; a local LLM composes anomalies as structured edits, checked by a repair loop."
+  status: "in press"
+
+- id: cog26-multiguard
+  year: 2026
+  title: "Efficient Multi-Guard Patrol through Extended Composite Potential Fields"
+  authors: "Kaijie Xu, Yiwei Zhang, Clark Verbrugge"
+  venue: "CoG 2026"
+  venue_md: "*IEEE Conference on Games (CoG 2026)* (in press)"
+  detail: "2026-cog-efficient-multi-guard-patrol"
+  figure: "/papers/2026-cog-efficient-multi-guard-patrol.webp"
+  figure_caption: "Illustration: three modular extensions to Composite Potential Fields: lazy evaluation, Voronoi territories and shared novelty patrol."
+  status: "in press"
+
+- id: cog26-boss
+  year: 2026
+  title: "Boss Fights as Spatio-Temporal Level Generation"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "CoG 2026"
+  venue_md: "*IEEE Conference on Games (CoG 2026)* (in press)"
+  detail: "2026-cog-boss-fight-generation"
+  figure: "/papers/2026-cog-boss-fight-generation.webp"
+  figure_caption: "Illustration: in a time-expanded (x, y, t) space the pipeline sketches a route corridor, validates survival and refines a replayable trace."
+  status: "in press"
+
+- id: cog26-ete
+  year: 2026
+  title: "Action Selection in Multiplayer Hidden-Information Games with Expected Target Entropy"
+  authors: "Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Lucas"
+  venue: "CoG 2026"
+  venue_md: "*IEEE Conference on Games (CoG 2026)* (in press)"
+  detail: "2026-cog-expected-target-entropy"
+  figure: "/papers/2026-cog-expected-target-entropy.webp"
+  figure_caption: "Illustration: a belief-state adapter lets the agent score each legal action by the expected entropy about the target after acting."
+  status: "in press"
+
+- id: fdg26-hd
+  year: 2026
+  title: "High Dimensional Procedural Content Generation"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "FDG 2026"
+  venue_md: "*Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)* — Honourable Mention"
+  link: "https://dl.acm.org/doi/10.1145/3815598.3815606"
+  detail: "2026-fdg-hdpcg"
+  figure: "/papers/2026-fdg-hdpcg.webp"
+  figure_caption: "Time direction in Unity: a 3D platformer level with moving platforms (green), enemies (red) and the planned player route (blue)."
+  award: "Honourable Mention"
+  featured: true
+
+- id: fdg26-noise
+  year: 2026
+  title: "(Perlin) Noise as AI coordinator"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "FDG 2026"
+  venue_md: "*Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)*"
+  link: "https://dl.acm.org/doi/10.1145/3815598.3815608"
+  detail: "2026-fdg-perlin-noise-ai-coordinator"
+  figure: "/papers/2026-fdg-perlin-noise-ai-coordinator.webp"
+  figure_caption: "Behaviour parameterisation: a low-frequency Perlin heading field, an independent speed field, and the resulting smooth agent motion."
+
+- id: fdg26-pix
+  year: 2026
+  title: "How Far Can We Go with Pixels Alone? A Pilot Study on Screen-Only Navigation in Commercial 3D ARPGs"
+  authors: "Kaijie Xu, Mustafa Bugti, Clark Verbrugge"
+  venue: "FDG 2026"
+  venue_md: "*Proceedings of the 21st International Conference on the Foundations of Digital Games (FDG 2026)*"
+  link: "https://dl.acm.org/doi/10.1145/3815598.3815607"
+  detail: "2026-fdg-pixels-alone-navigation"
+  figure: "/papers/2026-fdg-pixels-alone-navigation.webp"
+  figure_caption: "Black Myth: Wukong route: the evaluation path and milestones (red) and the side routes players and agents are visually drawn to first (green)."
+
+- id: aiide25-guard
+  year: 2025
+  title: "Generic Guard AI in Stealth Games with Composite Potential Fields"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "AIIDE 2025"
+  venue_md: "*Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2025)* — Best Student Paper Award"
+  link: "https://ojs.aaai.org/index.php/AIIDE/article/view/36819"
+  detail: "2025-11-01-guard-ai"
+  figure: "/papers/2025-11-01-guard-ai.webp"
+  figure_caption: "The Composite Potential Field in a test maze: the base layout with agents, and its Information, Confidence and Connectivity fields."
+  award: "Best Student Paper Award"
+  featured: true
+
+- id: aiide25-db
+  year: 2025
+  title: "A Database-Driven Framework for 3D Level Generation with LLMs"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "AIIDE 2025"
+  venue_md: "*Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2025)*"
+  link: "https://ojs.aaai.org/index.php/AIIDE/article/view/36840"
+  detail: "2025-11-03"
+  figure: "/papers/2025-11-03.webp"
+  figure_caption: "A generated multi-floor 3D level rendered in Unity: yellow volumes are rooms, red objects are placeholder facilities."
+
+- id: aiide25-nav
+  year: 2025
+  title: "Adaptive Visual Navigation Assistant in 3D RPGs"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "AIIDE 2025"
+  venue_md: "*Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2025)*"
+  link: "https://ojs.aaai.org/index.php/AIIDE/article/view/36839"
+  detail: "2025-11-02"
+  figure: "/papers/2025-11-02.webp"
+  figure_caption: "Example uses: helping players spot easily missed paths, and helping designers check visual guidance toward the intended route."
+
+- id: cog25-action
+  year: 2025
+  title: "Action Window Planning for Stealth Missions"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "CoG 2025"
+  venue_md: "*IEEE Conference on Games (CoG 2025)*"
+  link: "https://ieeexplore.ieee.org/abstract/document/11114360"
+  detail: "2025-08-p2"
+  figure: "/papers/2025-08-p2.webp"
+  figure_caption: "Illustration: evolutionary search and a constraint-driven safeblock search plan VIP routes with safe, dispersed action windows."
+
+- id: cog25-vis
+  year: 2025
+  title: "Quantitative Analysis of Visual Guidance in Level Transitions Using Multimodal Visual Metrics"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "CoG 2025"
+  venue_md: "*IEEE Conference on Games (CoG 2025)*"
+  link: "https://ieeexplore.ieee.org/abstract/document/11114135"
+  detail: "2025-08-p1"
+  figure: "/papers/2025-08-p1.webp"
+  figure_caption: "Illustration: depth maps (geometry) and RGB sequences (perception) from Dark Souls III are combined to quantify visual guidance."
+
+- id: cog25-csp
+  year: 2025
+  title: "Constraint Propagation for Reasoning in Single-player Deduction Games"
+  authors: "Fandi Meng, Kaijie Xu, Simon Lucas"
+  venue: "CoG 2025"
+  venue_md: "*IEEE Conference on Games (CoG 2025)*"
+  link: "https://ieeexplore.ieee.org/abstract/document/11114136"
+  detail: "2025-08-p3"
+  figure: "/papers/2025-08-p3.webp"
+  figure_caption: "Illustration: after each query's feedback, AC-3 prunes the information set before entropy-based search picks the next query."
+
+- id: fdg25
+  year: 2025
+  title: "Constraint Is All You Need: Optimization-Based 3D Level Generation with LLMs"
+  authors: "Kaijie Xu, Clark Verbrugge"
+  venue: "FDG 2025"
+  venue_md: "*Proceedings of the 20th International Conference on the Foundations of Digital Games (FDG 2025)*"
+  link: "https://dl.acm.org/doi/full/10.1145/3723498.3723840"
+  detail: "2025-04-1"
+  figure: "/papers/2025-04-1.webp"
+  figure_caption: "Illustration: an LLM turns a narrative description into GLDL constraints, solved as a facility layout problem to build a 3D level."
+
+- id: midl24
+  year: 2024
+  title: "FedFDD: Federated Learning with Frequency Domain Decomposition for Low-Dose CT Denoising"
+  authors: "Xuhang Chen, Zeju Li, Zikun Xu, Kaijie Xu, Cheng Ouyang, Chen Qin"
+  venue: "MIDL 2024"
+  venue_md: "*Medical Imaging with Deep Learning (MIDL 2024)*"
+  link: "https://proceedings.mlr.press/v250/chen24a.html"
+  detail: "2024"
+  figure: "/papers/2024.webp"
+  figure_caption: "Each low-dose CT image is split by frequency: high-frequency signals are learned federatedly, low-frequency ones stay local, then both are fused."

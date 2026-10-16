@@ -28,7 +28,8 @@ menu:
       weight: 4
 
 params:
-    description: "Kaijie (Jay) Xu, PhD Student at McGill University — Publications & News"
+    description: "Kaijie (Jay) Xu, PhD candidate at McGill University: game AI and procedural content generation"
+    images: ["xu-town-og.jpg"]
     author: Kaijie Xu
     # googleAnalyticsID: "G-XXXXX"
     DateFormat: "January 2006"

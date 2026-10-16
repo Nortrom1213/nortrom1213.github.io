@@ -1,0 +1,17 @@
+{{- /* Renders data/games.yaml as game cards. */ -}}
+{{- range site.Data.games }}
+<div class="game-card" id="{{ .id }}">
+  <h2>{{ .title }}</h2>
+  <ul class="game-tags">
+    <li class="status">{{ .status }}</li>
+    {{- range .tags }}<li>{{ . }}</li>{{ end }}
+  </ul>
+  {{- with .video }}
+  <video class="game-video" controls preload="metadata" playsinline>
+    <source src="{{ . }}#t=0.5" type="video/mp4">
+    Your browser does not support embedded video. <a href="{{ . }}">Download the trailer</a>.
+  </video>
+  {{- end }}
+  <p>{{ with .tagline }}<em>{{ . }}</em> {{ end }}{{ .description }}</p>
+</div>
+{{- end }}

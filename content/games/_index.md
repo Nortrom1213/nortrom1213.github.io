@@ -20,21 +20,6 @@ description: "Indie games and game jam projects by Kaijie (Jay) Xu"
 
 Besides research, I make small games. More projects coming soon.
 
-<div class="game-card">
+<!-- Games live in data/games.yaml (shared with Xu Town). -->
 
-## Night Shift: Museum Security
-
-<ul class="game-tags">
-  <li class="status">Hackathon Demo</li>
-  <li>Arcade AI Hackathon 2026</li>
-  <li>Stealth</li>
-</ul>
-
-<video class="game-video" controls preload="metadata" playsinline>
-  <source src="/games/night-shift-trailer.mp4#t=0.5" type="video/mp4">
-  Your browser does not support embedded video. <a href="/games/night-shift-trailer.mp4">Download the trailer</a>.
-</video>
-
-*This time, it's your watch.* A hackathon demo set in a museum after closing time: you take the night shift as the security guard. Built entirely with Arcade AI for the Arcade AI Hackathon 2026.
-
-</div>
+{{< games >}}

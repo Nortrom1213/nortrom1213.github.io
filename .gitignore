@@ -11,3 +11,7 @@ task_plan.md
 findings.md
 progress.md
 .playwright-mcp/
+
+# Xu Town 3D (built in CI into static/xu-town/)
+town3d/node_modules/
+static/xu-town/

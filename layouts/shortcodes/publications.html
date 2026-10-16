@@ -1,0 +1,13 @@
+{{- /* Renders data/publications.yaml. Usage: {{< publications >}} or {{< publications featured="true" >}} */ -}}
+{{- $featuredOnly := eq (.Get "featured") "true" -}}
+{{- $md := slice -}}
+{{- range site.Data.publications -}}
+  {{- if or (not $featuredOnly) .featured -}}
+    {{- $links := slice -}}
+    {{- with .link }}{{ $links = $links | append (printf "[Paper](%s)" .) }}{{ end -}}
+    {{- with .detail }}{{ $links = $links | append (printf "[Details](%s/)" .) }}{{ end -}}
+    {{- $item := printf "+ **%s** (%d)<br>\n  %s<br>\n  %s<br>\n  %s" .title .year .authors .venue_md (delimit $links " | ") -}}
+    {{- $md = $md | append $item -}}
+  {{- end -}}
+{{- end -}}
+{{ .Page.RenderString (delimit $md "\n\n") }}

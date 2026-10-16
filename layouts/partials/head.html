@@ -30,6 +30,9 @@
     {{- .Summary | default (printf "%s - %s" .Title  site.Title) }}{{- else }}
     {{- with site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end -}}">
 <meta name="author" content="{{ (partial "author.html" . ) }}">
+{{- if .IsHome }}
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Kaijie Xu", "alternateName": "Jay Xu", "url": "https://nortrom1213.github.io/", "image": "https://nortrom1213.github.io/me.jpg", "jobTitle": "PhD Candidate in Computer Science", "affiliation": {"@type": "CollegeOrUniversity", "name": "McGill University"}, "alumniOf": [{"@type": "CollegeOrUniversity", "name": "University of California, Berkeley"}, {"@type": "CollegeOrUniversity", "name": "Imperial College London"}], "knowsAbout": ["Procedural content generation", "Game AI", "Computer vision in games", "Large language models", "Optimization and evolutionary computation"], "sameAs": ["https://scholar.google.com/citations?user=Ks6qgVQAAAAJ", "https://www.linkedin.com/in/kaijie-xu-051705263/", "https://github.com/Nortrom1213"]}</script>
+{{- end }}
 <link rel="canonical" href="{{ if .Params.canonicalURL -}} {{ trim .Params.canonicalURL " " }} {{- else -}} {{ .Permalink }} {{- end }}">
 
 {{- /* Styles */}}

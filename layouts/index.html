@@ -1,14 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Kaijie Xu</title>
-<meta http-equiv="refresh" content="0; url=xu-town/">
-<style>html,body{margin:0;padding:0;height:100%;background:#1a1c3a;color:#fbf3dc;font-family:'VT323',monospace;}a{color:#ffd48a;}</style>
-<script>window.location.replace("xu-town/");</script>
-</head>
-<body>
-<p style="padding:1.2rem;">Redirecting to <a href="xu-town/">Xu Town</a>&hellip;</p>
-</body>
-</html>
+{{- define "main" }}
+<style>
+  .main .profile { min-height: auto; padding-top: .4rem; }
+  .enter-town { text-align: center; margin: .6rem 0 .4rem; }
+  .enter-town a {
+    display: inline-block; padding: .4rem 1rem;
+    border: 2px solid currentColor; border-radius: 6px;
+    text-decoration: none; font-weight: bold;
+  }
+</style>
+<div class="enter-town">
+  <a href="{{ "xu-town/" | relURL }}">&#10022; Enter Xu Town (3D)</a>
+</div>
+{{- partial "index_profile.html" . }}
+{{- end }}

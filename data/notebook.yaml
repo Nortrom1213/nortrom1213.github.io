@@ -1,0 +1,58 @@
+# Research notebook: sections > groups > links.
+
+- title: "📚 Conferences"
+  groups:
+    - title: "🎮 Core Gaming Conferences"
+      items:
+        - { name: "IEEE CoG", url: "https://cog2026.fdi.ucm.es/", desc: "IEEE Conference on Games" }
+        - { name: "AIIDE", url: "https://sites.google.com/view/aiide2026/home", desc: "AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment" }
+        - { name: "FDG", url: "https://fdg2026.org/", desc: "Foundations of Digital Games" }
+        - { name: "ACM CHI PLAY", url: "https://chiplay.acm.org/2026/", desc: "Player Experience & HCI in Games" }
+        - { name: "DiGRA", url: "https://www.digraconference2026.com/", desc: "Digital Games Research Association" }
+    - title: "🎯 Important Workshops"
+      items:
+        - { name: "PCG Workshop", url: "https://www.pcgworkshop.com/", desc: "Procedural Content Generation Workshop (FDG)" }
+        - { name: "EXAG", url: "https://www.exag.org/", desc: "Experimental AI in Games Workshop (AIIDE)" }
+    - title: "🖥️ Graphics & Interaction Conferences"
+      items:
+        - { name: "ACM SIGGRAPH", url: "https://s2026.siggraph.org/", desc: "Computer Graphics & Interactive Techniques" }
+        - { name: "I3D", url: "https://i3dsymposium.org/2026/", desc: "Interactive 3D Graphics and Games" }
+        - { name: "MIG", url: "https://mig.siggraph.org/", desc: "Motion, Interaction and Games" }
+        - { name: "IEEE VR", url: "https://ieeevr.org/2026/", desc: "Virtual Reality Conference" }
+        - { name: "ACM CHI", url: "https://chi2026.acm.org/", desc: "Human-Computer Interaction" }
+    - title: "🤖 AI & Multimedia Conferences"
+      items:
+        - { name: "AAAI", url: "https://aaai.org/conference/aaai/aaai-26/", desc: "Association for the Advancement of Artificial Intelligence" }
+        - { name: "IJCAI", url: "https://2026.ijcai.org/", desc: "International Joint Conference on Artificial Intelligence" }
+        - { name: "NeurIPS", url: "https://neurips.cc/Conferences/2026", desc: "Neural Information Processing Systems" }
+        - { name: "ICML", url: "https://icml.cc/Conferences/2026", desc: "International Conference on Machine Learning" }
+        - { name: "CVPR", url: "https://cvpr.thecvf.com/Conferences/2026", desc: "Computer Vision and Pattern Recognition" }
+        - { name: "AAMAS", url: "https://cyprusconferences.org/aamas2026/", desc: "Autonomous Agents and Multi-Agent Systems" }
+        - { name: "ACM Multimedia", url: "https://2026.acmmm.org/", desc: "Multimedia Research" }
+
+- title: "📖 Journals"
+  groups:
+    - title: "🎮 Core Gaming Journals"
+      items:
+        - { name: "IEEE Transactions on Games (ToG)", url: "https://transactions.games/", desc: "IEEE flagship journal for games research" }
+        - { name: "ACM Games: Research and Practice", url: "https://dl.acm.org/journal/games", desc: "ACM's premier games research journal" }
+        - { name: "Entertainment Computing", url: "https://journals.elsevier.com/entertainment-computing", desc: "Elsevier journal for entertainment technology" }
+        - { name: "Game Studies", url: "https://gamestudies.org", desc: "International journal of computer game research" }
+        - { name: "Simulation & Gaming", url: "https://journals.sagepub.com/home/sag", desc: "SAGE journal for simulation and gaming research" }
+    - title: "🖥️ Graphics & Interaction Journals"
+      items:
+        - { name: "ACM Transactions on Graphics (TOG)", url: "https://dl.acm.org/journal/tog", desc: "Premier computer graphics journal" }
+        - { name: "Computer Graphics Forum", url: "https://onlinelibrary.wiley.com/journal/14678659", desc: "Wiley journal for graphics research" }
+        - { name: "Virtual Reality", url: "https://springer.com/journal/10055", desc: "Springer journal for VR/AR research" }
+        - { name: "Presence", url: "https://direct.mit.edu/pvar", desc: "MIT Press journal for VR/AR presence research" }
+        - { name: "ACM TOCHI", url: "https://dl.acm.org/journal/tochi", desc: "ACM journal for human-computer interaction" }
+        - { name: "IJHCS", url: "https://journals.elsevier.com/international-journal-of-human-computer-studies", desc: "International journal of HCI studies" }
+    - title: "🤖 AI & Multimedia Journals"
+      items:
+        - { name: "IEEE TCIAIG (now IEEE ToG)", url: "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=4804728", desc: "IEEE journal for computational intelligence and AI in games" }
+        - { name: "IEEE TAI", url: "https://cis.ieee.org/publications/ieee-transactions-on-artificial-intelligence", desc: "IEEE transactions on artificial intelligence" }
+        - { name: "Artificial Intelligence", url: "https://journals.elsevier.com/artificial-intelligence", desc: "Elsevier journal for AI research" }
+        - { name: "IEEE TNNLS", url: "https://ieee-cis.org/publications/tnnls", desc: "IEEE journal for neural networks and learning systems" }
+        - { name: "Neural Computing", url: "https://springer.com/journal/521", desc: "Springer journal for neural computing applications" }
+        - { name: "ACM TOMM", url: "https://dl.acm.org/journal/tomm", desc: "ACM journal for multimedia computing and communications" }
+        - { name: "Multimedia Tools", url: "https://springer.com/journal/11042", desc: "Springer journal for multimedia tools and applications" }

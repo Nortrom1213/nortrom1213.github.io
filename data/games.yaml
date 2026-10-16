@@ -1,0 +1,8 @@
+# Indie games shown on /games/ and in the Xu Town Games Hall.
+- id: night-shift
+  title: "Night Shift: Museum Security"
+  tagline: "This time, it's your watch."
+  status: "Hackathon Demo"
+  tags: ["Arcade AI Hackathon 2026", "Stealth"]
+  video: "/games/night-shift-trailer.mp4"
+  description: "A hackathon demo set in a museum after closing time: you take the night shift as the security guard. Built entirely with Arcade AI for the Arcade AI Hackathon 2026."
