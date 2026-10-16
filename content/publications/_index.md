@@ -29,6 +29,16 @@ description: "Selected research publications and complete publication list"
 
 ## All Publications
 
++ **Stealth in Games: A Survey** (2026)<br>
+  Kaijie Xu, Clark Verbrugge<br>
+  *IEEE Transactions on Games* (Early Access)<br>
+  [Paper](https://doi.org/10.1109/TG.2026.3734827) | [Details](2026-tog-stealth-survey/)
+
++ **AI Native Games: A Survey and Roadmap** (2026)<br>
+  Zhiyue Xu, Fandi Meng, Kaijie Xu, Clark Verbrugge, Simon Lucas, Jian Zhao<br>
+  *arXiv preprint arXiv:2607.00527*<br>
+  [Paper](https://arxiv.org/abs/2607.00527) | [Details](2026-arxiv-ai-native-games/)
+
 + **From Experience to 3D Platformer Levels via Topological Graphs** (2026)<br>
   Kaijie Xu, Clark Verbrugge<br>
   *AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE 2026)* (accepted)<br>

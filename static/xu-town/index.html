@@ -144,7 +144,7 @@ body.xu-town-active .xu-floating-link{display:inline-flex;}
       <button id="xu-mode-game" type="button" class="xu-wood-button">&#9656; Enter the Town</button>
       <button id="xu-mode-classic" type="button" class="xu-wood-button xu-wood-button-secondary">&#9671; Classic Site</button>
     </div>
-    <div class="xu-chooser-footnote">You can switch modes anytime from the top-right.</div>
+    <div class="xu-chooser-footnote">You can switch modes anytime from the top-left corner.</div>
   </div>
 </div>
 
@@ -207,10 +207,24 @@ window.SITE_DATA = {
       authors: "Kaijie Xu, Fandi Meng, Clark Verbrugge, Simon Mark Lucas",
       venue: "AAAI 2026", venueFull: "AAAI Conference on Artificial Intelligence",
       link: "https://ojs.aaai.org/index.php/AAAI/article/view/38453" },
+    { id: "tog26-stealth", year: 2026,
+      title: "Stealth in Games: A Survey",
+      authors: "Kaijie Xu, Clark Verbrugge",
+      venue: "IEEE ToG", venueFull: "IEEE Transactions on Games (Early Access)",
+      link: "https://doi.org/10.1109/TG.2026.3734827",
+      detail: "/publications/2026-tog-stealth-survey/" },
+    { id: "arxiv26-ainative", year: 2026,
+      title: "AI Native Games: A Survey and Roadmap",
+      authors: "Zhiyue Xu, Fandi Meng, Kaijie Xu, Clark Verbrugge, Simon Lucas, Jian Zhao",
+      venue: "arXiv 2026", venueFull: "arXiv preprint arXiv:2607.00527",
+      link: "https://arxiv.org/abs/2607.00527",
+      detail: "/publications/2026-arxiv-ai-native-games/",
+      status: "preprint" },
     { id: "aiide26-platformer", year: 2026,
       title: "From Experience to 3D Platformer Levels via Topological Graphs",
       authors: "Kaijie Xu, Clark Verbrugge",
       venue: "AIIDE 2026", venueFull: "AAAI Conference on AI and Interactive Digital Entertainment",
+      detail: "/publications/2026-aiide-experience-platformer-levels/",
       status: "accepted" },
     { id: "fdg26-skills", year: 2026,
       title: "Generate Diverse Skills with Large Language Models",
@@ -305,6 +319,7 @@ window.SITE_DATA = {
   ],
 
   news: [
+    { year: 2026, date: "2026", text: "Our survey \"Stealth in Games: A Survey\" is published in IEEE Transactions on Games (Early Access).", link: "https://doi.org/10.1109/TG.2026.3734827" },
     { year: 2026, date: "2026", text: "One paper accepted at AIIDE 2026 - Belo Horizonte, Brazil · Nov 9-13.", link: "https://sites.google.com/view/aiide2026/home" },
     { year: 2026, date: "2026", text: "Five papers accepted at CoG 2026 - Madrid, Spain · Sep 1-4.", link: "https://cog2026.fdi.ucm.es/" },
     { year: 2026, date: "2026", text: "One paper accepted at the PCG Workshop 2026 at FDG 2026 - Copenhagen, Denmark · Aug 10-13.", link: "https://www.pcgworkshop.com/" },
@@ -373,7 +388,8 @@ window.SITE_DATA = {
     { id: "scholar", label: "Google Scholar", url: "https://scholar.google.com/citations?hl=zh-CN&user=Ks6qgVQAAAAJ", color: "#4285f4" },
     { id: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/in/kaijie-xu-051705263/", color: "#0a66c2" },
     { id: "email", label: "Email", url: "mailto:kaijie.xu2@mail.mcgill.ca", color: "#b85a3a" },
-    { id: "site", label: "Hugo Site", url: "https://nortrom1213.github.io/", color: "#3b8d56" },
+    { id: "games", label: "Indie Games", url: "/games/", color: "#7a2e2e" },
+    { id: "site", label: "Classic Site", url: "/classic/", color: "#3b8d56" },
   ],
 
   npcs: [
@@ -1775,9 +1791,9 @@ function AboutPanel({ onClose }) {
         ⌂ TOWN GUIDE ⌂<br/>
         ▸ NW · the LIBRARY holds my publications. Glowing tomes are my featured work.<br/>
         ▸ NE · the NOTICE BOARD shows recent news and announcements.<br/>
-        ▸ SW · the NOTEBOOK CAFÉ — research notes, conferences, journals on every wall.<br/>
-        ▸ SE · the RESEARCH STUDIO — sticky notes pinned to every surface.<br/>
-        ▸ Center · the PORTAL — fast travel to GitHub, Email, Scholar.
+        ▸ SW · the NOTEBOOK CAFÉ — conferences and journals pinned to every wall.<br/>
+        ▸ SE · the ARTIFACT hall — a plinth still waiting for its exhibit.<br/>
+        ▸ E · the PORTAL — fast travel to GitHub, Scholar, LinkedIn, Email.
       </div>
     </PixelPanel>
   );
@@ -1920,6 +1936,7 @@ function Book({ p, selected, onClick }) {
   const colorByVenue = {
     "CHI 2026": "#7d3a8a", "AAAI 2026": "#3a4d8a", "FDG 2026": "#7a3a4d",
     "PCG Workshop 2026": "#8a6a2a", "CoG 2026": "#3a6a5a",
+    "AIIDE 2026": "#8a5a2a", "IEEE ToG": "#2a5a8a", "arXiv 2026": "#6a6a6a",
     "AIIDE 2025": "#8a5a2a", "CoG 2025": "#3a6a5a", "FDG 2025": "#5a3a8a",
     "MIDL 2024": "#3a8a6a",
   };
