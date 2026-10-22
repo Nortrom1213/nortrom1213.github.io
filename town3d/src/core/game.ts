@@ -506,7 +506,7 @@ export class Game {
       tile("📚", "Publications", `${d.publications.length} papers`, () => panels.publicationsPanel(this.ui, d)),
       tile("📌", "News", "Latest updates", () => panels.newsPanel(this.ui, d)),
       tile("☕", "Notebook", "Venues & journals", () => panels.notebookPanel(this.ui, d)),
-      tile("🎮", "Indie Games", "Night Shift trailer", () => panels.gamesPanel(this.ui, d)),
+      tile("🎮", "Indie Games", "Trailers & demos", () => panels.gamesPanel(this.ui, d)),
       tile("🌀", "Links", "GitHub, Scholar, email", () => panels.linksPanel(this.ui, d)),
       tile("🧑‍🎨", "Change look", "Pick your avatar", () => this.ui.openPanel({ title: "Your look", kicker: "Avatar", body: avatarPicker(this) })),
     );

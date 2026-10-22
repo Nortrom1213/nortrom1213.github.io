@@ -228,7 +228,7 @@ export function gamesPanel(ui: UI, data: TownData) {
       <div class="meta" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
         <span class="tag status">${h(g.status)}</span>${g.tags.map((t) => `<span class="tag">${h(t)}</span>`).join("")}
       </div>
-      ${g.video ? `<video controls playsinline preload="metadata" src="${h(g.video)}#t=0.5"></video>` : ""}
+      ${g.video ? (g.poster ? `<video controls playsinline preload="none" poster="${h(g.poster)}" src="${h(g.video)}"></video>` : `<video controls playsinline preload="metadata" src="${h(g.video)}#t=0.5"></video>`) : ""}
       <p>${g.tagline ? `<em>${h(g.tagline)}</em> ` : ""}${h(g.description)}</p>`;
     body.append(card);
   }

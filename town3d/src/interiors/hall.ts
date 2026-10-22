@@ -6,7 +6,7 @@ import { buildRoom, labelPlane, type Room } from "./room";
 import { flatMat } from "../actors/chibi";
 import * as panels from "../ui/panels";
 
-// Games Hall: a cinema screen playing the Night Shift trailer, plus an arcade
+// Games Hall: a cinema screen playing the newest game's trailer, plus an arcade
 // cabinet for each research mini-game that explains it and offers a shortcut.
 
 const FURN = ["loungeSofa", "pottedPlant", "speaker", "rugRectangle", "lampSquareFloor"];
@@ -86,7 +86,7 @@ export class HallStage extends Stage {
       id: "screen",
       pos: new THREE.Vector3(0, 0, -D / 2 + 2.6),
       radius: 2.6,
-      label: "Watch the Night Shift trailer (with sound)",
+      label: "Watch the game trailers (with sound)",
       markerHeight: 1.6,
       onInteract: () => panels.gamesPanel(this.game.ui, this.game.data),
     });

@@ -1,4 +1,14 @@
-# Indie games shown on /games/ and in the Xu Town Games Hall.
+# Indie games shown on /games/ and in the Xu Town Games Hall (first entry plays
+# on the hall's cinema screen). `poster` is optional.
+- id: liang-zhu
+  title: "LIANG · ZHU 梁·祝"
+  tagline: "Butterfly Line."
+  status: "In Development"
+  tags: ["First-person", "Psychological horror"]
+  video: "/games/liang-zhu-trailer.mp4"
+  poster: "/games/liang-zhu-poster.webp"
+  description: "A first-person psychological horror about a man who keeps returning to a corridor that should not exist — and a voice on the phone that only speaks in the dark."
+
 - id: night-shift
   title: "Night Shift: Museum Security"
   tagline: "This time, it's your watch."

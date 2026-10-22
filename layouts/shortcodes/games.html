@@ -1,17 +1,19 @@
 {{- /* Renders data/games.yaml as game cards. */ -}}
 {{- range site.Data.games }}
-<div class="game-card" id="{{ .id }}">
-  <h2>{{ .title }}</h2>
+{{- $g := . }}
+<div class="game-card" id="{{ $g.id }}">
+  <h2>{{ $g.title }}</h2>
   <ul class="game-tags">
-    <li class="status">{{ .status }}</li>
-    {{- range .tags }}<li>{{ . }}</li>{{ end }}
+    <li class="status">{{ $g.status }}</li>
+    {{- range $g.tags }}<li>{{ . }}</li>{{ end }}
   </ul>
-  {{- with .video }}
-  <video class="game-video" controls preload="metadata" playsinline>
-    <source src="{{ . }}#t=0.5" type="video/mp4">
+  {{- with $g.video }}
+  {{- /* With a poster nothing downloads until play; without one, show a frame at 0.5 s. */}}
+  <video class="game-video" controls playsinline preload="{{ if $g.poster }}none{{ else }}metadata{{ end }}"{{ with $g.poster }} poster="{{ . }}"{{ end }}>
+    <source src="{{ . }}{{ if not $g.poster }}#t=0.5{{ end }}" type="video/mp4">
     Your browser does not support embedded video. <a href="{{ . }}">Download the trailer</a>.
   </video>
   {{- end }}
-  <p>{{ with .tagline }}<em>{{ . }}</em> {{ end }}{{ .description }}</p>
+  <p>{{ with $g.tagline }}<em>{{ . }}</em> {{ end }}{{ $g.description }}</p>
 </div>
 {{- end }}

@@ -45,6 +45,7 @@ export interface Game {
   status: string;
   tags: string[];
   video?: string;
+  poster?: string;
   description: string;
 }
 
