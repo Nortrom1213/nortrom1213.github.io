@@ -9,6 +9,15 @@
   poster: "/games/liang-zhu-poster.webp"
   description: "A first-person psychological horror about a man who keeps returning to a corridor that should not exist — and a voice on the phone that only speaks in the dark."
 
+- id: in-kind
+  title: "IN KIND 还施"
+  tagline: "Answer every blade in kind."
+  status: "In Development"
+  tags: ["Rhythm", "Wuxia", "Ink-wash"]
+  video: "/games/in-kind-trailer.mp4"
+  poster: "/games/in-kind-poster.webp"
+  description: "An ink-wash wuxia rhythm game: you duel each master with their own weapon — sword, twin sabres, fan, umbrella, meteor hammer, even a game of Go — and every parry, strike and dodge lands on the beat."
+
 - id: night-shift
   title: "Night Shift: Museum Security"
   tagline: "This time, it's your watch."
