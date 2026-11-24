@@ -4,10 +4,10 @@
   title: "LIANG · ZHU 梁·祝"
   tagline: "Butterfly Line."
   status: "In Development"
-  tags: ["First-person", "Psychological horror"]
+  tags: ["First-person", "Psychological horror", "Exploration & puzzles", "Stealth"]
   video: "/games/liang-zhu-trailer.mp4"
   poster: "/games/liang-zhu-poster.webp"
-  description: "A first-person psychological horror about a man who keeps returning to a corridor that should not exist — and a voice on the phone that only speaks in the dark."
+  description: "Seven years ago, Liang Chi missed her calls. Now a doctor at a small clinic in her hometown, he wakes on the night shift to a corridor that should not exist — and beyond it, the rain-soaked city they once shared, empty but for the voices of everyone who ever judged him. Somewhere in that city, on the other end of the line, she is still waiting for him to pick up."
 
 - id: in-kind
   title: "IN KIND 还施"
