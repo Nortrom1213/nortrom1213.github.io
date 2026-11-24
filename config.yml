@@ -26,6 +26,9 @@ menu:
     - name: Games
       url: games/
       weight: 4
+    - name: Blog
+      url: blog/
+      weight: 5
 
 params:
     description: "Kaijie (Jay) Xu, PhD candidate at McGill University: game AI and procedural content generation"
@@ -44,7 +47,7 @@ params:
     ShowBreadCrumbs: false
     ShowCodeCopyButtons: true
     ShowAllPagesInArchive: false
-    MainSections: ["news","publications","notebook","games"]
+    MainSections: ["news","publications","notebook","games","blog"]
     ShowToc: false
     disableScrollToTop: true
     TocOpen: true
@@ -72,6 +75,8 @@ params:
             url: /notebook/
           - name: Games
             url: /games/
+          - name: Blog
+            url: /blog/
 
 
     socialIcons:
