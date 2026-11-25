@@ -1,0 +1,404 @@
+<!doctype html><html><head><meta charset="utf-8"><title>L-system garden (live)</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #fff; overflow: hidden; font-family: Arial, sans-serif; color: #1f2a3a; }
+  #stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  .row { position: absolute; left: 48px; width: 1824px; display: flex; align-items: center; }
+  #row1 { top: 24px; height: 80px; gap: 14px; }
+  #row2 { top: 122px; height: 76px; gap: 18px; }
+  .lab { font-size: 34px; color: #6b7280; white-space: nowrap; }
+  .arrow { font-size: 44px; }
+  .gap { width: 22px; flex: none; }
+  input.t { font: 42px Consolas, "Cascadia Mono", "Courier New", monospace; height: 78px; box-sizing: border-box; border: 3px solid #d6ccbc; border-radius: 14px;
+    background: #fff; color: #1f2a3a; padding: 0 16px; outline: none; min-width: 0; transition: background .5s; }
+  input.t:focus { border-color: #34466b; }
+  input.t.bad, input.t.bad:focus { border: 5px solid #ED1B2F; background: #fdecee; padding: 0 14px; }
+  input.t.flash { background: #fde9b0; transition: none; }
+  #fAx { width: 150px; flex: none; }
+  input.p { width: 66px; flex: none; text-align: center; padding: 0; font-weight: bold; }
+  input.p.bad { padding: 0; }
+  input.r { flex: 1; }
+  input[type=range] { -webkit-appearance: none; appearance: none; height: 14px; border-radius: 7px; background: #d6ccbc; outline: none; margin: 0 6px; flex: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 44px; height: 44px; border-radius: 50%; background: #1f2a3a; border: 5px solid #fff; box-shadow: 0 2px 8px rgba(20,30,50,.35); cursor: pointer; }
+  input[type=range]::-moz-range-thumb { width: 36px; height: 36px; border-radius: 50%; background: #1f2a3a; border: 5px solid #fff; cursor: pointer; }
+  #sA { width: 400px; } #sJ { width: 210px; }
+  .val { font-size: 40px; font-weight: bold; white-space: nowrap; }
+  #vA { width: 116px; } #vJ { width: 84px; } #vN { width: 50px; text-align: center; }
+  #vN.cap { color: #f2902f; }
+  .delta { font: italic 50px "Times New Roman", serif; margin-right: 2px; }
+  button { font: bold 34px Arial, sans-serif; color: #1f2a3a; background: #f6f1e8; border: 3px solid #d6ccbc; border-radius: 16px; cursor: pointer; padding: 0; }
+  button:hover { background: #e9e1d4; }
+  button:active { transform: translateY(2px); }
+  button.pri { background: #1f2a3a; color: #fff; border-color: #1f2a3a; }
+  button.pri:hover { background: #34466b; }
+  button.sq { width: 70px; height: 70px; font-size: 44px; line-height: 60px; flex: none; }
+  #bFl { height: 70px; width: 196px; flex: none; margin-left: auto; color: #9aa3ad; background: #fff; }
+  #bFl.on { color: #1f2a3a; background: #fbe3e7; border-color: #f0a3ae; }
+  #cv { position: absolute; left: 0; top: 214px; width: 1920px; height: 696px; }
+  #bottom { position: absolute; left: 48px; top: 922px; width: 1824px; height: 140px; display: flex; gap: 8px; }
+  button.pre { width: 130px; height: 140px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff; font-size: 30px; }
+  button.pre canvas { width: 114px; height: 88px; display: block; }
+  button.pre.sel { border-color: #1f2a3a; background: #f6f1e8; }
+  button.act { height: 140px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+  button.act small { font: 24px Arial, sans-serif; opacity: .65; }
+  #bPlant { width: 226px; margin-left: 4px; } #bSur { width: 244px; } #bClear { width: 234px; }
+</style></head><body>
+<div id="stage">
+  <div id="row1" class="row">
+    <span class="lab">axiom</span><input id="fAx" class="t" spellcheck="false" autocomplete="off" value="F">
+    <span class="gap"></span>
+    <input id="fP1" class="t p" maxlength="1" spellcheck="false" autocomplete="off" value="F"><span class="arrow">→</span><input id="fR1" class="t r" spellcheck="false" autocomplete="off">
+    <span class="gap"></span>
+    <input id="fP2" class="t p" maxlength="1" spellcheck="false" autocomplete="off" value="X"><span class="arrow">→</span><input id="fR2" class="t r" spellcheck="false" autocomplete="off">
+  </div>
+  <div id="row2" class="row">
+    <span class="delta">δ</span><input id="sA" type="range" min="5" max="90" step="0.5" value="25.5"><span id="vA" class="val">25.7°</span>
+    <span class="gap"></span>
+    <span class="lab">generations</span><button id="bGm" class="sq">−</button><span id="vN" class="val">5</span><button id="bGp" class="sq">+</button>
+    <span class="gap"></span>
+    <span class="lab">randomness</span><input id="sJ" type="range" min="0" max="30" step="1" value="10"><span id="vJ" class="val">10%</span>
+    <button id="bFl" class="on">flowers</button>
+  </div>
+  <canvas id="cv" width="1920" height="696"></canvas>
+  <div id="bottom"></div>
+</div>
+<script>
+// Live L-system garden. Bracketed OL-systems with turtle interpretation, after Prusinkiewicz & Lindenmayer,
+// The Algorithmic Beauty of Plants (1990), section 1.6.3 / fig. 1.24. No external dependencies.
+// Keys (when not typing in a field): Enter = plant it, S = surprise me, C = clear garden, F = flowers,
+// Up/Down = generations, 1..8 = presets. In a text field, Enter or Esc leaves the field.
+const C = { ink: '#1f2a3a', cream: '#f6f1e8', body: '#e9e1d4', bodyDark: '#d6ccbc', grey: '#6b7280', light: '#9aa3ad', red: '#ED1B2F',
+  trunk: '#694e36', slate: '#34466b', jump: '#f2902f' };
+const LEAVES = ['#2fb574', '#259f71', '#13756c', '#22b5a8'];
+const BLOOMS = ['#e5484d', '#f6b92b', '#7c5cd6', '#f2902f', '#3d8be0'];
+const CAP = 300000, NB = 10, CW = 1920, CH = 696, GY = 606;
+const $ = id => document.getElementById(id);
+const cv = $('cv'), g = cv.getContext('2d');
+const Q = new URLSearchParams(location.search);
+const STILL = Q.get('still') === '1', MAXN = Number(Q.get('maxgen') || 10);
+
+// ABOP fig. 1.24 (a-f); Koch curve (snowflake side, ABOP fig. 1.1 written as an L-system); dragon curve (ABOP fig. 1.10a,
+// Fl -> Fl+Fr+, Fr -> -Fl-Fr, written with Fl = FX and Fr = YF so that F is the only drawing symbol).
+const PRESETS = [
+  { k: 'a', label: 'a', axiom: 'F', p1: 'F', r1: 'F[+F]F[-F]F', p2: 'X', r2: '', angle: 25.7, n: 5, pn: 4 },
+  { k: 'b', label: 'b', axiom: 'F', p1: 'F', r1: 'F[+F]F[-F][F]', p2: 'X', r2: '', angle: 20, n: 5, pn: 4 },
+  { k: 'c', label: 'c', axiom: 'F', p1: 'F', r1: 'FF-[-F+F+F]+[+F-F-F]', p2: 'X', r2: '', angle: 22.5, n: 4, pn: 3 },
+  { k: 'd', label: 'd', axiom: 'X', p1: 'F', r1: 'FF', p2: 'X', r2: 'F[+X]F[-X]+X', angle: 20, n: 7, pn: 5 },
+  { k: 'e', label: 'e', axiom: 'X', p1: 'F', r1: 'FF', p2: 'X', r2: 'F[+X][-X]FX', angle: 25.7, n: 7, pn: 5 },
+  { k: 'f', label: 'f', axiom: 'X', p1: 'F', r1: 'FF', p2: 'X', r2: 'F-[[X]+X]+F[+FX]-X', angle: 22.5, n: 5, pn: 4 },
+  { k: 'koch', label: 'Koch', axiom: 'F', p1: 'F', r1: 'F+F--F+F', p2: 'X', r2: '', angle: 60, n: 4, pn: 3, curve: true },
+  { k: 'dragon', label: 'dragon', axiom: 'FX', p1: 'X', r1: 'X+YF+', p2: 'Y', r2: '-FX-Y', angle: 90, n: 10, pn: 8, curve: true },
+];
+
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const hex = h => { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+const mix = (a, b, u) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * u)).join(',')})`; };
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const ease = u => { u = clamp(u, 0, 1); return u * u * (3 - 2 * u); };
+const pop = u => { u = clamp(u, 0, 1); const c = 1.7; return Math.max(0, 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2)); };
+
+// ---------------- the algorithm ----------------
+function balanced(s) { let d = 0; for (const ch of s) { if (ch === '[') d++; else if (ch === ']' && --d < 0) return false; } return d === 0; }
+// Parallel rewriting, n generations; stops early if the next string would pass CAP symbols.
+function expand(spec) {
+  const rules = {};
+  if (spec.p1 && spec.r1) rules[spec.p1] = spec.r1;
+  if (spec.p2 && spec.r2 && !(spec.p2 in rules)) rules[spec.p2] = spec.r2;
+  let s = spec.axiom, gens = 0;
+  for (; gens < spec.n; gens++) {
+    let len = 0; for (let i = 0; i < s.length; i++) { const r = rules[s[i]]; len += r === undefined ? 1 : r.length; }
+    if (len > CAP) break;
+    const out = new Array(s.length); for (let i = 0; i < s.length; i++) { const r = rules[s[i]]; out[i] = r === undefined ? s[i] : r; }
+    s = out.join('');
+  }
+  return { str: s, gens };
+}
+// Turtle: F draw forward, f move, + turn left by delta, - turn right, [ push, ] pop; every other symbol is ignored.
+function turtle(str, deg, jit, seed) {
+  let nF = 0, branched = false;
+  for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); if (c === 70) nF++; else if (c === 91) branched = true; }
+  const x0 = new Float32Array(nF), y0 = new Float32Array(nF), x1 = new Float32Array(nF), y1 = new Float32Array(nF), w0 = new Float32Array(nF), w1 = new Float32Array(nF), dep = new Uint8Array(nF);
+  const R = rng(seed), j = jit / 100, da = deg * Math.PI / 180, st = [], tips = [];
+  // a branching structure grows upward; an unbranched curve starts heading right
+  let x = 0, y = 0, h = branched ? Math.PI / 2 : 0, d = 0, w = 0, n = 0, drew = false, maxD = 0;
+  let bx0 = 0, bx1 = 0, by0 = 0, by1 = 0;
+  for (let i = 0; i < str.length; i++) {
+    switch (str.charCodeAt(i)) {
+      case 70: case 102: {                                   // F, f
+        const len = j ? 1 + j * (2 * R() - 1) : 1, nx = x + Math.cos(h) * len, ny = y + Math.sin(h) * len, nw = w + len * (1 + 0.5 * d);
+        if (str.charCodeAt(i) === 70) { x0[n] = x; y0[n] = y; x1[n] = nx; y1[n] = ny; w0[n] = w; w1[n] = nw; dep[n] = d < NB ? d : NB - 1; n++; drew = true; }
+        x = nx; y = ny; w = nw;
+        if (x < bx0) bx0 = x; if (x > bx1) bx1 = x; if (y < by0) by0 = y; if (y > by1) by1 = y;
+        break;
+      }
+      case 43: h += da * (j ? 1 + j * (2 * R() - 1) : 1); break;   // +
+      case 45: h -= da * (j ? 1 + j * (2 * R() - 1) : 1); break;   // -
+      case 91: st.push(x, y, h, w, drew ? 1 : 0); d++; if (d > maxD) maxD = d; drew = false; break;
+      case 93: if (st.length) { if (drew) tips.push(x, y, w, n); drew = st.pop() === 1; w = st.pop(); h = st.pop(); y = st.pop(); x = st.pop(); d--; } break;
+    }
+  }
+  if (drew && branched) tips.push(x, y, w, n);
+  let maxW = 1e-9; for (let i = 0; i < n; i++) if (w1[i] > maxW) maxW = w1[i];
+  for (let i = 0; i < n; i++) { w0[i] = Math.pow(w0[i] / maxW, 1.5); w1[i] = Math.pow(w1[i] / maxW, 1.5); }   // how much a point bends in the breeze
+  const cnt = new Int32Array(NB); for (let i = 0; i < n; i++) cnt[dep[i]]++;
+  const bucket = []; for (let b = 0; b < NB; b++) bucket.push(new Int32Array(cnt[b]));
+  cnt.fill(0); for (let i = 0; i < n; i++) bucket[dep[i]][cnt[dep[i]]++] = i;
+  // about 140 blossoms at most
+  const nt = tips.length / 4, keep = Math.min(1, 140 / Math.max(1, nt)), R2 = rng(seed ^ 0x9e3779b9), T = [];
+  for (let k = 0; k < nt; k++) if (keep >= 1 || R2() < keep) T.push(tips[4 * k], tips[4 * k + 1], Math.pow(tips[4 * k + 2] / maxW, 1.5), tips[4 * k + 3]);
+  return { N: n, x0, y0, x1, y1, w0, w1, bucket, maxD, branched, box: [bx0, by0, bx1, by1], tips: new Float32Array(T) };
+}
+function build(spec) {
+  const { str, gens } = expand(spec), P = turtle(str, spec.angle, spec.jit, spec.seed);
+  P.spec = { ...spec }; P.len = str.length; P.gens = gens;
+  const R = rng(spec.seed + 77);
+  const leaf = LEAVES[Math.floor(R() * LEAVES.length)], bloom = BLOOMS[Math.floor(R() * BLOOMS.length)];
+  P.cols = []; for (let b = 0; b < NB; b++) P.cols.push(P.branched ? mix(C.trunk, leaf, Math.min(1, b / Math.max(2.4, 0.55 * P.maxD))) : C.slate);
+  P.bloom = [mix(bloom, '#ffffff', 0.28), mix(bloom, '#ffffff', 0.62)]; P.phase = R() * 6.28;
+  return P;
+}
+
+// ---------------- layout and drawing ----------------
+// Fit a plant into a box standing on the ground at (cx, gy).
+function place(P, cx, gy, bw, bh) {
+  const [x0, y0, x1, y1] = P.box, w = Math.max(x1 - x0, 1e-6), below = -y0, h = Math.max(y1 - y0, 1e-6);
+  const rooted = P.branched && below < 0.25 * h;           // root on the ground; otherwise the bounding box sits on it
+  const s = Math.min(bw / w, bh / (rooted ? Math.max(y1, 1e-6) : h), bh);
+  return { ox: cx - (x0 + x1) / 2 * s, oy: rooted ? gy : gy + y0 * s - 4, s };
+}
+const lerpL = (a, b, u) => ({ ox: a.ox + (b.ox - a.ox) * u, oy: a.oy + (b.oy - a.oy) * u, s: a.s + (b.s - a.s) * u });
+let FLOWERS = true;
+// prog = number of segments drawn so far (fractional); sway = time in seconds or null
+function drawPlant(c, P, L, prog, sway) {
+  const { ox, oy, s } = L, { x0, y0, x1, y1, w0, w1 } = P;
+  const base = clamp(3.5 * Math.pow(s, 0.21), 1.6, 12), full = Math.floor(prog), part = prog - full;
+  const amp = sway === null || !P.branched ? 0 : 0.03 * (P.box[3] - P.box[1]) * s, ph = sway === null ? 0 : sway * 1.25 + P.phase, ph2 = sway === null ? 0 : sway * 2.9 + P.phase * 1.7;
+  const dx = w => amp * w * (Math.sin(ph + 2.2 * w) + 0.35 * Math.sin(ph2 + 4 * w));
+  c.lineCap = 'round'; c.lineJoin = 'round';
+  for (let b = 0; b < NB; b++) {
+    const idx = P.bucket[b]; if (!idx.length || idx[0] > full) continue;
+    c.beginPath(); let prev = -2;
+    for (let k = 0; k < idx.length; k++) {
+      const i = idx[k]; if (i > full || (i === full && part < 0.002)) break;
+      let ax = ox + x0[i] * s, ay = oy - y0[i] * s, bx = ox + x1[i] * s, by = oy - y1[i] * s;
+      if (amp) { ax += dx(w0[i]); bx += dx(w1[i]); }
+      if (i === full) { bx = ax + (bx - ax) * part; by = ay + (by - ay) * part; }
+      if (!(i === prev + 1 && x0[i] === x1[prev] && y0[i] === y1[prev])) c.moveTo(ax, ay);
+      c.lineTo(bx, by); prev = i;
+    }
+    c.strokeStyle = P.cols[b]; c.lineWidth = Math.max(1.15, base * Math.pow(0.74, b)); c.stroke();
+  }
+  if (FLOWERS && P.tips.length) {
+    const T = P.tips, r0 = clamp(base * 0.8, 2.2, 5.5), span = P.N * 0.05 + 1;
+    for (let pass = 0; pass < 2; pass++) {
+      c.beginPath();
+      for (let k = pass * 4; k < T.length; k += 8) {
+        const r = r0 * pop((prog - T[k + 3]) / span); if (r <= 0.05) continue;
+        const X = ox + T[k] * s + (amp ? dx(T[k + 2]) : 0), Y = oy - T[k + 1] * s;
+        c.moveTo(X + r, Y); c.arc(X, Y, r, 0, 6.2832);
+      }
+      c.fillStyle = P.bloom[pass]; c.fill();
+    }
+  }
+}
+// A finished plant rendered once into its own bitmap (used for very large plants).
+let RES = 1;
+function bitmap(P, L) {
+  const [x0, y0, x1, y1] = P.box, m = 24, bx = Math.floor(L.ox + x0 * L.s - m), by = Math.floor(L.oy - y1 * L.s - m);
+  const w = Math.ceil((x1 - x0) * L.s + 2 * m), h = Math.ceil((y1 - y0) * L.s + 2 * m), cvs = document.createElement('canvas');
+  cvs.width = Math.max(1, Math.round(w * RES)); cvs.height = Math.max(1, Math.round(h * RES));
+  const c = cvs.getContext('2d'); c.setTransform(RES, 0, 0, RES, -bx * RES, -by * RES); drawPlant(c, P, L, P.N, null);
+  return { cvs, bx, by, w, h, res: RES, fl: FLOWERS };
+}
+function drawCached(P, L, key) {
+  if (!P[key] || P[key].res !== RES || P[key].fl !== FLOWERS) P[key] = bitmap(P, L);
+  const B = P[key]; g.drawImage(B.cvs, B.bx, B.by, B.w, B.h);
+}
+
+// ---------------- state ----------------
+const F = { axiom: $('fAx'), p1: $('fP1'), r1: $('fR1'), p2: $('fP2'), r2: $('fR2') };
+let angle = 25.7, gensWanted = 5, jit = 10, plantJit = 10, seed = Number(Q.get('seed') || (1 + Math.floor(Math.random() * 99999)));
+let cur = null, growT0 = 0, lastChange = -1e9, invalid = false, selPreset = null;
+const SLOT_X = [134, 301, 469, 636, 1284, 1451, 1619, 1786], SLOT_H = [310, 370, 330, 400, 380, 320, 360, 300], ORDER = [3, 4, 2, 5, 1, 6, 0, 7];
+const garden = new Array(8).fill(null); let plantedCount = 0;
+const MR = rng(seed * 31 + 7);                         // random source for "Surprise me"
+const curLayout = P => place(P, 960, GY, P.branched ? 470 : 500, 500);
+const slotLayout = (P, i) => place(P, SLOT_X[i], GY, 176, SLOT_H[i]);
+const norm = s => s.replace(/[−–—]/g, '-').replace(/\s+/g, '');
+const now = () => performance.now();
+
+function readSpec() {
+  return { axiom: norm(F.axiom.value), p1: norm(F.p1.value).slice(0, 1), r1: norm(F.r1.value), p2: norm(F.p2.value).slice(0, 1), r2: norm(F.r2.value), angle, n: gensWanted, jit, seed };
+}
+function setFields(s) { F.axiom.value = s.axiom; F.p1.value = s.p1; F.r1.value = s.r1; F.p2.value = s.p2; F.r2.value = s.r2; angle = s.angle; gensWanted = s.n; }
+// Rebuild the current plant from the controls. An invalid field keeps the last valid plant.
+function update() {
+  const s = readSpec();
+  const bad = { axiom: !s.axiom || !balanced(s.axiom), r1: !balanced(s.r1), r2: !balanced(s.r2) };
+  for (const k of ['axiom', 'r1', 'r2']) F[k].classList.toggle('bad', bad[k]);
+  invalid = bad.axiom || bad.r1 || bad.r2;
+  if (!invalid) {
+    cur = build(s);
+    const t = now(); if (t - lastChange > 300) growT0 = t; lastChange = t;     // a slider drag keeps growing instead of restarting
+  }
+  ui();
+}
+function ui() {
+  $('sA').value = angle; $('vA').textContent = (Math.round(angle * 10) / 10) + '°';
+  $('sJ').value = jit; $('vJ').textContent = jit + '%';
+  $('vN').textContent = cur ? cur.gens : gensWanted; $('vN').classList.toggle('cap', !!cur && cur.gens < cur.spec.n);
+  $('bFl').classList.toggle('on', FLOWERS);
+  document.querySelectorAll('button.pre').forEach(b => b.classList.toggle('sel', b.dataset.k === selPreset));
+}
+function preset(k) {
+  const p = PRESETS.find(q => q.k === k); if (!p) return;
+  setFields(p); selPreset = k;
+  if (p.curve) jit = 0; else if (jit === 0 && plantJit > 0 && cur && !cur.branched) jit = plantJit;   // curves are exact; plants get the randomness back
+  lastChange = -1e9; update();
+}
+function plantIt() {
+  if (!cur || !cur.N) return;
+  let i = ORDER.find(j => !garden[j]);
+  if (i === undefined) { i = 0; for (let j = 1; j < 8; j++) if (garden[j].order < garden[i].order) i = j; }   // garden full: the oldest plant makes room
+  cur.bmCur = null;
+  garden[i] = { P: cur, from: curLayout(cur), t0: now(), order: plantedCount++ };
+  seed = (seed * 1103515245 + 12345) >>> 0 || 1;
+  cur = build({ ...cur.spec, seed }); growT0 = now() + 250; lastChange = now();
+  ui();
+}
+function clearGarden() { garden.fill(null); }
+// Small random edit of one rule (insert / delete / swap / flip a symbol, inside brackets when the rule has any;
+// brackets themselves are never touched, so the rule stays balanced), plus a small change of the angle.
+function mutateRule(r, alphabet) {
+  const a = [...r], inside = []; let d = 0; const br = r.includes('[');
+  a.forEach((ch, i) => { if (ch === '[') d++; else if (ch === ']') d--; else if (!br || d > 0) inside.push(i); });
+  const ins = []; d = 0; a.forEach((ch, i) => { if (ch === '[') d++; if (ch === ']') d--; if (!br || d > 0) ins.push(i + 1); });   // positions where a symbol may be inserted
+  const pick = arr => arr[Math.floor(MR() * arr.length)], op = pick(['ins', 'ins', 'del', 'swap', 'flip']);
+  if (op === 'ins' && ins.length) a.splice(pick(ins), 0, pick(alphabet));
+  else if (op === 'del' && inside.length > 1) a.splice(pick(inside), 1);
+  else if (op === 'swap') { const c = inside.filter((i, k) => inside[k + 1] === i + 1 && a[i] !== a[i + 1]); if (c.length) { const i = pick(c); [a[i], a[i + 1]] = [a[i + 1], a[i]]; } }
+  else if (op === 'flip') { const c = inside.filter(i => a[i] === '+' || a[i] === '-'); if (c.length) { const i = pick(c); a[i] = a[i] === '+' ? '-' : '+'; } }
+  return a.join('');
+}
+function surprise() {
+  if (!cur) return;
+  const s = cur.spec, cand = ['r1', 'r2'].filter(k => s[k] && s[k === 'r1' ? 'p1' : 'p2']);
+  if (!cand.length) return;
+  const withBr = cand.filter(k => s[k].includes('[')), pool = withBr.length ? withBr : cand;
+  const alphabet = ['F', 'F', '+', '-', '+', '-']; for (const p of [s.p1, s.p2]) if (p && p !== 'F' && (s.axiom + s.r1 + s.r2).includes(p)) alphabet.push(p);
+  for (let tries = 0; tries < 40; tries++) {
+    const k = pool[Math.floor(MR() * pool.length)], r = mutateRule(s[k], alphabet); if (r === s[k]) continue;
+    let da = (Math.floor(MR() * 6) + 1) * 0.5 * (MR() < 0.5 ? -1 : 1), a2 = clamp(Math.round((s.angle + da) * 2) / 2, 5, 90);
+    const P = build({ ...s, [k]: r, angle: a2 });
+    if (P.gens < s.n || P.N < 2 || P.box[2] - P.box[0] + P.box[3] - P.box[1] < 1) continue;
+    F[k].value = r; angle = a2; selPreset = null; lastChange = -1e9; update();
+    F[k].classList.add('flash'); setTimeout(() => F[k].classList.remove('flash'), 60);
+    return;
+  }
+}
+function setGens(n) { gensWanted = clamp(n, 0, MAXN); lastChange = -1e9; update(); }
+
+// ---------------- frame ----------------
+function label(s, x, y, o = {}) {
+  g.font = `${o.italic ? 'italic ' : ''}${o.bold ? 'bold ' : ''}${o.size || 30}px ${o.font || 'Arial'}`; g.fillStyle = o.color || C.grey; g.textAlign = o.align || 'left'; g.textBaseline = 'middle';
+  g.fillText(s, x, y); return g.measureText(s).width;
+}
+function frame() {
+  const t = now(), ts = STILL ? 1.0 : t / 1000;
+  g.setTransform(RES, 0, 0, RES, 0, 0); g.clearRect(0, 0, CW, CH);
+  // soil and ground line
+  g.fillStyle = C.cream; g.fillRect(0, GY, CW, CH - GY);
+  g.strokeStyle = C.bodyDark; g.lineWidth = 5; g.lineCap = 'butt'; g.beginPath(); g.moveTo(0, GY); g.lineTo(CW, GY); g.stroke();
+  // free spots
+  g.fillStyle = C.bodyDark;
+  for (let i = 0; i < 8; i++) if (!garden[i]) { g.beginPath(); g.ellipse(SLOT_X[i], GY + 24, 20, 7, 0, 0, 6.2832); g.fill(); }
+  // the garden
+  for (let i = 0; i < 8; i++) {
+    const G = garden[i]; if (!G) continue;
+    const u = STILL ? 1 : ease((t - G.t0) / 700), L = u >= 1 ? slotLayout(G.P, i) : lerpL(G.from, slotLayout(G.P, i), u);
+    if (u >= 1 && G.P.N > 20000) drawCached(G.P, L, 'bmSlot'); else drawPlant(g, G.P, L, G.P.N, ts);
+  }
+  // the current plant
+  if (cur) {
+    const L = curLayout(cur), u = STILL ? 1 : clamp((t - growT0) / 1000, 0, 1);
+    if (u >= 1 && cur.N > 4000) drawCached(cur, L, 'bmCur'); else drawPlant(g, cur, L, ease(u) * cur.N + (u >= 1 ? 1 : 0), null);
+    if (!cur.N) { g.fillStyle = C.trunk; g.beginPath(); g.arc(960, GY - 7, 9, 0, 6.2832); g.fill(); }
+  }
+  // legend and symbol count
+  let x = 48; const y = 34;
+  for (const [a, b] of [['F', 'draw'], ['f', 'move'], ['+ −', 'turn by δ'], ['[ ]', 'branch']]) {
+    x += label(a, x, y, { size: 34, bold: true, color: C.ink, font: 'Consolas, "Courier New", monospace' }) + 12; x += label(b, x, y, { size: 30 }) + 44;
+  }
+  if (cur) {
+    label(`${cur.len.toLocaleString('en-US')} symbols`, CW - 48, y, { size: 34, align: 'right' });
+    if (cur.gens < cur.spec.n) label(`stopped at generation ${cur.gens}: the next one passes ${CAP.toLocaleString('en-US')} symbols`, CW - 48, y + 46, { size: 30, align: 'right', color: C.jump });
+  }
+  if (invalid) label('unbalanced [ ]  —  showing the last valid plant', 960, GY + 56, { size: 34, bold: true, align: 'center', color: C.red });
+  requestAnimationFrame(frame);
+}
+
+// ---------------- controls ----------------
+function fit() {
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080), st = $('stage');
+  st.style.transform = `translate(${(innerWidth - 1920 * k) / 2}px, ${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+  const r = clamp(k * (window.devicePixelRatio || 1), 1, 2.5);
+  if (r !== RES || cv.width !== Math.round(CW * r)) { RES = r; cv.width = Math.round(CW * r); cv.height = Math.round(CH * r); }
+}
+addEventListener('resize', fit); fit();
+
+// preset buttons with tiny previews, then the three actions
+{
+  const bot = $('bottom');
+  for (const p of PRESETS) {
+    const b = document.createElement('button'); b.className = 'pre'; b.dataset.k = p.k; b.title = `${p.axiom};  ${p.p1} → ${p.r1}${p.r2 ? `;  ${p.p2} → ${p.r2}` : ''};  δ = ${p.angle}°`;
+    const c = document.createElement('canvas'); c.width = 228; c.height = 176; const lab = document.createElement('span'); lab.textContent = p.label;
+    b.append(c, lab); bot.append(b);
+    const P = build({ ...p, n: p.pn, jit: 0, seed: 1 }), x = c.getContext('2d'); x.setTransform(2, 0, 0, 2, 0, 0);
+    const fl = FLOWERS; FLOWERS = false; drawPlant(x, P, place(P, 57, 84, 100, 76), P.N, null); FLOWERS = fl;
+    b.onclick = () => { b.blur(); preset(p.k); };
+  }
+  const act = (id, cls, text, key, fn) => { const b = document.createElement('button'); b.id = id; b.className = 'act ' + cls; b.innerHTML = `<span>${text}</span><small>${key}</small>`; b.onclick = () => { b.blur(); fn(); }; bot.append(b); };
+  act('bPlant', 'pri', 'Plant it', 'Enter', plantIt); act('bSur', '', 'Surprise me', 'S', surprise); act('bClear', '', 'Clear garden', 'C', clearGarden);
+}
+for (const k in F) {
+  F[k].addEventListener('input', () => { selPreset = null; update(); });
+  F[k].addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === 'Escape') { ev.preventDefault(); ev.stopPropagation(); F[k].blur(); } });
+}
+F.p1.addEventListener('focus', () => F.p1.select()); F.p2.addEventListener('focus', () => F.p2.select());
+$('sA').addEventListener('input', () => { angle = Number($('sA').value); selPreset = null; update(); });
+$('sJ').addEventListener('input', () => { jit = plantJit = Number($('sJ').value); update(); });
+$('sA').addEventListener('change', () => $('sA').blur()); $('sJ').addEventListener('change', () => $('sJ').blur());
+$('bGm').onclick = () => { $('bGm').blur(); setGens((cur ? cur.gens : gensWanted) - 1); };
+$('bGp').onclick = () => { $('bGp').blur(); setGens((cur ? cur.gens : gensWanted) + 1); };
+const toggleFlowers = () => { FLOWERS = !FLOWERS; ui(); };
+$('bFl').onclick = () => { $('bFl').blur(); toggleFlowers(); };
+addEventListener('keydown', ev => {
+  const tg = ev.target; if (tg.tagName === 'INPUT' && tg.type !== 'range') return;
+  if (ev.ctrlKey || ev.metaKey || ev.altKey) return;
+  const k = ev.key.toLowerCase();
+  if (k === 'enter') { ev.preventDefault(); plantIt(); }
+  else if (k === 's') surprise(); else if (k === 'c') clearGarden(); else if (k === 'f') toggleFlowers();
+  else if (k === 'arrowup') { ev.preventDefault(); setGens((cur ? cur.gens : gensWanted) + 1); }
+  else if (k === 'arrowdown') { ev.preventDefault(); setGens((cur ? cur.gens : gensWanted) - 1); }
+  else if (k >= '1' && k <= '8') preset(PRESETS[Number(k) - 1].k);
+});
+// click a planted plant to load its rule back into the editor
+const slotAt = ev => { const r = cv.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * CW; return SLOT_X.findIndex((sx, i) => garden[i] && Math.abs(x - sx) < 84); };
+cv.addEventListener('mousemove', ev => { cv.style.cursor = slotAt(ev) >= 0 ? 'pointer' : 'default'; });
+cv.addEventListener('click', ev => { const i = slotAt(ev); if (i < 0) return; const s = garden[i].P.spec; setFields(s); jit = s.jit; selPreset = null; lastChange = -1e9; update(); });
+
+// ---------------- start; URL parameters (also used as test hooks) ----------------
+// ?preset=a..f|koch|dragon  ?axiom= ?p1= ?r1= ?p2= ?r2=  ?angle= ?n= ?jit= ?flowers=0 ?seed=
+// ?garden=a,c,d,e,f (plants these presets first)  ?do=surprise,plant,clear  ?still=1 (no animation)  ?maxgen=
+if (Q.get('flowers') === '0') FLOWERS = false;
+if (Q.get('jit')) jit = plantJit = clamp(Number(Q.get('jit')), 0, 30);
+for (const k of (Q.get('garden') || '').split(',').filter(Boolean)) { preset(k); plantIt(); }
+preset(Q.get('preset') || 'a');
+if (Q.get('jit')) { jit = clamp(Number(Q.get('jit')), 0, 30); }
+if (Q.get('angle')) angle = clamp(Number(Q.get('angle')), 5, 90);
+if (Q.get('n')) gensWanted = clamp(Number(Q.get('n')), 0, MAXN);
+for (const k of ['axiom', 'p1', 'r1', 'p2', 'r2']) if (Q.get(k) !== null) { F[k].value = Q.get(k); selPreset = null; }
+update();
+for (const a of (Q.get('do') || '').split(',')) { if (a === 'surprise') surprise(); if (a === 'plant') plantIt(); if (a === 'clear') clearGarden(); }
+window.GARDEN = { get cur() { return cur; }, get planted() { return garden.filter(Boolean).length; }, get invalid() { return invalid; }, get angle() { return angle; }, get jit() { return jit; }, get flowers() { return FLOWERS; }, garden };
+requestAnimationFrame(frame);
+</script></body></html>
